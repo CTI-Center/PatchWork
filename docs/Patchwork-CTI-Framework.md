@@ -7,7 +7,7 @@ Version: "0.1"
 ---
 
 >TL:DR
-> - **What this document is:** The description of what the framework classifies, with what  vocabularies, under what confidence and sharing rules, and how each construct traces back to  the standard it was borrowed from.
+> - **What this document is:** The description of what the framework classifies, with what vocabularies, under what confidence and sharing rules, and how each construct traces back to  the standard it was borrowed from.
 > - **How it was created.** We composed several publicly available, market-leading standards into one framework, That patching-together is why the framework is named **Patchwork**.
 
 ---
@@ -24,67 +24,51 @@ Version: "0.1"
 8. [Sharing, handling and provenance](#8.-sharing,-handling-and-provenance)
 9. [Serialisation and storage](#9.-serialisation-and-storage)
 10. [Samples](#10.-samples)
-11. [Divergences and gaps](#11.-divergences-and-gaps)
 
 [Glossary](#glossary) · [Sources](#sources) · [Revision history](#revision-history)
 
 ---
 ## 1.-Purpose-and-scope
 
-This framework exists to turn analyst observations of adversary activity into an actionable,
-standards-conformant threat intelligence compatible with STIX 2.1, **in a record where each
-judgement stays revisable without destroying the ones around it**.
+This framework exists to turn analyst observations of adversary activity into an actionable, standards-conformant threat intelligence compatible with STIX 2.1, **in a record where each judgement stays revisable without destroying the ones around it**.
 
-**The problem it solves.** Threat intelligence is a record of provisional judgements, and
-correction is routine rather than exceptional. Most data models make correction destructive:
-renaming an actor, merging two clusters, or re-grading a source overwrites the reasoning that
-produced the earlier view, so the record can no longer show what was believed, on what evidence,
-or why it changed. Every construct below exists to keep each judgement separable — from the
-evidence that supports it, and from the other judgements around it.
+**The problem it solves.** 
+	Threat intelligence is a record of provisional judgements, and correction is routine rather than exceptional. Most data models make correction destructive: renaming an actor, merging two clusters, or re-grading a source overwrites the reasoning that produced the earlier view, so the record can no longer show what was believed, on what evidence, or why it changed. Every construct below exists to keep each judgement separable, from the evidence that supports it, and from the other judgements around it.
+- **Attribution accumulates rather than overwrites.** 
+	An analyst who tracks an unattributed intrusion today, links it to a second body of activity next month, and assesses both as one adversary next year ends up with a structure that still holds all three, the two original clusters, the grouping assessment, and the evidence for each ([4.1](#4.1-three-tiers-of-object,-linked)).
+- **Source grading attaches to the observation, not the adversary**
+	A new report never overwrites the provenance of the last one ([7.1](#7.1-admiralty-grading-attaches-to-the-observation)).
+- **Urgency and sourcing stay on separate axes**
+	How close a threat is and how good the reporting is, are answers to different questions ([3.4](#3.4-threat-levels)).
+- **One member's judgement cannot overwrite another's** 
+	Provisional designations carry the authoring member's namespace, so overlapping assessments coexist instead of one silently winning ([4.2](#4.2-member-namespaces)).
 
-- **Attribution accumulates rather than overwrites.** An analyst who tracks an unattributed
-  intrusion today, links it to a second body of activity next month, and assesses both as one
-  adversary next year ends up with a structure that still holds all three — the two original
-  clusters, the grouping assessment, and the evidence for each
-  ([4.1](#4.1-three-tiers-of-object,-linked)).
-- **Source grading attaches to the observation, not the adversary**, so a new report never
-  overwrites the provenance of the last one
-  ([7.1](#7.1-admiralty-grading-attaches-to-the-observation)).
-- **Urgency and sourcing stay on separate axes**, because how close a threat is and how good the
-  reporting is are answers to different questions ([3.4](#3.4-threat-levels)).
-- **One member's judgement cannot overwrite another's** — provisional designations carry the
-  authoring member's namespace, so overlapping assessments coexist instead of one silently
-  winning ([4.2](#4.2-member-namespaces)).
+**In scope:**
+	adversary tracking and naming, attribution tiering, motivation and technique classification, sector taxonomy, confidence and source grading, TLP handling, STIX 2.1 serialisation, and curated intelligence products.
 
-**In scope:** adversary tracking and naming, attribution tiering, motivation and technique
-classification, sector taxonomy, confidence and source grading, TLP handling, STIX 2.1
-serialisation, and curated intelligence products.
+**Out of scope, deliberately:** 
+	this is not a maturity model, not a collection-management plan, not an intelligence-cycle doctrine, and not a detection-engineering standard. It says nothing about how requirements are set or how stakeholders are served, where CERT-EU's framework is a *programme* standard, this one is a *data and attribution* standard.
 
-**Out of scope, deliberately:** this is not a maturity model, not a collection-management
-plan, not an intelligence-cycle doctrine, and not a detection-engineering standard. It says
-nothing about how requirements are set or how stakeholders are served — where CERT-EU's
-framework is a *programme* standard, this one is a *data and attribution* standard.
-
-**Designed for shared use.** The framework is meant to be adopted by multiple independent
-members who may exchange data. Where that creates collision risk — chiefly in adversary
-naming — the framework specifies a per-member namespace rather than assuming a single
-authority ([4.2](#4.2-member-namespaces)).
+**Designed for shared use.** 
+	The framework is meant to be adopted by multiple independent members who may exchange data. Where that creates collision risk, chiefly in adversary naming, the framework specifies a per-member namespace rather than assuming a single authority ([4.2](#4.2-member-namespaces)).
 
 ---
 
 ## 2.-Source-standards-and-how-they-compose
 
-Four external standards were composed. None was adopted wholesale; each contributed the part it does best.
+Five external standards were composed. None was adopted wholesale; each contributed the part it does best. Where Patchwork parts company with them is registered below: [2.4](#2.4-deliberate-divergences) is settled policy, [2.5](#2.5-not-adopted) is absence, both summarise, and link forward to the chapters that argue each case
 
-| Standard                                                                  | What was taken                                                                                                                                                                                                                                                           | Why that one                                                                                                                                                                           |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **CERT-EU CTI Framework**                                                 | Malicious activities of interest, ecosystem, threat categories, threat domains and threat levels (localised in §3 and §5.2); technical-attribution-only doctrine; the Admiralty grading scheme. Threat *actor* levels and the scoring models are **not** adopted — §11.2 | The only one of the four that is an explicit, published *classification* standard with normative analytic rules. It supplies the doctrine layer.                                       |
-| **Mandiant / Google Threat Intelligence**                                 | The `UNC` → `TEMP` → `APT`/`FIN` graduation ladder; `intrusion-set` as the primary adversary object; the open-vocabulary value sets; the report-type catalogue                                                                                                           | The most mature published model of adversary identity as *provisional and revisable* rather than assigned once. Its vocabularies are already the de-facto STIX values in wide tooling. |
-| **Palo Alto Unit 42**                                                     | The `CL-<MOT>-####` / `TGR-<MOT>-####` code grammar; the STA/CRI/MIX/UNK motivation classes; constellation naming; handles treated as personas rather than designations                                                                                                  | Mandiant's ladder has the right *shape* but opaque identifiers. Unit 42's grammar encodes tier and motivation in the name itself, which makes an unattributed cluster self-describing. |
-| **CISA Automated Indicator Sharing**, Submission Guide v.16 (25 Jan 2021) | TLP marking as a mandatory per-object property; the sharing matrix; the HIGH/MEDIUM/LOW confidence criteria as a coarse comparison scale; handling obligations (PII minimisation, consent, versioning)                                                                   | The only source of the four that treats *dissemination* as a first-class constraint rather than an afterthought.                                                                       |
+| Standard                                                                  | What was taken                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Why that one                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **CERT-EU CTI Framework**                                                 | - [Malicious activities of interest](Easy-access/CERT-EU/cert-eu-cti-framework.md#malicious-activities-of-interest)<br>- [ecosystem](Easy-access/CERT-EU/cert-eu-cti-framework.md#ecosystem)<br>- [threat categories](Easy-access/CERT-EU/cert-eu-cti-framework.md#threat-and-counter-threat-categories)<br>- [threat domains](Easy-access/CERT-EU/cert-eu-cti-framework.md#threat-domains)<br>- [threat levels](Easy-access/CERT-EU/cert-eu-cti-framework.md#threat-levels) (localised in [3](#3.-What-we-track-and-how-we-scope-it) and [5.2](#5.2-Activity-categories))<br>- [technical-attribution-only doctrine](Easy-access/CERT-EU/cert-eu-cti-framework.md#technical-attribution-principles)<br>- [Admiralty grading scheme](Easy-access/CERT-EU/cert-eu-cti-framework.md#confidence-in-information).                                                                                                     | The only one of the four that is an explicit, published *classification* standard with normative analytic rules. It supplies the doctrine layer.                                                                                                                                                                                                                                                                              |
+| **Mandiant / Google Threat Intelligence**                                 | - [graduation ladder](Easy-access/GTI/debuncing-attribution-how-mandiant-tracks-uncategorized-threat-actors-mandiant.md#why-uncs-matter)<br>- [Open-vocabulary](Vocabularies.md) <br>- [Report-type](Report-Types.md) <br>- [campaign-type](How-does-Mandiant-track-threat-actors)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | The most mature published model of adversary identity as *provisional and revisable* rather than assigned once. Its vocabularies are already the de-facto STIX values in wide tooling.                                                                                                                                                                                                                                        |
+| **Palo Alto Unit 42**                                                     | - `intrusion-set` [code grammar](Easy-access/PaloAltoNetworks/introducing-unit-42s-attribution-framework.md#levels-of-attribution)<br>- [motivation classes](Easy-access/PaloAltoNetworks/introducing-unit-42s-attribution-framework.md#level-1-activity-clusters)<br>- `intrusion-set` as the adversary object ([ATOM / Adversary Playbook](https://github.com/pan-unit42/playbook_viewer))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Mandiant's ladder has the right *shape* but opaque identifiers. Unit 42's grammar encodes tier and motivation in the name itself, which makes an unattributed cluster self-describing.                                                                                                                                                                                                                                        |
+| **CISA Automated Indicator Sharing**, Submission Guide v.16 (25 Jan 2021) | [TLP marking](<Easy-access/CISA/ais-submission-guide-v.16.md#4.7-traffic-light-protocol-(tlp)-marking>) as a mandatory per-object property; the [sharing matrix](Easy-access/CISA/ais-submission-guide-v.16.md#7.1-tlp); the [HIGH/MEDIUM/LOW confidence criteria](Easy-access/CISA/ais-submission-guide-v.16.md#appendix-b---confidence-level-criteria) as a coarse comparison scale; handling obligations ([PII minimisation](Easy-access/CISA/ais-submission-guide-v.16.md#4.5-prior-to-submission), [consent](Easy-access/CISA/ais-submission-guide-v.16.md#7.2-consent), [versioning](Easy-access/CISA/ais-submission-guide-v.16.md#10.0-versioning))                                                                                                                                                                                                                                                        | The only source of the four that treats *dissemination* as a first-class constraint rather than an afterthought.                                                                                                                                                                                                                                                                                                              |
+| **OASIS STIX 2.1**                                                        | The object and serialisation substrate: the 19 SDO types, the two SROs (`relationship`, `sighting`), the SCOs and `bundle`; the common properties (`id`, `created`, `modified`, `revoked`, `confidence`, `created_by_ref`, `object_marking_refs`, `external_references`); the versioning model ([3.6](Easy-access/oasis-open/stix-2.1.md#3.6-versioning)); `marking-definition` and the TLP marking type ([7.2](Easy-access/oasis-open/stix-2.1.md#7.2-data-markings)); the open vocabularies ([10](Easy-access/oasis-open/stix-2.1.md#10-stix-vocabularies), enumerated in [Vocabularies](Vocabularies.md)); and `extension-definition` ([7.3](Easy-access/oasis-open/stix-2.1.md#7.3-extension-definition)), which carries the framework's own classification properties ([9.3](#9.3-classification-properties)). Patterning, Language Content and granular markings are **not** used — [2.5](#2.5-not-adopted) | The only one of the five that is a *serialisation* standard. The other four supply doctrine, adversary-identity method and dissemination rules; none of them says how a judgement is written down, versioned or exchanged. STIX 2.1's versioning model — `id` constant, `modified` advances, `revoked` retires — is what makes "revisable without destroying the judgements around it" a mechanism rather than an aspiration. |
+
 > ⚠️ **AIS version caveat.** Guide v.16 predates STIX 2.1 adoption in AIS: it is written
 > against STIX **1.x** (`STIX_Package`, `stix:Observables` embedded in `stix:Indicators`, the
-> `AIS_Bundle_Marking_1.1.1` schema). Its field-level Appendix A profile therefore does **not**
+> `AIS_Bundle_Marking_1.1.1` schema). Its field-level [Appendix A](Easy-access/CISA/ais-submission-guide-v.16.md#appendix-a---ais-stix-profile-fields) profile therefore does **not**
 > apply to this framework's STIX 2.1 output. What carries over is *intent* — what must be
 > marked, what must be minimised, what must be consented to — not field names.
 
@@ -114,6 +98,84 @@ have to restructure. It is not a claim that data will automatically merge.
   STIX on serialisation 
 - **Sector taxonomy.** Neither vendor taxonomy is adopted. The framework defines its own
   hierarchy and supplies a mapping *into* it ([6.1](#6.1-sectors)). 
+- **How to carry non-standard properties.** Earlier drafts of this framework used `x_`-prefixed
+  custom properties. STIX 2.1 **deprecates** that mechanism — its [11](<Easy-access/oasis-open/stix-2.1.md#11-customizing-stix-(deprecated)>) is titled "Customizing STIX
+  (Deprecated)" — in favour of `extension-definition` objects ([7.3](Easy-access/oasis-open/stix-2.1.md#7.3-extension-definition)). Here STIX **wins**: the
+  five classification properties now ride on a single nested `property-extension`
+  ([9.3](#9.3-classification-properties)). This is the one entry in this list resolved *against*
+  the framework's earlier choice rather than against a source standard.
+
+### 2.3-Why-STIX-2.1-sits-differently-from-the-other-four
+
+The other four are read as **doctrine and method**, and localised into this document's own prose —
+CERT-EU's threat domains became [3.3](#3.3-threat-domains), Unit 42's code grammar became
+[4.1](#4.1-three-tiers-of-object,-linked). Nothing downstream can check whether that localisation
+was faithful; it is an editorial claim.
+
+STIX 2.1 is not localised. It is the **wire format**, and conformance to it is *testable* — a
+bundle either validates or it does not, and [12](Easy-access/oasis-open/stix-2.1.md#12-conformance) says which features are mandatory (versioning is
+one). That makes it the only source standard this framework can actually fail against.
+
+It also runs in the opposite direction from the other four. They *supply* material the framework
+adopts; STIX **constrains what can be said**. Richer analyst-facing values are degraded into it
+on serialisation — Unit 42's MOT classes into `attack-motivation-ov`
+([5.1](#5.1-the-analyst-facing-motivation-classes)), Admiralty credibility into a `confidence`
+integer ([7.1](#7.1-admiralty-grading-attaches-to-the-observation)). Where a judgement will not
+fit, the framework carries it in an extension rather than bending the standard
+([9.3](#9.3-classification-properties)).
+
+### 2.4-Deliberate-divergences
+
+| Divergence                                                                     | From                          | Reason                                                                                                                                                                                                                              |
+| ------------------------------------------------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tiers are separate linked objects, not one designation maturing in place**   | **Mandiant and Unit 42 both** | Preserves history, makes a wrong grouping correctable by deleting an edge, and keeps cross-cluster evidence (shared code base ⇒ shared developer or operator) expressible after grouping ([4.1](#4.1-three-tiers-of-object,-linked)) |
+| Persona is a `threat-actor` SDO, not an intrusion-set alias                    | Unit 42                       | Personas are adversary-controlled and deceptive; as an alias, a shared brand name silently fuses unrelated activity ([4.4](#4.4-personas-are-objects,-not-aliases))                                                                  |
+| Own 182-entry sector hierarchy                                                 | all three                     | Every source taxonomy is **flat**; the sub-sector level is where the analytic value sits ([6.1](#6.1-sectors))                                                                                                                      |
+| Per-member namespace prefix                                                    | all three                     | The sources each assume a single naming authority; a community framework cannot ([4.2](#4.2-member-namespaces))                                                                                                                     |
+| Threat domains defined by *relation* to a constituency, not by named geography | CERT-EU                       | CERT-EU's ladder is EU-specific; Patchwork is multi-member ([3.3](#3.3-threat-domains))                                                                                                                                             |
+| No `financial-gain` motivation                                                 | —                             | Not a member of `attack-motivation-ov`; mirrors Mandiant's own `organizational-gain` mapping.                                                                                                                                       |
+| Hacktivism maps to MOT class `UNK`                                             | Unit 42                       | Unit 42's code set has no hacktivism class ([5.1](#5.1-the-analyst-facing-motivation-classes))                                                                                                                                      |
+
+### 2.5-Not-adopted
+
+**From CERT-EU** — chapters 1–6 are now localised in [3](#3.-what-we-track-and-how-we-scope-it)
+and [5.2](#5.2-activity-categories). What remains outside the framework:
+
+Threat *actor* levels and the scoring models are **not** adopted — [2.5](#2.5-not-adopted)
+
+| Construct | What adoption would require |
+|---|---|
+| **[Threat actor levels](Easy-access/CERT-EU/cert-eu-cti-framework.md#threat-actor-levels)** (Critical / High / Medium / Low) | Derivable in principle from the adversary graph, but the definitions rest on "significant incident" and on a declared period of interest. **Blocked until a member defines significant incident** — see the note in [3.4](#3.4-threat-levels). |
+| **[Threat scoring](Easy-access/CERT-EU/cert-eu-cti-framework.md#threat-scoring)** — occurrences, targeting, severity, time period, decay | A scoring engine over the MAI graph, plus a severity scale (absent, below) and a weighting of the ecosystem components in [3.2](#3.2-ecosystem). |
+| **[Mitigation scoring](Easy-access/CERT-EU/cert-eu-cti-framework.md#mitigation-scoring)** — `K₁ × MMW + K₂ × MIA + K₃ × ME8` | Mitigation objects, initial-access technique tagging and Essential Eight mappings — none of which the framework holds. |
+| **[FIRST LCA and WEP](Easy-access/CERT-EU/cert-eu-cti-framework.md#communicating-on-uncertainties)** | Calibrated prose vocabulary for analytic confidence and estimative probability in written products. A templates-only change; nothing structural blocks it. |
+
+**From CISA AIS** — [PII minimisation](Easy-access/CISA/ais-submission-guide-v.16.md#4.5-prior-to-submission), [source-identity](Easy-access/CISA/ais-submission-guide-v.16.md#7.3-source-information)
+and [consent](Easy-access/CISA/ais-submission-guide-v.16.md#7.2-consent) fields, and [](Easy-access/CISA/ais-submission-guide-v.16.md#10.0-versioning) of a fact already shared. Detailed in
+[8.3](#8.3-handling-obligations-—-acknowledged,-not-specified).
+
+**From STIX 2.1** — features of the standard the framework does not exercise:
+
+| Construct | Why not |
+|---|---|
+| **Patterning** ([9](Easy-access/oasis-open/stix-2.1.md#9-stix-patterning)) | No indicator pattern grammar is emitted. Indicators here carry analyst-authored context, not machine-evaluable `pattern` expressions. Adopting it is additive — nothing structural blocks it. |
+| **Language Content** ([7.1](Easy-access/oasis-open/stix-2.1.md#7.1-language-content)) | Object text is single-language. Localisation would need a `language-content` object per translated object. |
+| **Granular markings** ([7.2.3](Easy-access/oasis-open/stix-2.1.md#7.2.3-granular-markings)) | Marking is object-level only ([8.1](#8.1-tlp)). Marking individual properties at different TLP levels is expressible in STIX but not used. |
+
+**Structural gaps in Patchwork itself:**
+
+- **No severity dimension.** Nothing distinguishes a defaced website from a destroyed plant.
+  Note that adopting threat levels does **not** close this: a threat level is urgency and
+  proximity, not realised impact, and CERT-EU's own threat scoring treats severity as a separate
+  input.
+- **The Diamond promotion gate is unquantified** ([4.1](#4.1-three-tiers-of-object,-linked)) —
+  "enough vertices" is not a specification.
+- **No object type for non-adversarial context.** `Policy & law enforcement` activity —
+  takedowns, arrests, sanctions — has real explanatory value for why an adversary changed
+  behaviour, and nowhere to live ([5.2](#5.2-activity-categories)).
+- **Retraction of facts.** Withdrawing an *assessment* is solved by the additive ladder;
+  withdrawing a *fact already shared* is not ([8.3](#8.3-handling-obligations-—-acknowledged,-not-specified)).
+
 ---
 
 ## 3.-What-we-track-and-how-we-scope-it
@@ -218,7 +280,7 @@ prioritisation, and is the natural field for a threat-alert product.
 > incident**, which CERT-EU inherits from EU regulation. Patchwork does not define it — each
 > member must, for their own constituency, before this scale can be applied consistently. This
 > is also what currently blocks adopting CERT-EU's threat *actor* levels
-> ([11](#11.-divergences-and-gaps)).
+> ([2.5](#2.5-not-adopted)).
 
 ---
 
@@ -300,7 +362,7 @@ four vertices (adversary / infrastructure / capability / victim) are evidenced a
 member clusters, and the grading on the underlying observations supports the claim. The
 framework deliberately does not fix a numeric threshold.
 
-![Attribution workflow visualization](img/Attribution-workflow-visualization.png)
+![Attribution workflow visualization](Attribution-workflow-visualization.png)
 *Attribution workflow visualization*
  
 ### 4.2-Member-namespaces
@@ -434,7 +496,7 @@ Two categories deserve a note:
 - **`Policy & law enforcement` is not adversary activity at all.** It is the counter-threat
   context that explains why an adversary went quiet, rebranded, or lost infrastructure — real
   analytic value, but this framework has no object type for it
-  ([11](#11.-divergences-and-gaps)).
+  ([2.5](#2.5-not-adopted)).
 
 ---
 
@@ -457,7 +519,7 @@ adopted, for a reason that is easy to verify: **neither vendor publishes a hiera
 | **This framework**                 | Two-level hierarchy, `part-of`                                                                            | 58 parents + 124 sub-sectors |
 | **Google TI** (`IndustrySectorOV`) | **Flat**, no hierarchy                                                                                    | 27 fixed values              |
 | **Mandiant**                       | **Flat**, and *no fixed vocabulary at all* — industry strings are passed through verbatim from the source | unbounded                    |
-| **CERT-EU** (§9, NIS2-derived)     | Flat                                                                                                      | 28 values                    |
+| **CERT-EU** ([9](Easy-access/CERT-EU/cert-eu-cti-framework.md#sectors-of-interest), NIS2-derived)     | Flat                                                                                                      | 28 values                    |
 
 Adopting any of them would mean discarding the sub-sector level, which is where most analytic
 value sits — "energy" and "energy:oil, gas" support very different questions.
@@ -477,8 +539,10 @@ The rationale is conformance, not integration ([2.1](#2.1-borrowing-methodology,
 tooling ecosystem already expects, so adopting them costs nothing and avoids inventing a
 private dialect.
 Most are standard STIX open vocabularies that any conformant platform already ships. The
-genuinely additive ones are the Mandiant domain **report types** (`malware-profile`,
-`ttp-deep-dive`, `threat-alert`, …), which have no standard equivalent.
+genuinely additive ones are the domain **report types** (`malware-profile`, `ttp-deep-dive`,
+`threat-alert`, …), which have no standard equivalent. Most were inherited with the Mandiant
+domain set; `net-assessment` is Patchwork's own, and three inherited values are kept only so
+records that already carry them stay valid ([Report-Types](Report-Types.md)).
 
 ---
 
@@ -512,10 +576,10 @@ attach to the event:
 
 | | Scale | Granularity | Status here |
 |---|---|---|---|
-| **Admiralty** (CERT-EU §10.1) | A–F × 1–6, two independent axes | 36 combinations | **Adopted** |
-| **CISA AIS** (Appendix B, after DIA 2010) | HIGH / MEDIUM / LOW-UNKNOWN, single axis | 3 values | Not used. Comparable to a collapsed Admiralty: HIGH ≈ A1–B2, MEDIUM ≈ B3–C3, LOW ≈ D–F or 4–6 |
+| **Admiralty** ([CERT-EU 10.1](Easy-access/CERT-EU/cert-eu-cti-framework.md#confidence-in-information)) | A–F × 1–6, two independent axes | 36 combinations | **Adopted** |
+| **CISA AIS** ([Appendix B](Easy-access/CISA/ais-submission-guide-v.16.md#appendix-b---confidence-level-criteria), after DIA 2010) | HIGH / MEDIUM / LOW-UNKNOWN, single axis | 3 values | Not used. Comparable to a collapsed Admiralty: HIGH ≈ A1–B2, MEDIUM ≈ B3–C3, LOW ≈ D–F or 4–6 |
 | **STIX 2.1 `confidence`** | 0–100 integer | continuous | **Used** as the serialisation target |
-| **FIRST LCA / WEP** (CERT-EU §10.2) | *low/moderate/high confidence*; *unlikely/likely/very likely/almost certainly* | prose | **Not adopted** |
+| **FIRST LCA / WEP** ([CERT-EU 10.2](Easy-access/CERT-EU/cert-eu-cti-framework.md#communicating-on-uncertainties)) | *low/moderate/high confidence*; *unlikely/likely/very likely/almost certainly* | prose | **Not adopted** |
 
 ---
 ## 8.-Sharing,-handling-and-provenance
@@ -528,7 +592,7 @@ are **not** emitted, because platforms resolve the predefined markings themselve
 stub fails STIX 2.1 validation. TLP:WHITE was renamed TLP:CLEAR in TLP 2.0 but keeps the same
 STIX id, so both spellings resolve identically.
 
-**Handling rule adopted from AIS §4.7:** TLP:RED must never travel over an automated sharing
+**Handling rule adopted from [AIS 4.7](<Easy-access/CISA/ais-submission-guide-v.16.md#4.7-traffic-light-protocol-(tlp)-marking>):** TLP:RED must never travel over an automated sharing
 channel. Any export path a member builds is required to filter on TLP **before** transmission —
 recording a marking faithfully is not the same as honouring it.
 
@@ -547,13 +611,13 @@ The framework records the following AIS obligations without yet specifying how t
 They are listed so that a member building a sharing capability starts from a known baseline
 rather than discovering them late.
 
-- **PII minimisation.** AIS (4.5) requires removing all personal information not directly
+- **PII minimisation.** [AIS (4.5)](Easy-access/CISA/ais-submission-guide-v.16.md#4.5-prior-to-submission) requires removing all personal information not directly
   related to a cybersecurity threat *before* sharing. Free-text description fields are the
   obvious risk surface.
-- **Source identity and consent.** AIS (7.2–7.3) require an organisation name, ISO 3166-1
+- **Source identity and consent.** AIS ([7.2](Easy-access/CISA/ais-submission-guide-v.16.md#7.2-consent)–[7.3](Easy-access/CISA/ais-submission-guide-v.16.md#7.3-source-information)) require an organisation name, ISO 3166-1
   alpha-2 country, ISO 3166-2 administrative area, sector, and an explicit consent choice
   (None / USG / Everyone) on every submission.
-- **Versioning and retraction.** AIS (10) requires issuing a versioning update when information
+- **Versioning and retraction.** [AIS (10)](Easy-access/CISA/ais-submission-guide-v.16.md#10.0-versioning) requires issuing a versioning update when information
   is shared in error or under a wrong marking. Retracting an **assessment** is already solved:
   delete the `part-of` or `related-to` edge and the grouping is withdrawn with the underlying
   clusters and their evidence intact ([4.1](#4.1-three-tiers-of-object,-linked)). Retracting a
@@ -578,7 +642,7 @@ flowchart TB
   VLOC["location<br/>(victim country)"]
   OLOC["location<br/>(actor origin)"]
   AP["attack-pattern<br/>(+ ATT&amp;CK ref)"]
-  CAM["campaign<br/>(analyst-asserted)"]
+  CAM["campaign<br/>(analyst-asserted · typed)"]
   REP["report<br/>(curated product)"]
 
   INC -->|attributed-to| IS
@@ -601,6 +665,11 @@ flowchart TB
 
 Solid edges are emitted per observation; dashed edges come from the curation layer ([9.4](#9.4-curation-layer)) and
 appear only when campaigns or reports are produced.
+
+> **`CAM -.->|attributed-to| IS` is one edge for an `Individual` campaign and many for a
+> `Global` one** ([9.4](#9.4-curation-layer)). That plurality is a consequence of the type, not a
+> coordination assertion: a `Global` campaign attributed to six intrusion-sets is claiming six
+> unrelated actors converged, not that they worked together.
 
 > **`sighting` is deliberately unused** for attack patterns — sighting an attack pattern is
 > atypical STIX. The relationship is reserved for indicators.
@@ -629,47 +698,166 @@ Three derived rules the framework depends on:
   otherwise put a *changing* name on a *durable* record.
 - **Event names must self-disambiguate.** Because an event's identity is its name alone, two
   observations of the same attack on the same target would collapse into one — silently
-  discarding the second's Admiralty grading, which §7.1 exists to preserve. Event names must
+  discarding the second's Admiralty grading, which 7.1 exists to preserve. Event names must
   therefore carry a distinguishing element such as the observation date.
 - **A report's `published` date must be anchored to something stable** — the earliest activity
   it covers, never the latest. Anchoring to the latest forks a new report every time the
   underlying set grows, instead of updating the living product in place.
 
-### 9.3-Custom-properties
+### 9.3-Classification-properties
 
 STIX 2.1 has no native representation for the classification concepts in
-[3](#3.-what-we-track-and-how-we-scope-it), so the framework defines them as custom
-properties. **These names are normative** — members exchanging reports must use the same
-strings, or every member invents their own and the classification stops being comparable.
+[3](#3.-what-we-track-and-how-we-scope-it) and [5.2](#5.2-activity-categories), so the framework
+defines its own. They are carried in a **STIX extension**, not as `x_`-prefixed custom
+properties: STIX 2.1 [11](<Easy-access/oasis-open/stix-2.1.md#11-customizing-stix-(deprecated)>) deprecates that mechanism in favour of `extension-definition` ([7.3](Easy-access/oasis-open/stix-2.1.md#7.3-extension-definition)),
+and [10.5](Easy-access/oasis-open/stix-2.1.md#10.5-extension-types-enumeration) encourages the nested `property-extension` type over top-level properties, which
+collide across producers.
+
+**These names are normative** — members exchanging reports must use the same strings and the
+same extension id, or every member invents their own and the classification stops being
+comparable.
+
+#### The extension definition
+
+Published once, and referenced by every object that carries a classification:
+
+```json
+{
+  "type": "extension-definition",
+  "spec_version": "2.1",
+  "id": "extension-definition--68d9295e-c5bb-4fae-895b-23271595cc5b",
+  "created_by_ref": "identity--<the-publishing-member>",
+  "created": "2026-08-31T00:00:00.000Z",
+  "modified": "2026-09-01T00:00:00.000Z",
+  "name": "Patchwork CTI classification",
+  "description": "Threat level, threat domain, activity category, attribution tier, intent and campaign type, as defined by the Patchwork CTI Framework.",
+  "schema": "https://github.com/CTI-Center-Organization/Patch-CTI-Framework/blob/main/docs/Patchwork-CTI-Framework.md#9.3-classification-properties",
+  "version": "1.1.0",
+  "extension_types": ["property-extension"]
+}
+```
+
+> ⚠️ **The extension id is permanent.** Changing it forks every object that carries it, exactly
+> as changing a member namespace token does ([4.2](#4.2-member-namespaces)). Mint once.
+
+**The `version` moves; the `id` does not.** Adding a property to the set below is a change to
+this definition, so `version` advances and `modified` with it — `1.1.0` added `campaign_type`.
+Adding a property is backward-compatible: objects written against `1.0.0` stay valid, and a
+consumer that does not know the new property ignores it exactly as it would ignore the whole
+extension. Removing or retyping a property would not be, and is not something to do quietly.
+
+#### The properties
 
 | Concept                                                     | Property              | Carried on                      | Values                                                         |
 | ----------------------------------------------------------- | --------------------- | ------------------------------- | -------------------------------------------------------------- |
-| Threat level ([3.4](#3.4-threat-levels))                    | `x_threat_level`      | `report`, `incident`            | `High` · `Medium` · `Low`                                      |
-| Threat domain ([3.3](#3.3-threat-domains))                  | `x_threat_domain`     | `report`, `incident`            | `Constituency` · `National` · `Regional` · `Partner` · `World` |
-| Activity category ([5.2](#5.2-activity-categories))         | `x_activity_category` | `incident`                      | **list** — one or more of the nine §5.2 categories             |
-| Attribution tier ([4.1](#4.1-three-tiers-of-object,-linked)) | `x_attribution_tier`  | `intrusion-set`                 | `Cluster` · `Temporary` · `Mature`                             |
-| Intent                                                      | `x_intent`            | `intrusion-set`, `threat-actor` | `financial` · `espionage` · `sabotage` · `disruption`          |
+| Threat level ([3.4](#3.4-threat-levels))                    | `threat_level`        | `report`, `incident`            | `High` · `Medium` · `Low`                                      |
+| Threat domain ([3.3](#3.3-threat-domains))                  | `threat_domain`       | `report`, `incident`            | `Constituency` · `National` · `Regional` · `Partner` · `World` |
+| Activity category ([5.2](#5.2-activity-categories))         | `activity_category`   | `incident`                      | **list** — one or more of the nine 5.2 categories             |
+| Attribution tier ([4.1](#4.1-three-tiers-of-object,-linked)) | `attribution_tier`    | `intrusion-set`                 | `Cluster` · `Temporary` · `Mature`                             |
+| Intent                                                      | `intent`              | `intrusion-set`, `threat-actor` | `financial` · `espionage` · `sabotage` · `disruption`          |
+| Campaign type ([9.4](#9.4-curation-layer))                  | `campaign_type`       | `campaign`                      | `Individual` · `Global`                                        |
 
-`x_activity_category` is a **list** because §5.2 states categories overlap by design — a
+The `x_` prefix is gone: the extension id already namespaces these, so prefixing them again
+would only re-introduce the collision risk the extension exists to remove.
+
+`activity_category` is a **list** because 5.2 states categories overlap by design — a
 ransomware operation running a leak site is legitimately both `Cybercrime` and
 `Data exposure and leaks`. The others are single-valued: an activity has one highest-ranking
-domain ([3.3](#3.3-threat-domains)) and one urgency.
+domain ([3.3](#3.3-threat-domains)) and one urgency, and a campaign is one kind or the other —
+if it reads as both, it is two campaigns.
 
-> Threat *domain* is recorded from the **authoring** member's perspective. A receiving member
-> whose constituency differs will re-derive it — the ladder is constituency-relative by design
-> ([3.3](#3.3-threat-domains)), so the value travels as the author's assessment, not as an absolute.
+`campaign_type` is here rather than on the object itself because STIX 2.1's `campaign` SDO
+([4.2](Easy-access/oasis-open/stix-2.1.md#4.2-campaign)) has **no type property** — its specific
+properties are `name`, `description`, `aliases`, `first_seen`, `last_seen` and `objective`, and
+there is no `campaign-type-ov` to draw values from. The distinction is Mandiant's
+([2](#2.-source-standards-and-how-they-compose)); the carrier is ours because the standard
+offers no slot for it.
+
+#### On the wire
+
+```json
+{
+  "type": "report",
+  "spec_version": "2.1",
+  "id": "report--3f8a1c92-5e47-4b10-9d3e-7c2a6b4f0e15",
+  "created_by_ref": "identity--<the-authoring-member>",
+  "name": "<CTI-CENTER> Access broker advertising utility-sector foothold",
+  "report_types": ["threat-alert"],
+  "published": "2026-08-14T00:00:00.000Z",
+  "object_refs": ["intrusion-set--...", "incident--..."],
+  "confidence": 60,
+  "object_marking_refs": ["marking-definition--<tlp-amber>"],
+  "extensions": {
+    "extension-definition--68d9295e-c5bb-4fae-895b-23271595cc5b": {
+      "extension_type": "property-extension",
+      "threat_level": "High",
+      "threat_domain": "National"
+    }
+  }
+}
+```
+
+A consumer that does not know the extension still reads the report, its `confidence` and its TLP
+marking — it loses only the classification. That graceful degradation is the reason for using
+the standard mechanism rather than inventing one.
+
+A `campaign` carries its type the same way — same extension id, same nesting:
+
+```json
+{
+  "type": "campaign",
+  "spec_version": "2.1",
+  "id": "campaign--b7c4e2a8-1d93-4f56-8e0b-3a9c5d7f2481",
+  "created_by_ref": "identity--<the-authoring-member>",
+  "name": "<CTI-CENTER> CVE-2026-XXXXX mass exploitation",
+  "description": "Unrelated actors converging on a freshly disclosed edge-device vulnerability.",
+  "first_seen": "2026-08-19T00:00:00.000Z",
+  "object_marking_refs": ["marking-definition--<tlp-green>"],
+  "extensions": {
+    "extension-definition--68d9295e-c5bb-4fae-895b-23271595cc5b": {
+      "extension_type": "property-extension",
+      "campaign_type": "Global"
+    }
+  }
+}
+```
+
+> **Other producers' extensions are not ours to redefine.** `x_opencti_reliability`
+> ([7.1](#7.1-admiralty-grading-attaches-to-the-observation)) and `x_mitre_id`
+> ([6.2](#6.2-techniques)) stay exactly as their originators emit them; the framework consumes
+> those, it does not own them.
 
 ### 9.4-Curation-layer
 
 Above the per-observation objects sit two analyst-asserted containers:
 
-- **Campaigns** are a *coordination claim* — that several events form one operation. They are
-  authored deliberately, never inferred automatically. Heuristics may **suggest** groupings for
-  an analyst to confirm; a suggestion is not a campaign. An actor-less "regional wave" is a
-  legitimate *unattributed* campaign.
-- **Reports** are the products members exchange, typed from the Mandiant `report_types_ov` set.
-  [report-types](report-types.md) is the picker — which value to use, when, and a skeleton template for each of
-  the 15 hand-authored kinds;
+- **Campaigns** are a *shared-context claim* — that several events belong together and are worth
+  tracking as one thing. `campaign_type` ([9.3](#9.3-classification-properties)) records which
+  kind of togetherness is being claimed:
+    - **`Individual`** — one or more actors cooperating toward a single objective. This is the
+      stronger, *coordination* assertion: one operation, however many hands are on it.
+    - **`Global`** — multiple unrelated actors acting in parallel on a shared theme, target or
+      resource; the standing example is a scramble of unconnected actors onto a freshly
+      disclosed vulnerability. This is explicitly **not** a coordination claim. What is being
+      asserted is that the convergence itself is worth tracking, not that anyone coordinated it.
+
+  Both are authored deliberately, **never inferred automatically** — the `Global` type
+  especially, because a shared theme is cheap to detect and a campaign is not a trend. Heuristics
+  may **suggest** groupings for an analyst to confirm; a suggestion is not a campaign.
+
+  An actor-less "regional wave" is a legitimate *unattributed* **`Individual`** campaign — one
+  operation whose operator is not yet known. That is a different claim from `Global`, where the
+  operators are known to be several and known to be unrelated. Unattributed is a statement about
+  what we have not established; `Global` is a statement about what we have.
+- **Reports** are the products members exchange, typed from `report_types_ov`
+  ([Vocabularies 1.10](Vocabularies.md#1.10-report_types_ov)). [Report-Types](Report-Types.md)
+  is the picker — which value to use, when, and a skeleton template for each of the 13
+  authored kinds. Three further domain values are **retired**: still accepted so historical
+  imports stay valid, never chosen for new work.
+
+  A report is not a campaign. `threat-activity` is the write-up of activity whose relevance
+  has become elevated; the claim that several incidents form *one operation* lives in the
+  `campaign` object, above. A report references a campaign, it does not stand in for one;
 
 ### 9.5-Automating-the-grouping-step
 
@@ -702,25 +890,25 @@ Worked examples under `Resources/Report Templates/reports/samples/`, each shippi
 reader can check object and relationship types against [9.1](#9.1-the-object-graph) rather
 than taking them on trust:
 
-- [Access-sale-scenario](samples/Access-sale-scenario.md) — an underground-forum listing offering access to a traffic-control
+- [Access-sale-scenario](Real-Examples/Access-sale-scenario.md) — an underground-forum listing offering access to a traffic-control
   system. Written as a **filled-in `threat-alert`** following the submission standard in
-  [report-types](report-types.md), so it doubles as the worked example of what a good submission looks like:
+  [Report-Types](Report-Types.md), so it doubles as the worked example of what a good submission looks like:
   metadata block with all three classification fields, key judgments, actions, then the full
   object mapping and relationship graph as appendices. Its bundle is generated by a
   deterministic builder, so narrative and STIX can be diffed against each other.
-- [Access-sale-scenario-2](samples/Access-sale-scenario-2.md) — the same activity
+- [Access-sale-scenario-2](Real-Examples/Access-sale-scenario-2.md) — the same activity
   cluster as the sample above, observed 74 days later selling a different, already-completed
   breach. Its companion is deliberate: read together, the two samples show what changes on a
   *second* observation of a tracked cluster (confidence moves, the persona's counters refresh)
   and — the point of its Appendix B — what does **not**: two incidents on one cluster is not
   grounds to promote to a temporary group ([4.1](#4.1-three-tiers-of-object,-linked)).
-- [CRESCENTHARVEST](samples/CRESCENTHARVEST.md) — an unattributed espionage cluster
+- [CRESCENTHARVEST](Real-Examples/CRESCENTHARVEST.md) — an unattributed espionage cluster
   (`CL-STA-0001`), sourced from a real third-party report (Acronis TRU), showing the framework
   applied to a technical malware/campaign write-up rather than a dark-web listing: a `campaign`
   and `malware` object, ten ATT&CK techniques, and file/domain/IP indicators, all under a Cluster
   tier whose low-confidence attribution notes — but does not adopt — an overlap with activity
   reported elsewhere under different names.
-- [Graduation fixture](samples/graduation-fixture.md) — not a narrative sample but a
+- [Graduation fixture](Real-Examples/graduation-fixture.md) — not a narrative sample but a
   synthetic **test bundle** (`graduation_fixture.bundle.json`): four independent, unattributed
   clusters with no relationships between them yet, built to exercise the automated-grouping
   workflow in [9.5](#9.5-automating-the-grouping-step) rather than to represent a real incident.
@@ -730,56 +918,6 @@ than taking them on trust:
 > **High** threat level carried on **C/3** sourcing — urgency and source quality are independent
 > axes ([3.4](#3.4-threat-levels)).
 
-
-
-
-
-## 11.-Divergences-and-gaps
-
-An honest register of where Patchwork parts company with its sources, and what it has not taken
-from them. §11.1 is settled policy; §11.2 is absence.
-
-### 11.1-Deliberate-divergences
-
-| Divergence                                                                     | From                          | Reason                                                                                                                                                                                                                              |
-| ------------------------------------------------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tiers are separate linked objects, not one designation maturing in place**   | **Mandiant and Unit 42 both** | Preserves history, makes a wrong grouping correctable by deleting an edge, and keeps cross-cluster evidence (shared code base ⇒ shared developer or operator) expressible after grouping ([4.1](#4.1-three-tiers-of-object,-linked)) |
-| Persona is a `threat-actor` SDO, not an intrusion-set alias                    | Unit 42                       | Personas are adversary-controlled and deceptive; as an alias, a shared brand name silently fuses unrelated activity ([4.4](#4.4-personas-are-objects,-not-aliases))                                                                  |
-| Own 182-entry sector hierarchy                                                 | all three                     | Every source taxonomy is **flat**; the sub-sector level is where the analytic value sits ([6.1](#6.1-sectors))                                                                                                                      |
-| Per-member namespace prefix                                                    | all three                     | The sources each assume a single naming authority; a community framework cannot ([4.2](#4.2-member-namespaces))                                                                                                                     |
-| Threat domains defined by *relation* to a constituency, not by named geography | CERT-EU                       | CERT-EU's ladder is EU-specific; Patchwork is multi-member ([3.3](#3.3-threat-domains))                                                                                                                                             |
-| No `financial-gain` motivation                                                 | —                             | Not a member of `attack-motivation-ov`; mirrors Mandiant's own `organizational-gain` mapping.                                                                                                                                       |
-| Hacktivism maps to MOT class `UNK`                                             | Unit 42                       | Unit 42's code set has no hacktivism class ([5.1](#5.1-the-analyst-facing-motivation-classes))                                                                                                                                      |
-
-### 11.2-Not-adopted
-
-**From CERT-EU** — chapters 1–6 are now localised in [3](#3.-what-we-track-and-how-we-scope-it)
-and [5.2](#5.2-activity-categories). What remains outside the framework:
-
-| Construct | What adoption would require |
-|---|---|
-| **Threat actor levels** (Critical / High / Medium / Low) | Derivable in principle from the adversary graph, but the definitions rest on "significant incident" and on a declared period of interest. **Blocked until a member defines significant incident** — see the note in [3.4](#3.4-threat-levels). |
-| **Threat scoring** — occurrences, targeting, severity, time period, decay | A scoring engine over the MAI graph, plus a severity scale (absent, below) and a weighting of the ecosystem components in [3.2](#3.2-ecosystem). |
-| **Mitigation scoring** — `K₁ × MMW + K₂ × MIA + K₃ × ME8` | Mitigation objects, initial-access technique tagging and Essential Eight mappings — none of which the framework holds. |
-| **FIRST LCA and WEP** | Calibrated prose vocabulary for analytic confidence and estimative probability in written products. A templates-only change; nothing structural blocks it. |
-
-**From CISA AIS** — PII minimisation, source-identity and consent fields, and versioning /
-retraction of a fact already shared. Detailed in
-[8.3](#8.3-handling-obligations-—-acknowledged,-not-specified).
-
-**Structural gaps in Patchwork itself:**
-
-- **No severity dimension.** Nothing distinguishes a defaced website from a destroyed plant.
-  Note that adopting threat levels does **not** close this: a threat level is urgency and
-  proximity, not realised impact, and CERT-EU's own threat scoring treats severity as a separate
-  input.
-- **The Diamond promotion gate is unquantified** ([4.1](#4.1-three-tiers-of-object,-linked)) —
-  "enough vertices" is not a specification.
-- **No object type for non-adversarial context.** `Policy & law enforcement` activity —
-  takedowns, arrests, sanctions — has real explanatory value for why an adversary changed
-  behaviour, and nowhere to live ([5.2](#5.2-activity-categories)).
-- **Retraction of facts.** Withdrawing an *assessment* is solved by the additive ladder;
-  withdrawing a *fact already shared* is not ([8.3](#8.3-handling-obligations-—-acknowledged,-not-specified)).
 
 ---
 
@@ -827,31 +965,35 @@ to the section that defines it in full.
 - **SDO / SCO.** STIX Domain Object / STIX Cyber-observable Object — the two base STIX 2.1 object
   families this framework serialises into (e.g. `intrusion-set` and `threat-actor` are SDOs; a
   `user-account` used as an indicator's basis is an SCO). See [9.1](#9.1-the-object-graph).
-- **Attribution tier.** The `x_attribution_tier` custom property recording where an `intrusion-set`
-  sits on the ladder — `Cluster`, `Temporary`, or `Mature`. See [9.3](#9.3-custom-properties).
-- **Campaign.** An analyst-asserted, deliberately-authored coordination claim that several events
-  form one operation — never inferred automatically. See [9.4](#9.4-curation-layer).
+- **Attribution tier.** The `attribution_tier` extension property recording where an `intrusion-set`
+  sits on the ladder — `Cluster`, `Temporary`, or `Mature`. See [9.3](#9.3-classification-properties).
+- **Campaign.** An analyst-asserted, deliberately-authored claim that several events belong
+  together — either as one coordinated operation (`campaign_type: Individual`) or as unrelated
+  actors converging on a shared theme, target or resource (`campaign_type: Global`). Never
+  inferred automatically. See [9.4](#9.4-curation-layer).
 
 ---
 
 ## Sources
 
-- **CERT-EU Cyber Threat Intelligence Framework**, v2 (April 2026) 
+- **CERT-EU Cyber Threat Intelligence Framework**, v2 (April 2026) — local copy: [cert-eu-cti-framework.md](Easy-access/CERT-EU/cert-eu-cti-framework.md)
 	- <https://cert.europa.eu/publications/threat-intelligence/cyber-threat-intelligence-framework/markdown>
-- **CISA Automated Indicator Sharing (AIS) Submission Guide**, v.16, 25 January 2021 —
+- **CISA Automated Indicator Sharing (AIS) Submission Guide**, v.16, 25 January 2021 — local copy: [ais-submission-guide-v.16.md](Easy-access/CISA/ais-submission-guide-v.16.md)
 	- <https://www.cisa.gov/automated-indicator-sharing-ais>
-- **Mandiant / Google Threat Intelligence** — "DebUNCing Attribution: How Mandiant Tracks Uncategorized Threat Actors"
+- **Mandiant / Google Threat Intelligence** — "DebUNCing Attribution: How Mandiant Tracks Uncategorized Threat Actors" — local copy: [debuncing-attribution-…-mandiant.md](Easy-access/GTI/debuncing-attribution-how-mandiant-tracks-uncategorized-threat-actors-mandiant.md)
 	- <https://cloud.google.com/blog/topics/threat-intelligence/how-mandiant-tracks-uncategorized-threat-actors> ·
 	- GTI suspected attribution <https://gtidocs.virustotal.com/docs/suspected-attribution> ·
 	- GTI STIX responses <https://gtidocs.virustotal.com/reference/stix-responses>
-- **Palo Alto Unit 42** — attribution framework
+- **Palo Alto Unit 42** — attribution framework — local copy: [introducing-unit-42s-attribution-framework.md](Easy-access/PaloAltoNetworks/introducing-unit-42s-attribution-framework.md)
 	- <https://unit42.paloaltonetworks.com/unit-42-attribution-framework/> · naming
 	- <https://unit42.paloaltonetworks.com/from-activity-to-formal-naming/> · playbooks
 	- <https://github.com/pan-unit42/playbook_viewer>
-- **OASIS STIX 2.1**
+- **OASIS STIX 2.1** — Committee Specification 01 / OASIS Standard. The object model, common
+  properties, versioning semantics, data markings, extension mechanism and open vocabularies
+  ([2](#2.-source-standards-and-how-they-compose), [2.3](#2.3-why-stix-2.1-sits-differently-from-the-other-four)) — local copy: [stix-2.1.md](Easy-access/oasis-open/stix-2.1.md)
 	- <https://docs.oasis-open.org/cti/stix/v2.1/os/stix-v2.1-os.html>
 - **MITRE ATT&CK** Enterprise : <https://attack.mitre.org/>
-- **FIRST** : Levels of Confidence in Assessment and Words of Estimative Probability guidance (referenced by CERT-EU §10.2; not adopted here).
+- **FIRST** : Levels of Confidence in Assessment and Words of Estimative Probability guidance (referenced by CERT-EU 10.2; not adopted here).
 - **OpenCTI** : https://github.com/OpenCTI-Platform/opencti
 
 
@@ -862,5 +1004,8 @@ to the section that defines it in full.
 | Version | Date       | Change                                                                                                                                            |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0.1     | 2026-08-31 | First draft circulated for community review, consolidated into a single document. Composed from CERT-EU, Mandiant/GTI, Unit 42 and CISA AIS v.16. |
+| 0.2     | 2026-08-31 | **OASIS STIX 2.1 recorded as the fifth source standard** ([2](#2.-source-standards-and-how-they-compose), [2.3](#2.3-why-stix-2.1-sits-differently-from-the-other-four)) — previously relied on throughout but absent from the source table. The five classification properties **migrated from deprecated `x_` custom properties to a nested `property-extension`** ([9.3](#9.3-classification-properties)); STIX 2.1 11 deprecates the `x_` mechanism in favour of `extension-definition` (7.3). Property names are unchanged apart from dropping the `x_` prefix, but their serialised position has moved, so 0.1 bundles do not round-trip. |
+| 0.3     | 2026-09-01 | **Campaigns are now typed** — new `campaign_type` extension property ([9.3](#9.3-classification-properties)), values `Individual` · `Global`, localised from Mandiant's campaign taxonomy ([2](#2.-source-standards-and-how-they-compose)). This **widened the definition of a campaign** ([9.4](#9.4-curation-layer), glossary) from a *coordination claim* — several events forming one operation — to a *shared-context claim*, because a Global campaign asserts that unrelated actors converged, not that anyone coordinated. Existing campaigns are all `Individual` and keep their meaning, but the word "campaign" now covers a case it previously excluded. The deliberate-authorship rule is unchanged and restated per type. The classification `extension-definition` moves to **1.1.0** (backward-compatible addition; `id` unchanged, so 0.2 bundles stay valid). |
+| 0.4     | 2026-09-01 | **Report types re-derived against their source** ([Report-Types](Report-Types.md), [1.10](Vocabularies.md#1.10-report_types_ov)). The domain set had been adopted from a connector's value set, which is frozen at a catalogue Google has since retired, and read as though it were a live product list. Three values — `patch`, `network-activity`, `ics-security-roundup` — are **retired from authoring**: still accepted so records that already carry them stay valid ([9.2](#9.2-identity-and-merge-rules)), but no longer offered in the picker and no longer holding a usable template. `network-activity` is retired for a second reason — the slug named a network-flow product and the template had drifted into a general infrastructure write-up, so one value carried two meanings. **`net-assessment` is added** (27 values), a backward-looking period summary that had no home among the others; it is Patchwork's own, not inherited. Four descriptions that changed *which type an author picks* are corrected: `vulnerability-exploitation` is the periodic roundup for out-of-cycle patching decisions rather than a single-CVE write-up — which is what made `patch` look necessary; `threat-activity` is activity whose relevance has become elevated, **not** a campaign, a reading that collided with `campaign_type` ([9.4](#9.4-curation-layer)); `event-coverage` covers the implications of a cyber event, not activity around a real-world election or summit; `ttp-deep-dive` is actor-anchored. No existing sample changes type. |
 
 [^1]: Palo Alto Unit 42, "Introducing Unit 42's Attribution Framework" — <https://unit42.paloaltonetworks.com/unit-42-attribution-framework/>

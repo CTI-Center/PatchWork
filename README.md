@@ -3,8 +3,7 @@ standards-conformant threat intelligence compatible with STIX 2.1, **in a record
 judgement stays revisable without destroying the ones around it**. **Patchwork** is a threat-intelligence framework for tracking adversaries and sharing reports, currently composed from Five published standards that patching-together is where the name comes from. 
 
 > **Status: draft v0.1, circulated for community review.** Several design choices were close
-> calls and are marked as such in the text. Disagreement is useful — see
-> [CONTRIBUTING.md](docs/CONTRIBUTING.md).
+> calls and are marked as such in the text. Disagreement is useful — see  [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 This project began as personal documentation. As it grew, I realized that each standard
 contributes a piece of the puzzle I was looking for. I'm grateful you're here to build on what I
@@ -29,13 +28,15 @@ Please note: *the document structure was generated with AI assistance and may co
 ```markdown
 ├── docs
 │   ├── CONTRIBUTING.md			How to propose changes
+│   ├── Easy-access/			Local copies of the source standards
 │   ├── img/				Diagrams referenced by the docs
 │   ├── Patchwork-CTI-Framework.md	The specification
 │   ├── report-types.md			which report type to use, and when
 │   ├── samples/			Real world report samples
 │   ├── Sectors.md			Sector taxonomy
-│   ├── templates/			15 per-type skeletons, one per report type
+│   ├── templates/			One skeleton per report type — 13 to author, 3 retired
 │   └── Vocabularies.md			Controlled value sets
+├── tools/				Scripts — see each tool's own README
 └── README.md
 ```
 
@@ -96,12 +97,24 @@ repo.
 Portions are adapted from the [CERT-EU Cyber Threat Intelligence Framework](https://cert.europa.eu/publications/threat-intelligence/cyber-threat-intelligence-framework/markdown),
 © CERT-EU, licensed CC BY 4.0.
 
+`docs/Easy-access/` holds local copies of the sources this framework builds on, so its
+citations can be followed without leaving the repo. **Those copies keep their own licences and
+are not covered by the CC BY 4.0 above.** Each records its origin and retrieval date in its
+frontmatter. In particular `docs/Easy-access/GTI/gtidocs/` is an *unofficial* snapshot of the
+[Google Threat Intelligence documentation hub](https://gtidocs.virustotal.com/docs/), © Google,
+mirrored for reference only and refreshed by
+[`tools/gtidocs-mirror`](tools/gtidocs-mirror/README.md) — check the live page linked at the
+foot of any archived file before relying on it.
+
 
 ## Start-here
 
 | Document | What it covers |
 | --- | --- |
 | **[The framework](docs/Patchwork-CTI-Framework.md)** | The specification itself — adversary model, attribution ladder, classification, confidence, sharing and STIX serialisation. Has its own [table of contents](docs/Patchwork-CTI-Framework.md#table-of-contents) and [glossary](docs/Patchwork-CTI-Framework.md#glossary). |
-| **[Report types](docs/report-types.md)** | Which report type to use when, a template for each of the 15 hand-authored kinds, and the worked samples. |
+| **[Report types](docs/Report-Types.md)** | Which report type to use when, a template for each of the 13 authored kinds, and the worked samples. |
 | **[Vocabularies](docs/Vocabularies.md)** · **[Sectors](docs/Sectors.md)** | The controlled value sets. |
 | **[Contributing](docs/CONTRIBUTING.md)** | How to propose a change, and what a good one looks like. |
+
+TodoList :
+- [ ] 
