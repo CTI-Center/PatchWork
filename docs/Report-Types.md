@@ -1,35 +1,30 @@
-Every report carries a `report_types` value from `report_types_ov`
-(27 values, [Vocabularies 1.10](Vocabularies.md#1.10-report_types_ov)). This page exists so you can tell **which one to pick** and start from a real structure instead of a blank page.
-The values fall into three tiers and they are **not** interchangeable. Sixteen are Patchwork
-domain types: thirteen you [author](<#author-these-(13)>), and three [retired](<#retired-—-valid,-not-authored-(3)>) ones kept only so historical imports stay
-valid. The remaining eleven are STIX 2.1's own `report-type-ov`, which connectors apply to
-whatever they import ([feed-assigned](<#feed-assigned-types-(11)-—-no-template>)).
+Every report carries a `report_types` value from `report_types_ov` (27 values, [Vocabularies 1.10](Vocabularies.md#1.10-report_types_ov)). This page exists so you can tell **which one to pick** and start from a real structure instead of a blank page. The values fall into three tiers and they are **not** interchangeable. Sixteen are Patchwork domain types: thirteen you [author](<#author-these-(13)>), and three [retired](<#retired-—-valid,-not-authored-(3)>) ones kept only so historical imports stay valid. The remaining eleven are STIX 2.1's own `report-type-ov`, which connectors apply to whatever they import ([feed-assigned](<#feed-assigned-types-(11)-—-no-template>)).
 
 > **One operation with a start and an end is a `campaign`, not a report type**
 > ([9.4](Patchwork-CTI-Framework.md#9.4-curation-layer)). Report the activity that made it relevant as `threat-activity`, and let the campaign object carry the operation itself.
 
 ## Before-you-write,-four-things-that-bite
 
-1. **Title carries your member namespace token.** 
+1. **Title carries your member namespace token.**
 	Assertions a member authors are namespaced so two members' reports never collide on name-based dedup ([4.2](Patchwork-CTI-Framework.md#4.2-member-namespaces)). Pick your token once, changing it later forks every object that carries it.
-2. **`published` must be a stable anchor date.** 
+2. **`published` must be a stable anchor date.**
 	Reports deduplicate on **`name` + `published`** ([9.2](Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules)). A date that shifts when you revise forks a second report instead of updating the first. Anchor it to the earliest activity the report covers, never the latest.
-3. **Three types may also be produced by your own tooling** 
+3. **Three types may also be produced by your own tooling**
 	`actor-profile`, `threat-activity`, `country-profile`. This is a statement about *your* environment, not about any upstream platform: if a member generates these from incident data, a hand-written one needs a distinct title or the two merge and one overwrites the other. Each template spells out the pattern to avoid. A member whose tooling generates other types should read the same warning onto those.
-4. **The three classification fields are not optional.** 
+4. **The three classification fields are not optional.**
 	Threat level, threat domain and activity category ([3](Patchwork-CTI-Framework.md#3.-what-we-track-and-how-we-scope-it)) are how a receiving member triages your report and scopes it against their own constituency. A report without them cannot be prioritised by anyone but you.
 
 Author identity on everything: **your own member identity**, emitted as `created_by_ref` ([8.2](Patchwork-CTI-Framework.md#8.2-provenance)).
 
 ## Author-these-(13)
 
-The **Description** and **Benefits** columns are the upstream catalogue's own, taken from the [current report types](Easy-access/GTI/gtidocs/guides/07-report-analysis/report-types.md#current-reports-types) table these thirteen slugs were re-derived against. Production cadence and platform-product pointers are dropped, Patchwork mandates neither. Type, Template and Sample are Patchwork's.
+The **Description** and **Benefits** columns are **adapted from** the upstream catalogue's, taken from the [current report types](Easy-access/GTI/gtidocs/guides/07-report-analysis/report-types.md#current-reports-types) table these thirteen slugs were re-derived against, and edited where the upstream wording named a product cadence or changed which type an author would pick (revision history 0.4). Production cadence and platform-product pointers are dropped, Patchwork mandates neither. Type, Template and Sample are Patchwork's.
 
 | Type                         | Source type                              | Description                                                                                                                                                                                                                                                                                            | Benefits                                                                                                                  | Template                                                                     | Sample                                                                                                                                  |
 | ---------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `actor-profile`              | Actor Profile                            | An in-depth look into a specific threat actor's tactics, techniques, and procedures.                                                                                                                                                                                                                   | Proactive defense, improved detection rates, faster incident response, optimized security investments.                    | [actor-profile](Report-Templates/actor-profile.md)                           |                                                                                                                                         |
 | `country-profile`            | Country Profile                          | A strategic overview of the cyber threat landscape relevant to a specific geographic region.                                                                                                                                                                                                           | Deeper understanding of the relevant cyber threat landscape of a country.                                                 | [country-profile](Report-Templates/country-profile.md)                       |                                                                                                                                         |
-| `crowd-sourced`              | OSINT Article                            | Crowdsourced reports, automatically ingested from the community — users can also request the ingestion of articles not yet included. They cover a wide range of cybersecurity topics.                                                                                                                  | Rapid and broader threat coverage.                                                                                        | —                                                                            | —                                                                                                                                       |
+| —                            | OSINT Article                            | Crowdsourced reports, automatically ingested from the community — users can also request the ingestion of articles not yet included. They cover a wide range of cybersecurity topics.                                                                                                                  | Rapid and broader threat coverage.                                                                                        | —                                                                            | —                                                                                                                                       |
 | `event-coverage`             | Event Coverage/Implication               | Analysis on the implications of a recent event or campaign conducted by a threat actor. Also includes first glance reports, which offer preliminary information on an incident while the analysis of related malware or other campaign aspects is still in progress.                                   | Reduced exposure to breaking threats, improved crisis management, agile defense adjustments, minimized impact.            | [event-coverage](Report-Templates/event-coverage.md)                         |                                                                                                                                         |
 | `executive-perspective`      | Executive Perspective                    | Brief analysis about cyber threats relevant to events or business circumstances, geared toward a strategic leadership audience. Also covers periodic "at a glance" snapshots of newly produced reporting.                                                                                              | Alignment of security with business goals, improved cyber resilience.                                                     | [executive-perspective](Report-Templates/executive-perspective.md)           |                                                                                                                                         |
 | `industry`                   | Industry Reporting                       | A strategic overview of the cyber threat landscape relevant to a specific industry vertical.                                                                                                                                                                                                           | Deeper understanding of threats and trends assessed within specific industries.                                           | [industry](Report-Templates/industry.md)                                     |                                                                                                                                         |
@@ -42,25 +37,14 @@ The **Description** and **Benefits** columns are the upstream catalogue's own, t
 | `ttp-deep-dive`              | TTP Deep Dive                            | An in-depth look into a threat actor and the tactics, techniques, and procedures (TTPs) they use to achieve specific goals.                                                                                                                                                                            | Deeper understanding of attacker methodology, improved detection of sophisticated attacks, targeted mitigation.           | [ttp-deep-dive](Report-Templates/ttp-deep-dive.md)                           |                                                                                                                                         |
 | `vulnerability-exploitation` | Weekly Vulnerability Exploitation Report | Summarises, on a periodic basis, important developments concerning vulnerabilities that may pose a critical or high risk to enterprises. Intended as a resource for decision makers on out-of-cycle patching decisions.                                                                                | Significant reduction in attack surface, actionable and timely intelligence.                                              | [vulnerability-exploitation](Report-Templates/vulnerability-exploitation.md) |                                                                                                                                         |
 
-> **The last row is not one of the thirteen.** `OSINT Article` is the source catalogue's single
-> crowdsourced type — public reporting ingested automatically rather than written by an analyst —
-> and Patchwork has no slug for it. A third-party report you ingest arrives carrying a
-> [feed-assigned](<#feed-assigned-types-(11)-—-no-template>) type instead, usually `threat-report`.
-> It is kept here so the mapping to the source catalogue is complete rather than silently short.
+> **The `OSINT Article` row is not one of the thirteen** —
+> the table is alphabetical, so it sits third rather than last. It is the source catalogue's single crowdsourced type — public reporting ingested automatically rather than written by an analyst — and Patchwork has no slug for it, which is why its Type cell is `—`. A third-party report you ingest arrives carrying a [feed-assigned](<#feed-assigned-types-(11)-—-no-template>) type instead, usually `threat-report`. It is kept here so the mapping to the source catalogue is complete rather than silently short.
 
 ## Retired-—-valid,-not-authored-(3)
 
-These three slugs entered the framework with the rest of the domain set, which was taken
-from a **connector's value set** rather than from a live product catalogue — and that value
-set is frozen at a catalogue its publisher has since retired
-([source](Easy-access/GTI/gtidocs/guides/07-report-analysis/report-types.md#decommissioned-curated-reports-types-or-series)).
-Nothing here is about following Google. It is that a type nobody can point at a reason for
-is a type nobody should be offered.
+These three slugs entered the framework with the rest of the domain set, which was taken from a **connector's value set** rather than from a live product catalogue — and that value set is frozen at a catalogue its publisher has since retired ([source](Easy-access/GTI/gtidocs/guides/07-report-analysis/report-types.md#decommissioned-curated-reports-types-or-series)). Nothing here is about following Google. It is that a type nobody can point at a reason for is a type nobody should be offered.
 
-**They remain valid values.** A report imported from a historical feed may carry one, and a
-value set that invalidates records it previously accepted is exactly what
-[9.2](Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules) exists to prevent. They have
-no template and should not be chosen for new work.
+**They remain valid values.** A report imported from a historical feed may carry one, and a value set that invalidates records it previously accepted is exactly what [9.2](Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules) exists to prevent. They are not offered in the picker and should not be chosen for new work; each retired template is kept in place behind a banner pointing at its replacement.
 
 | Type                   | Why it is not authored                                                                                                                                                            | Author this instead                                                                                             |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -68,20 +52,11 @@ no template and should not be chosen for new work.
 | `network-activity`     | **A re-purpose, not an inheritance.** The source product analysed network-flow data against industrial ports; Patchwork's template had become a general infrastructure write-up under a borrowed name. Two different things wearing one slug. | `threat-activity` for the activity itself, `ttp-deep-dive` for the tradecraft, `malware-profile` for C2 tied to a family |
 | `ics-security-roundup` | Its source product was folded into general news analysis, and the OT vulnerability roundups into the weekly vulnerability report.                                                  | `news-analysis`, `industry` for a standing sector picture, or `vulnerability-exploitation` for the OT vulnerability half |
 
-> Four further values — `Malicious Activity Report`, `Tactical Threat Report`,
-> `Technical Intelligence`, `Threat Intelligence` — are still *accepted* by the upstream
-> search API but appear in no published catalogue, current or decommissioned
-> ([source](Easy-access/GTI/gtidocs/guides/06-ioc-investigation/intelligence/threat-intelligence-objects-modifiers-values.md)).
-> They have no Patchwork slug and no template. Recorded here so the gap is not rediscovered.
+> Four further values — `Malicious Activity Report`, `Tactical Threat Report`, `Technical Intelligence`, `Threat Intelligence` — are still *accepted* by the upstream search API but appear in no published catalogue, current or decommissioned ([source](Easy-access/GTI/gtidocs/guides/06-ioc-investigation/intelligence/threat-intelligence-objects-modifiers-values.md)). They have no Patchwork slug and no template. Recorded here so the gap is not rediscovered.
 
 ## Feed-assigned-types-(11)-—-no-template
 
-These eleven are STIX 2.1's own `report-type-ov`, applied by import connectors to
-classify a report by the kind of object it concerns.
-They are valid values and you will see them on imported reports, but nobody
-hand-writes one — there is no `observed-data` report to sit down and author.
-If you were about to reach for one of these, the authored table above
-almost certainly has what you want.
+These eleven are STIX 2.1's own `report-type-ov`, applied by import connectors to classify a report by the kind of object it concerns. They are valid values and you will see them on imported reports, but nobody hand-writes one — there is no `observed-data` report to sit down and author. If you were about to reach for one of these, the authored table above almost certainly has what you want.
 
 | Type | Applied to |
 | ---- | ---------- |

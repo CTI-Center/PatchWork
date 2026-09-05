@@ -1,10 +1,4 @@
-The controlled value sets a Patchwork report draws from. Every value below is reproduced
-verbatim from its source vocabulary — nothing here is invented, and the counts
-stated in each section are the authority.
-Where a table carries a **Use when** column, that column is a short editorial gloss to help you
-pick between confusable values — it is *not* normative spec text, and neither is the short
-explanation that opens each section. The values themselves are
-verbatim; the glosses are ours, and are fair game to correct.
+The controlled value sets a Patchwork report draws from. Every value in [1](#1.-vocabularies) is reproduced verbatim from its source vocabulary — nothing there is invented, and the counts stated in each section are the authority. Sections [2](#2.-The-motivation-model), [3](<#3.-Attribution-tiers-(where-the-CRI/STA-code-lives)>) and [4](#4.-Campaign-types) are different in kind: they are Patchwork's own models, built where no source vocabulary exists, and each says so where it starts. Where a table carries a **Use when** column, that column is a short editorial gloss to help you pick between confusable values — it is *not* normative spec text, and neither is the short explanation that opens each section. The values themselves are verbatim; the glosses are ours, and are fair game to correct.
 
 ## 1.-Vocabularies
 
@@ -35,9 +29,7 @@ verbatim; the glosses are ours, and are fair game to correct.
 
 ### 1.1-attack_motivation_ov
 
-Why the actor acts. `primary_motivation` carries a single best-fit value and
-`secondary_motivations` a list of any others. It records intent — not what the actor did, and
-not how capable they are (that is [1.5](#1.5-threat-actor-sophistication)).
+Why the actor acts. `primary_motivation` carries a single best-fit value and `secondary_motivations` a list of any others. It records intent — not what the actor did, and not how capable they are (that is [1.5](#1.5-threat-actor-sophistication)).
 
 10 values.
 
@@ -58,10 +50,7 @@ not how capable they are (that is [1.5](#1.5-threat-actor-sophistication)).
 
 ### 1.2-attack_resource_level_ov
 
-The **organisational level** the actor works at, which in turn determines the resources
-available to them. STIX ties this to sophistication ([1.5](#1.5-threat-actor-sophistication)): a given resource level
-implies access to **at least** a corresponding sophistication level, so the two are related
-rather than independent.
+The **organisational level** the actor works at, which in turn determines the resources available to them. STIX ties this to sophistication ([1.5](#1.5-threat-actor-sophistication)): a given resource level implies access to **at least** a corresponding sophistication level, so the two are related rather than independent.
 
 6 values, ordinal ascending — `individual` is the least resourced, `government` is the most:
 
@@ -76,11 +65,9 @@ rather than independent.
 
 ### 1.3-threat-actor-type
 
-What **kind** of adversary this is — their nature, rather than the part they play on any one
-operation (that is [1.4](#1.4-threat-actor-role)).
+What **kind** of adversary this is — their nature, rather than the part they play on any one operation (that is [1.4](#1.4-threat-actor-role)).
 
-12 values. `threat-actor` groups and individuals share one set — there is no separate
-individual vocabulary.
+12 values. `threat-actor` groups and individuals share one set — there is no separate individual vocabulary.
 
 | Value | Use when |
 |---|---|
@@ -99,10 +86,7 @@ individual vocabulary.
 
 ### 1.4-threat-actor-role
 
-What **part** the actor plays in an operation, as distinct from what kind of actor they are
-([1.3](#1.3-threat-actor-type)). Roles are how a single campaign separates the group that wrote the malware from
-the group that ran the infrastructure from the sponsor who paid for it. `roles` is a list — one
-actor can hold several.
+What **part** the actor plays in an operation, as distinct from what kind of actor they are ([1.3](#1.3-threat-actor-type)). Roles are how a single campaign separates the group that wrote the malware from the group that ran the infrastructure from the sponsor who paid for it. `roles` is a list — one actor can hold several.
 
 7 values.
 
@@ -118,9 +102,7 @@ actor can hold several.
 
 ### 1.5-threat-actor-sophistication
 
-The **skill, knowledge, training or expertise** the actor needs in order to carry out the
-attack. Distinct from how well resourced they are ([1.2](#1.2-attack_resource_level_ov)) — but not independent of it:
-STIX says a given resource level implies at least a corresponding sophistication.
+The **skill, knowledge, training or expertise** the actor needs in order to carry out the attack. Distinct from how well resourced they are ([1.2](#1.2-attack_resource_level_ov)) — but not independent of it: STIX says a given resource level implies at least a corresponding sophistication.
 
 7 values.
 
@@ -138,9 +120,7 @@ Ordinal, ascending — keep this order, do not alphabetise:
 
 ### 1.6-malware_type_ov
 
-What the malicious code **is**, classified by primary purpose. `malware_types` is a list — one
-sample is often several, such as a `dropper` that installs a `backdoor`. This is the label; what
-the code can actually do is [1.7](#1.7-malware_capabilities_ov).
+What the malicious code **is**, classified by primary purpose. `malware_types` is a list — one sample is often several, such as a `dropper` that installs a `backdoor`. This is the label; what the code can actually do is [1.7](#1.7-malware_capabilities_ov).
 
 22 values:
 
@@ -171,12 +151,9 @@ the code can actually do is [1.7](#1.7-malware_capabilities_ov).
 
 ### 1.7-malware_capabilities_ov
 
-Any of the **capabilities identified** for the malware instance or family — what it can do,
-complementing the type label in [1.6](#1.6-malware_type_ov). These are *not* ATT&CK techniques: those ride on
-separate `attack-pattern` objects carrying `x_mitre_id` (framework §6.2).
+Any of the **capabilities identified** for the malware instance or family — what it can do, complementing the type label in [1.6](#1.6-malware_type_ov). These are *not* ATT&CK techniques: those ride on separate `attack-pattern` objects carrying `x_mitre_id` (framework §6.2).
 
-Grouped for scanning. The 37 values are unchanged — the groups are a reading aid, not part of
-the vocabulary, and are never emitted:
+Grouped for scanning. The 37 values are unchanged — the groups are a reading aid, not part of the vocabulary, and are never emitted:
 
 | Group | Values |
 |---|---|
@@ -193,10 +170,7 @@ the vocabulary, and are never emitted:
 
 ### 1.8-implementation_language_ov
 
-The **programming language(s) used to implement** the malware instance or family.
-`implementation_languages` is a list — a family with a scripted loader
-and a compiled payload carries several. `x86-32` and `x86-64` appear here meaning hand-written
-assembly; the same two strings in [1.9](#1.9-processor_architecture_ov) mean something different.
+The **programming language(s) used to implement** the malware instance or family. `implementation_languages` is a list — a family with a scripted loader and a compiled payload carries several. `x86-32` and `x86-64` appear here meaning hand-written assembly; the same two strings in [1.9](#1.9-processor_architecture_ov) mean something different.
 
 21 values:
 
@@ -226,10 +200,7 @@ assembly; the same two strings in [1.9](#1.9-processor_architecture_ov) mean som
 
 ### 1.9-processor_architecture_ov
 
-The **CPU architecture(s)** the sample is built to execute on, emitted on
-`architecture_execution_envs`. Cross-compiled families carry several. Note `x86-32` / `x86-64`
-also appear in [1.8](#1.8-implementation_language_ov), where they mean the code was *written in* assembly rather than that it
-*runs on* that CPU.
+The **CPU architecture(s)** the sample is built to execute on, emitted on `architecture_execution_envs`. Cross-compiled families carry several. Note `x86-32` / `x86-64` also appear in [1.8](#1.8-implementation_language_ov), where they mean the code was *written in* assembly rather than that it *runs on* that CPU.
 
 8 values:
 
@@ -246,43 +217,28 @@ also appear in [1.8](#1.8-implementation_language_ov), where they mean the code 
 
 ### 1.10-report_types_ov
 
-What kind of report this is. It decides which template you start from, and how a receiving
-member triages what you send them.
+What kind of report this is. It decides which template you start from, and how a receiving member triages what you send them.
 
 27 values, in three tiers:
 
-**STIX 2.1 `report-type-ov` (11):** `attack-pattern` · `campaign` · `identity` ·
-`indicator` · `intrusion-set` · `malware` · `observed-data` · `threat-actor` ·
-`threat-report` · `tool` · `vulnerability`
+**STIX 2.1 `report-type-ov` (11):** `attack-pattern` · `campaign` · `identity` · `indicator` · `intrusion-set` · `malware` · `observed-data` · `threat-actor` · `threat-report` · `tool` · `vulnerability`
 
-These classify a report by the kind of object it concerns. Import connectors apply them;
-nobody hand-writes one.
+These classify a report by the kind of object it concerns. Import connectors apply them; nobody hand-writes one.
 
-**Patchwork domain types, authored (13):** `actor-profile` · `country-profile` ·
-`event-coverage` · `executive-perspective` · `industry` · `malware-profile` ·
-`net-assessment` · `news-analysis` · `threat-activity` · `threat-alert` ·
-`trends-forecasting` · `ttp-deep-dive` · `vulnerability-exploitation`
+**Patchwork domain types, authored (13):** `actor-profile` · `country-profile` · `event-coverage` · `executive-perspective` · `industry` · `malware-profile` · `net-assessment` · `news-analysis` · `threat-activity` · `threat-alert` · `trends-forecasting` · `ttp-deep-dive` · `vulnerability-exploitation`
 
-Twelve were inherited with the Mandiant domain set; `net-assessment` is Patchwork's own,
-added because a backward-looking period summary had no home among the others.
+Twelve were inherited with the Mandiant domain set. `net-assessment` was **re-derived**: it is a current type in the live upstream catalogue but was absent from the connector's frozen value set the domain types were originally adopted from, so it had to be recovered rather than inherited. It is not Patchwork's invention.
 
 **Retired, still valid (3):** `ics-security-roundup` · `network-activity` · `patch`
 
-Accepted on imported historical reports, never chosen for new work. Retiring a value from
-*authoring* is not the same as removing it from the vocabulary — a set that invalidates
-records it once accepted breaks [9.2](Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules).
-[Report-Types](<Report-Types.md#retired-—-valid,-not-authored-(3)>) gives the reason for
-each and what to write instead.
+Accepted on imported historical reports, never chosen for new work. Retiring a value from *authoring* is not the same as removing it from the vocabulary — a set that invalidates records it once accepted breaks [9.2](Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules). [Report-Types](<Report-Types.md#retired-—-valid,-not-authored-(3)>) gives the reason for each and what to write instead.
 
-> **Choosing between the 13.** [Report-Types](Report-Types.md) carries the full picker
-> table — each type's description, benefits, template and worked sample. It is the picker —
-> this section is only the value list, so the two do not drift.
+> **Choosing between the 13.**
+> [Report-Types](Report-Types.md) carries the full picker table — each type's description, benefits, template and worked sample. It is the picker — this section is only the value list, so the two do not drift.
 
 ### 1.11-indicator_type_ov
 
-What the indicator **asserts** about the pattern it carries — whether that pattern marks
-something malicious, benign, anonymising or compromised. This classifies the *claim*; how much
-you trust it is the separate `confidence` field (framework §7).
+What the indicator **asserts** about the pattern it carries — whether that pattern marks something malicious, benign, anonymising or compromised. This classifies the *claim*; how much you trust it is the separate `confidence` field (framework §7).
 
 7 values.
 
@@ -298,9 +254,7 @@ you trust it is the separate `confidence` field (framework §7).
 
 ## 2.-The-motivation-model
 
-Financially-motivated crime cannot be a distinct `attack-motivation-ov` value —
-there is no `financial-gain`. Both connectors resolve this the same way, and we
-mirror them:
+Financially-motivated crime cannot be a distinct `attack-motivation-ov` value — there is no `financial-gain`. The two connectors resolve this **differently**, and we follow Mandiant's:
 
 | Producer | How financial motivation is emitted |
 |---|---|
@@ -308,8 +262,7 @@ mirror them:
 | **Mandiant connector** | Explicit map: `"Financial Theft" → organizational-gain` (also `"Military Advantage"`, `"Political Advantage"`, `"Disruption"` → `organizational-gain`) |
 | **Ours** | `organizational-gain` + `intent`, matching Mandiant |
 
-Our mapping — crime vs state is carried in `intent` + the cluster-name code
-(`CL-CRI-` / `CL-STA-`), **not** in `primary_motivation`:
+Our mapping — crime vs state is carried in `intent` + the cluster-name code (`CL-CRI-` / `CL-STA-`), **not** in `primary_motivation`:
 
 ```mermaid
 flowchart TB
@@ -317,41 +270,33 @@ flowchart TB
   STA["STA / nation / state / espionage"] --> OG
   MIX["MIX"] --> OG
   UNK["UNK"] --> OM["(motivation omitted)"]
-  CRI -.-> XF["intent: financial"]
-  STA -.-> XE["intent: espionage"]
-  MIX -.-> XE
+  CRI -.-> XF["intent: [financial]"]
+  STA -.-> XE["intent: [espionage]"]
+  MIX -.-> XM["intent: [financial, espionage]"]
 ```
 
-Result: local `organizational-gain` crime actors sit in the same motivation space
-as Mandiant-imported FIN groups. (Other spreadsheet inputs still map to valid
-values: hacktivism → `ideology`, sabotage/disruption → `dominance`, plus
-`notoriety` / `revenge` / `coercion`.)
+Result: local `organizational-gain` crime actors sit in the same motivation space as Mandiant-imported FIN groups. (Other spreadsheet inputs still map to valid values: hacktivism → `ideology`, sabotage/disruption → `dominance`, plus `notoriety` / `revenge` / `coercion`.)
+
+> **This table is only half of the `intent` derivation.**
+> MOT reaches `financial` and `espionage` and nothing else — it has no class that could produce `sabotage` or `disruption`, which come from the activity side. `MIX` contributes **both** values, which is why `intent` is a list rather than a single string. The full derivation, taking MOT *and* observed activity categories as inputs, is [Patchwork 5.3](Patchwork-CTI-Framework.md#5.3-intent); the four values are defined there.
 
 ## 3.-Attribution-tiers-(where-the-CRI/STA-code-lives)
 
-The cluster-name code (which carries the CRI/STA/MIX/UNK distinction) travels the
-same three-tier ladder for both Mandiant and Unit 42 lineages:
+The cluster-name code (which carries the CRI/STA/MIX/UNK distinction) travels the same three-tier ladder for both Mandiant and Unit 42 lineages:
 
 ```mermaid
 flowchart LR
-  C["Cluster<br/>CL-&lt;MOT&gt;-#### · UNC####<br/>confidence ~30"] --> T["Temporary<br/>TGR-&lt;MOT&gt;-#### · TEMP.*<br/>confidence ~60"] --> N["Named<br/>APT## · FIN## · constellation<br/>confidence ~85"]
+  C["Cluster<br/>CL-&lt;MOT&gt;-#### · UNC####"] --> T["Temporary<br/>TGR-&lt;MOT&gt;-#### · TEMP.*"] --> N["Mature<br/>APT## · FIN## · constellation"]
 ```
 
-`<MOT>` = `STA` (state) · `CRI` (crime) · `MIX` (state+crime) · `UNK` (unknown).
-Tier lives in `attribution_tier` (a Patchwork extension property, not `x_`-prefixed — see
-[Patchwork 9.3](Patchwork-CTI-Framework.md#9.3-classification-properties)); see
-[Patchwork 4.1](Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked).
+`<MOT>` = `STA` (state) · `CRI` (crime) · `MIX` (state+crime) · `UNK` (unknown). Tier lives in `attribution_tier` (a Patchwork extension property, not `x_`-prefixed — see [Patchwork 9.3](Patchwork-CTI-Framework.md#9.3-classification-properties)); see [Patchwork 4.1](Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked).
 
 
 ## 4.-Campaign-types
 
-Which kind of *belonging together* a campaign asserts. Lives in `campaign_type` (a Patchwork
-extension property, not `x_`-prefixed — see
-[Patchwork 9.3](Patchwork-CTI-Framework.md#9.3-classification-properties)); the concept is
-localised from Mandiant's campaign taxonomy.
+Which kind of *belonging together* a campaign asserts. Lives in `campaign_type` (a Patchwork extension property, not `x_`-prefixed — see [Patchwork 9.3](Patchwork-CTI-Framework.md#9.3-classification-properties)); the concept is localised from Mandiant's campaign taxonomy.
 
-STIX 2.1's `campaign` object has no type property and there is no `campaign-type-ov`, so unlike
-§1 these values are **ours** — there is no source vocabulary to reproduce.
+STIX 2.1's `campaign` object has no type property and there is no `campaign-type-ov`, so unlike §1 these values are **ours** — there is no source vocabulary to reproduce.
 
 2 values:
 
@@ -360,17 +305,9 @@ STIX 2.1's `campaign` object has no type property and there is no `campaign-type
 | `Individual` | One or more actors cooperating toward a single objective against multiple targets in a relevant time period. A **coordination** claim: one operation, however many hands are on it. | The events are one operation — even if you cannot yet say whose. |
 | `Global` | Multiple **unrelated** actors running parallel activity on a shared theme, target or resource. Explicitly **not** a coordination claim; what is asserted is that the convergence is worth tracking. | Unconnected actors have independently converged — the standing example is a scramble onto a freshly disclosed vulnerability. |
 
-**Mandiant mapping.** `Individual` ← "Individual Threat Campaign"; `Global` ← "Global Threat
-Campaign". The property name already supplies "campaign", so the values drop the suffix.
+**Mandiant mapping.** `Individual` ← "Individual Threat Campaign"; `Global` ← "Global Threat Campaign". The property name already supplies "campaign", so the values drop the suffix.
 
-> **Easily confused: an unattributed `Individual` vs a `Global`.** An actor-less "regional wave"
-> is an *unattributed* `Individual` campaign — one operation whose operator is not yet known.
-> `Global` is not a weaker version of that: it says the operators are known to be several *and*
-> known to be unrelated. Unattributed describes what you have not established; `Global` describes
-> what you have. If you are reaching for `Global` because attribution is thin, you want an
-> unattributed `Individual`.
+> **Easily confused: an unattributed `Individual` vs a `Global`.**
+> An actor-less "regional wave" is an *unattributed* `Individual` campaign — one operation whose operator is not yet known. `Global` is not a weaker version of that: it says the operators are known to be several *and* known to be unrelated. Unattributed describes what you have not established; `Global` describes what you have. If you are reaching for `Global` because attribution is thin, you want an unattributed `Individual`.
 
-Single-valued — a campaign is one kind or the other; if it reads as both, it is two campaigns.
-Both types are analyst-authored and never inferred automatically, the `Global` type especially:
-a shared theme is cheap to detect, and a campaign is not a trend. See
-[Patchwork 9.4](Patchwork-CTI-Framework.md#9.4-curation-layer).
+Single-valued — a campaign is one kind or the other; if it reads as both, it is two campaigns. Both types are analyst-authored and never inferred automatically, the `Global` type especially: a shared theme is cheap to detect, and a campaign is not a trend. See [Patchwork 9.4](Patchwork-CTI-Framework.md#9.4-curation-layer).

@@ -1,13 +1,8 @@
 > [!WARNING] Retired — do not start a new report from this template
-> `network-activity` is a **retired** type. It is still a valid `report_types` value so
-> historical imports stay readable, but nothing new should be authored with it
-> ([why](<../Report-Types.md#retired-—-valid,-not-authored-(3)>)). The slug named a
-> network-flow product against industrial ports; what this template grew into — a general
-> adversary-infrastructure write-up — was never what the value meant.
+> `network-activity` is a **retired** type. It is still a valid `report_types` value so historical imports stay readable, but nothing new should be authored with it ([why](<../Report-Types.md#retired-—-valid,-not-authored-(3)>)). The slug named a network-flow product against industrial ports; what this template grew into — a general adversary-infrastructure write-up — was never what the value meant.
 >
-> **Write this instead:** [`threat-activity`](threat-activity.md) for the activity itself,
-> [`ttp-deep-dive`](ttp-deep-dive.md) for the tradecraft, or
-> [`malware-profile`](malware-profile.md) where the infrastructure belongs to one family.
+> **Write this instead:**
+> [`threat-activity`](threat-activity.md) for the activity itself, [`ttp-deep-dive`](ttp-deep-dive.md) for the tradecraft, or [`malware-profile`](malware-profile.md) where the infrastructure belongs to one family.
 >
 > Picker: [Report-Types](../Report-Types.md) · Controlled values: [Vocabularies](../Vocabularies.md) · Framework: [Patchwork-CTI-Framework](../Patchwork-CTI-Framework.md)
 >
@@ -22,23 +17,21 @@
 | Report Type | `network-activity` | Fixed for this template — emitted as `report_types: ["network-activity"]` |
 | Title | | Prefix with **your member namespace token** (§4.2) — e.g. `acme-`. Pick it once; it is stable forever |
 | Published | | **Stable anchor date.** Dedup is name + published (§9.2), so a date that changes on revision forks a new report |
-| TLP | | `White` \| `Green` \| `Amber` \| `Red` |
+| TLP | | `Clear` \| `Green` \| `Amber` \| `Amber+Strict` \| `Red` (TLP 2.0, §8.1). `Clear` was called `White` and keeps the same STIX id; `Amber+Strict` withdraws the client carve-out and is dual-marked with `Amber` |
 | Author | | **Your member identity** — becomes `created_by_ref` (§8.2) |
 | Source Reliability | | Admiralty `A`–`F` |
 | Info Credibility | | Admiralty `1`–`6` |
 | Threat level | | `High` \| `Medium` \| `Low` (§3.4) — urgency and proximity, **not** a confidence grade. Emitted as `threat_level` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
 | Threat domain | | `Constituency` \| `National` \| `Regional` \| `Partner` \| `World` (§3.3). Highest applicable rung wins. Emitted as `threat_domain` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
 | Activity category | | One or more of the nine categories in §5.2 — emitted as `activity_category` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
+| Observed date | | **Required where this report records an incident.** When the activity was *observed*, not when this was written. It contributes to the incident's identity key (§9.2), so a wrong date forks a duplicate rather than updating. Emitted as `observed_date` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
 
 ## Key-judgments
 
 > [!TIP] What goes here
-> 3-5 bullets. The part a reader acts on — put it first, not at the end.
-> State confidence, and say plainly what you cannot support.
+> 3-5 bullets. The part a reader acts on — put it first, not at the end. State confidence, and say plainly what you cannot support.
 
--
--
--
+- - -
 
 ## Infrastructure-observed
 
@@ -64,11 +57,9 @@
 ## Objects-referenced
 
 > [!TIP] What goes here
-> What belongs in this report's `object_refs` so the narrative and the STIX
-> container agree. For `network-activity`: indicators, observed-data, and the intrusion-set operating the infrastructure.
+> What belongs in this report's `object_refs` so the narrative and the STIX container agree. For `network-activity`: indicators, observed-data, and the intrusion-set operating the infrastructure.
 
--
--
+- -
 
 
 ## Sources

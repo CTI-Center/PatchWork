@@ -1,9 +1,12 @@
+# Sectors
+
 | Sector                      | Sub-sector                                             |
 | --------------------------- | ------------------------------------------------------ |
 | administrative              |                                                        |
 | aerospace                   |                                                        |
 |                             | manufacturing                                          |
 |                             | technology & research                                  |
+| agriculture                 |                                                        |
 |                             | chemicals & fertilizers                                |
 |                             | crop and animal production                             |
 |                             | farming                                                |
@@ -72,7 +75,7 @@
 | healthcare                  |                                                        |
 |                             | equipment & services                                   |
 |                             | pharmaceuticals, biotechnology & life sciences         |
-| healthcare                  | research                                               |
+|                             | research                                               |
 | hospitality-leisure         |                                                        |
 |                             | hotel, motels & cruise lines                           |
 |                             | leisure & recreation                                   |
@@ -99,6 +102,7 @@
 |                             | wearing apparel                                        |
 |                             | wood                                                   |
 | marine                      |                                                        |
+| media                       |                                                        |
 |                             | advertising & marketing                                |
 |                             | broadcasting                                           |
 |                             | entertainment                                          |

@@ -1,7 +1,9 @@
 > [!NOTE] About this template — Actor Profile (`actor-profile`)
-> **Use this when:** A standing profile of one adversary.
+> **Use this when:**
+> A standing profile of one adversary.
 >
-> **Use something else if:** the subject is activity whose relevance has become elevated — use `threat-activity`. One operation with a start and an end is a `campaign` **object**, not a report type ([9.4](../Patchwork-CTI-Framework.md#9.4-curation-layer)).
+> **Use something else if:**
+> the subject is activity whose relevance has become elevated — use `threat-activity`. One operation with a start and an end is a `campaign` **object**, not a report type ([9.4](../Patchwork-CTI-Framework.md#9.4-curation-layer)).
 >
 > Picker: [Report-Types](../Report-Types.md) · Controlled values: [Vocabularies](../Vocabularies.md) · Framework: [Patchwork-CTI-Framework](../Patchwork-CTI-Framework.md)
 >
@@ -9,11 +11,7 @@
 
 # <Title>-—-Actor-Profile
 
-> ⚠️ **This type is also generated automatically.** `cti-aggregate.js` already
-> emits `actor-profile` reports from the incident data, and OpenCTI deduplicates
-> reports on **name + published**. If you title this report using the generated
-> pattern — `cc-<Actor> (<handle>) — activity profile` — it will **merge into and
-> overwrite** the automatic one. Give your hand-written report a distinct title.
+> ⚠️ **This type may also be generated automatically in your environment.** Where a member's own tooling emits `actor-profile` reports from incident data, reports deduplicate on **name + published** ([9.2](../Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules)) — so a hand-written report that reuses the generated title pattern (something of the shape `<member>-<Actor> (<handle>) — activity profile`) will **merge into and overwrite** the generated one. Give yours a distinct title. This is a statement about *your own* environment, not about any upstream platform ([Report-Types](<../Report-Types.md#before-you-write,-four-things-that-bite>)).
 
 ## Report-metadata
 
@@ -22,28 +20,26 @@
 | Report Type | `actor-profile` | Fixed for this template — emitted as `report_types: ["actor-profile"]` |
 | Title | | Prefix with **your member namespace token** (§4.2) — e.g. `acme-`. Pick it once; it is stable forever |
 | Published | | **Stable anchor date.** Dedup is name + published (§9.2), so a date that changes on revision forks a new report |
-| TLP | | `White` \| `Green` \| `Amber` \| `Red` |
+| TLP | | `Clear` \| `Green` \| `Amber` \| `Amber+Strict` \| `Red` (TLP 2.0, §8.1). `Clear` was called `White` and keeps the same STIX id; `Amber+Strict` withdraws the client carve-out and is dual-marked with `Amber` |
 | Author | | **Your member identity** — becomes `created_by_ref` (§8.2) |
 | Source Reliability | | Admiralty `A`–`F` |
 | Info Credibility | | Admiralty `1`–`6` |
 | Threat level | | `High` \| `Medium` \| `Low` (§3.4) — urgency and proximity, **not** a confidence grade. Emitted as `threat_level` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
 | Threat domain | | `Constituency` \| `National` \| `Regional` \| `Partner` \| `World` (§3.3). Highest applicable rung wins. Emitted as `threat_domain` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
 | Activity category | | One or more of the nine categories in §5.2 — emitted as `activity_category` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
+| Observed date | | **Required where this report records an incident.** When the activity was *observed*, not when this was written. It contributes to the incident's identity key (§9.2), so a wrong date forks a duplicate rather than updating. Emitted as `observed_date` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
 
 ## Key-judgments
 
 > [!TIP] What goes here
-> 3-5 bullets. The part a reader acts on — put it first, not at the end.
-> State confidence, and say plainly what you cannot support.
+> 3-5 bullets. The part a reader acts on — put it first, not at the end. State confidence, and say plainly what you cannot support.
 
--
--
--
+- - -
 
 ## Designation-and-aliases
 
 > [!TIP] What goes here
-> Code (cc-CL-<MOT>-####) as the name; handles/personas as aliases. See CTI-Framework.md §9.
+> Code (`<member>-CL-<MOT>-####`) as the name; handles/personas as aliases. See [9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties).
 
 | Designation | Aliases | Tier |
 | --- | --- | --- |
@@ -53,7 +49,7 @@
 ## Motivation-and-tier
 
 > [!TIP] What goes here
-> Tier: Cluster (confidence 30) · Temporary (60) · Named (85). Motivation per Appendix A1 of the incident template.
+> Tier: `Cluster` · `Temporary` · `Mature` ([4.1](<../Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked>)) — the framework fixes no numeric confidence per tier; see the promotion evidence checklist at [4.6](../Patchwork-CTI-Framework.md#4.6-minimum-evidence-for-promotion). Motivation per [5.1](../Patchwork-CTI-Framework.md#5.1-the-analyst-facing-motivation-classes) and intent per [5.3](../Patchwork-CTI-Framework.md#5.3-intent).
 
 
 
@@ -84,11 +80,9 @@
 ## Objects-referenced
 
 > [!TIP] What goes here
-> What belongs in this report's `object_refs` so the narrative and the STIX
-> container agree. For `actor-profile`: the intrusion-set, its incidents, campaigns, attack-patterns, victims and sectors.
+> What belongs in this report's `object_refs` so the narrative and the STIX container agree. For `actor-profile`: the intrusion-set, its incidents, campaigns, attack-patterns, victims and sectors.
 
--
--
+- -
 
 
 ## Sources
