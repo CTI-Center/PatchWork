@@ -36,6 +36,8 @@ Please note: *the document structure was generated with AI assistance and may co
 │   ├── Sectors.md			Sector taxonomy
 │   ├── templates/			15 per-type skeletons, one per report type
 │   └── Vocabularies.md			Controlled value sets
+├── scripts/
+│   └── check-links.py			Internal-link and anchor validation
 └── README.md
 ```
 

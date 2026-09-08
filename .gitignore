@@ -1,0 +1,7 @@
+# Claude Code working files — local to each contributor, not part of the spec
+CLAUDE.md
+.claude/
+
+# Local copies of the external standards this framework cites.
+# Intentionally untracked — see docs/CONTRIBUTING.md "Format" for the canonical URLs.
+Resources/Clippings/
