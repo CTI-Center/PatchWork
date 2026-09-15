@@ -40,6 +40,7 @@ Generated from the repository by [`tools/repo-tree`](tools/repo-tree/README.md) 
 ├── LICENSE-MIT                     MIT — scripts and tooling
 ├── README.md
 └── tools/                          Scripts — see each tool's own README
+    ├── check-links/                Validates the internal links in docs/
     ├── gtidocs-mirror/             Refreshes the GTI documentation snapshot
     └── repo-tree/                  Regenerates the tree on this page
 ```
