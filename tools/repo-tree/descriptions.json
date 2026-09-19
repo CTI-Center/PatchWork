@@ -18,6 +18,7 @@
   "docs/Vocabularies.md": "Controlled value sets",
 
   "tools": "Scripts — see each tool's own README",
+  "tools/check-links": "Validates the internal links in docs/",
   "tools/gtidocs-mirror": "Refreshes the GTI documentation snapshot",
   "tools/repo-tree": "Regenerates the tree on this page"
 }
