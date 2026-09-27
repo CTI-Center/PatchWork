@@ -1,9 +1,9 @@
 ---
 title: Patchwork CTI-Framework
 created: 2026-08-31
-updated: 2026-09-05
+updated: 2026-09-06
 status: draft — for community review
-Version: "0.5"
+Version: "0.6"
 ---
 
 > TL:DR
@@ -78,11 +78,11 @@ The framework borrows Mandiant's and Unit 42's **published methodology**. It doe
 ### 2.2-Where-the-standards-disagree,-and-who-wins
 
 - **Adversary object type.**
-	Mandiant/GTI and Unit 42 both centre the `intrusion-set`. This framework follows them. CERT-EU speaks of "threat actors" generically and takes no STIX position.
+	**Unit 42** centres the `intrusion-set` — its published adversary playbooks carry exactly one per adversary. This framework follows it. **Mandiant/GTI does not**, and this is a divergence rather than an inheritance: GTI's own STIX documentation lists its threat-object types as `threat-actor`, `malware`, `campaign`, `grouping`, `report` and `vulnerability` ([STIX responses](Easy-access/GTI/gtidocs/reference/01-api-introduction/stix-responses.md)) — `intrusion-set` is not among them. CERT-EU speaks of "threat actors" generically and takes no STIX position.
 - **How a designation matures.**
 	Both vendors mature *one* designation in place. This framework **diverges**: each tier is a separate object and higher tiers are built by linking, never by renaming ([4.1](#4.1-three-tiers-of-object,-linked)).
 - **Where the persona lives.**
-	Unit 42's published playbooks carry the industry handle as an *alias* of the named intrusion set. This framework **diverges**: the persona is its own `threat-actor` SDO ([4.4](#4.4-personas-are-objects,-not-aliases)).
+	Unit 42's published playbooks emit no `threat-actor` object and populate no `aliases` — the industry handle is simply absent from the serialisation, leaving the intrusion-set's own name to carry everything. This framework **diverges**: the persona is its own `threat-actor` SDO ([4.4](#4.4-personas-are-objects,-not-aliases)).
 - **Motivation vocabulary.**
 	Unit 42's four MOT classes are richer than STIX's `attack-motivation-ov` can express, and coarser than CERT-EU's nine activity categories. The framework keeps the Unit 42 classes as the *analyst-facing* value and degrades them to STIX on serialisation
 - **Sector taxonomy.**
@@ -102,8 +102,9 @@ It also runs in the opposite direction from the other four. They *supply* materi
 
 | Divergence                                                                     | From                          | Reason                                                                                                                                                                                                                              |
 | ------------------------------------------------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `intrusion-set` as the adversary object                                        | **Mandiant / GTI**            | GTI types adversaries as `threat-actor`; Patchwork reserves that type for the persona ([4.4](#4.4-personas-are-objects,-not-aliases)), and follows Unit 42 in centring the `intrusion-set` ([4.1](#4.1-three-tiers-of-object,-linked))                                     |
 | **Tiers are separate linked objects, not one designation maturing in place**   | **Mandiant and Unit 42 both** | Preserves history, makes a wrong grouping correctable by deleting an edge, and keeps cross-cluster evidence (shared code base ⇒ shared developer or operator) expressible after grouping ([4.1](#4.1-three-tiers-of-object,-linked)) |
-| Persona is a `threat-actor` SDO, not an intrusion-set alias                    | Unit 42                       | Personas are adversary-controlled and deceptive; as an alias, a shared brand name silently fuses unrelated activity ([4.4](#4.4-personas-are-objects,-not-aliases))                                                                  |
+| Persona is a `threat-actor` SDO, not folded into the adversary record          | Unit 42                       | Personas are adversary-controlled and deceptive; carried as a name or an alias, a shared brand silently fuses unrelated activity ([4.4](#4.4-personas-are-objects,-not-aliases))                                                     |
 | Own 182-entry sector hierarchy                                                 | all three                     | Every source taxonomy is **flat**; the sub-sector level is where the analytic value sits ([6.1](#6.1-sectors))                                                                                                                      |
 | Per-member namespace prefix                                                    | all three                     | The sources each assume a single naming authority; a community framework cannot ([4.2](#4.2-member-namespaces))                                                                                                                     |
 | Threat domains defined by *relation* to a constituency, not by named geography | CERT-EU                       | CERT-EU's ladder is EU-specific; Patchwork is multi-member ([3.3](#3.3-threat-domains))                                                                                                                                             |
@@ -320,7 +321,7 @@ This is the framework's most consequential design decision, and it buys four thi
 
 **The promotion gate is the Diamond Model.** Create a higher-tier object only when enough of the four vertices (adversary / infrastructure / capability / victim) are evidenced across the member clusters, and the grading on the underlying observations supports the claim. The framework deliberately does not fix a numeric threshold; which vertices are required at each step, and what the underlying observations must be graded, is [4.6](#4.6-minimum-evidence-for-promotion).
 
-![Attribution workflow visualization](Resources/Attribution-workflow-visualization.png) *Attribution workflow visualization*
+![Attribution workflow visualization](Resources/img/Attribution-workflow-visualization.png) *Attribution workflow visualization*
  
 ### 4.2-Member-namespaces
 
@@ -356,7 +357,7 @@ A cluster with no observed persona yields **no** threat-actor — an analytic co
 
 **Why this must not be an alias.** Personas are adversary-controlled and routinely deceptive. They are abandoned after takedowns, resurrected by unrelated groups, shared across affiliates, and sometimes deliberately impersonated to misdirect attribution. If the persona is stored as an alias of the intrusion-set, then every one of those events forces an edit to the *activity* record — and worse, two clusters that adopt the same brand name will **merge into one object** under name-based deduplication, silently fusing two unrelated bodies of activity. Keeping the persona separate means a brand can move, split, or be exposed as a front without disturbing a single observation.
 
-> **This diverges from Unit 42**, whose playbooks carry the handle as an alias of the intrusion set and emit no threat-actor object at all. The cost is an extra object per persona.
+> **This diverges from Unit 42**, whose playbooks emit no `threat-actor` object at all — and do not carry the handle as an `aliases` entry either, so it is absent from the serialisation rather than merely folded in. The cost of modelling it separately is an extra object per persona.
 
 
 ### 4.5-Attribution-doctrine
@@ -457,6 +458,72 @@ Two consequences worth stating: the registry is the **only** place a token is re
 
 > The registry is deliberately a flat file under version control rather than a service. It is small, it changes rarely, it needs an audit trail more than it needs an API, and a framework that required members to run infrastructure in order to name something would not be adopted.
 
+
+### 4.8-When-several-actors-claim-one-activity
+
+One compromise routinely attracts more than one actor: the original broker advertises access, a second account re-lists it using the first one's proof, a third buys it and sells it on — or says it has. [Access-sale-scenario-2](Real-Examples/Access-sale-scenario-2.md) already names this as the normal lifecycle in its immediate actions, and until 0.6 the framework said nothing about how to record it. The two tempting shortcuts — folding the newcomers into the cluster that got there first, or hanging their handles off it as aliases — are the two the rest of this chapter exists to forbid.
+
+#### First,-decide-whether-each-claimant-is-an-MAI-at-all
+
+Not every account that talks about a compromise is conducting one. [3.1](#3.1-malicious-activity-of-interest) admits four kinds of thing — confirmed compromise, suspicious attempts, adversarial resource development, reconnaissance — and commentary is none of them.
+
+| What the claimant does | An MAI? | What to create |
+|---|---|---|
+| Holds, sells or brokers the access — **including merely claiming to** | Yes — adversarial resource development | Its own cluster, and its own persona if a handle is observed |
+| Redistributes the stolen material to an audience | Yes — hack-and-leak, categorised `Data exposure and leaks` or `Hacktivism` ([5.2](#5.2-activity-categories)) | Its own cluster and persona |
+| Comments on, analyses or reports the compromise | **No** | Nothing. It is a *source*, and belongs in the report's Sources table |
+
+- **A claim you believe to be false is still an observation.**
+	A seller advertising access it does not hold cannot be told apart from a genuine broker at the moment of observation, and the listing has effect either way — it keeps the victim named in a market and it draws buyers. Record it and grade it; do not decline to record it because you doubt it. Where the doubt goes is *Primacy is recorded as evidence, not as rank*, below.
+- **An observer is not an adversary.**
+	This is the same call [5.2](#5.2-activity-categories) already makes for `Policy & law enforcement` — real analytic value, no adversary object. A researcher, a journalist, or a channel reposting a screenshot with its own commentary are observers of the activity, not participants in it. Give one a cluster and the graph asserts an adversary that does not exist, permanently, because codes are never withdrawn ([4.3](#4.3-attribution-codes-are-assigned-once-and-never-reused)).
+
+#### Each-claimant-that-clears-the-gate-is-its-own-cluster
+
+Separate operators conducting separate MAIs are separate clusters, coded on first sight ([4.3](#4.3-attribution-codes-are-assigned-once-and-never-reused)). Folding a claimant into the originating cluster asserts that they are one operator, which is the one claim the evidence does not support; carrying its handle in the originating cluster's `aliases` asserts the same thing and additionally fuses the two irreversibly under [9.2](#9.2-identity-and-merge-rules)'s name key ([4.4](#4.4-personas-are-objects,-not-aliases)).
+
+**The MOT class is derived per claimant, never inherited.** A resale account is `CRI` with intent `financial` — [5.3](#5.3-intent) places access brokering *and* fraud there, so the scam reading does not change the class. A channel republishing the material to make a political point is `UNK`, which is where [5.1](#5.1-the-analyst-facing-motivation-classes) maps hacktivism, with intent `disruption`. Two claimants on one compromise can therefore sit in different MOT classes and carry different code prefixes, which is the clearest statement the model can make that shared subject matter is not shared identity.
+
+> ⚠️ **Check the contact identifier before minting a code.**
+> If a claimant's contact identifier, wallet or infrastructure matches the originating cluster's, this is one operator running a second front, and the right record is one cluster with more incidents — exactly what [Access-sale-scenario-2](Real-Examples/Access-sale-scenario-2.md) is. Codes are never renumbered ([4.3](#4.3-attribution-codes-are-assigned-once-and-never-reused)), so this is the one mistake in this section that cannot be repaired by deleting an edge.
+
+#### The-edge-is-related-to,-and-nothing-stronger
+
+| Candidate | Verdict |
+|---|---|
+| **`related-to`** | **Correct.** [4.1](#4.1-three-tiers-of-object,-linked) defines it as *a link is observed between two clusters, with no grouping claim yet*, which is exactly the claim being made |
+| `part-of` | No. It is the ladder edge, and it asserts that the clusters are one operator ([4.1](#4.1-three-tiers-of-object,-linked)) |
+| `derived-from` | No, and this is the trap. [4.1](#4.1-three-tiers-of-object,-linked) glosses it *successor, rebrand, splinter* — a claim about operator continuity. A reseller does not descend from the broker it bought from |
+| `duplicate-of` | No. That is the same adversary matured twice ([4.7](#4.7-mature-name-collisions-and-the-member-registry)) |
+
+**What kind of link it is goes in the relationship's `description`, not into a new relationship type.** `related-to` is deliberately empty of meaning, and the pull to coin `resells-access-of` or `impersonates` is to be resisted: [9.1](#9.1-the-object-graph) registers exactly one framework-defined type, and a registry that grew an exception per situation would reproduce, in a new place, the error it was written to fix. The prose belongs on the edge — *"re-listing of the access first advertised by `cc-CL-CRI-0028` on 2026-06-08; the proof image is byte-identical to that listing's"* — where it travels with the assertion instead of living in an analyst's head.
+
+**The queryable link is the victim, not the edge.** Every claimant's incident `targets` the same victim `identity` objects, and each carries its own `observed_date`. That shared spine is a fact rather than an assessment, it survives the deletion of any `related-to` edge, and it is what makes *show me everyone trading this access* answerable at all.
+
+#### Primacy-is-recorded-as-evidence,-not-as-rank
+
+The instinct on finding a copycat is to mark it as one — a low confidence on its cluster, a "fake" flag, an alias hung off the real actor. Each of those writes a judgement about **one claim** onto a **durable record of activity**, which is the failure mode [4.4](#4.4-personas-are-objects,-not-aliases) and [7.1](#7.1-admiralty-grading-attaches-to-the-observation) were both written to prevent. There is no rank property, and none is needed:
+
+| To record | Put it on | Never on |
+|---|---|---|
+| *This claim is probably false* | information credibility on the **incident** — `4` doubtful ⇒ `confidence` 40, `5` improbable ⇒ 20 ([7.1](#7.1-admiralty-grading-attaches-to-the-observation)) | the cluster's `confidence`, which means confidence in the *clustering* ([4.1](#4.1-three-tiers-of-object,-linked)) |
+| *This source is a throwaway account* | `x_opencti_reliability` `D`–`F` on the incident ([7.1](#7.1-admiralty-grading-attaches-to-the-observation)) | the persona, or the cluster |
+| *This actor was not first* | `observed_date` — required on every incident, and part of [9.2](#9.2-identity-and-merge-rules)'s key | a rank, sequence or "primary" property |
+| *This actor evidences no capability* | the **absence** of `attack-pattern` and `indicator` edges | a technique inherited from the originating cluster |
+
+- **Do not inherit the originator's technique.**
+	A re-lister holding someone else's screenshot has evidenced nothing and gets no `attack-pattern` at all; a buyer genuinely evidences **T1650 Acquire Access**. Carrying the originating cluster's technique across is the quiet contamination that separate incident objects exist to prevent.
+- **A low grade does not lower the threat level.**
+	[3.4](#3.4-threat-levels)'s own worked case is that a poorly-sourced rumour of an active intrusion in the constituency is *D4 and High*, and is worth acting on precisely because the level is high despite the grade. A re-listing widens the pool of people trying to buy access to a constituency asset, which is what the level tracks; the grade tracks how well-sourced the claim is. The two axes stay apart here as everywhere.
+- **The originating cluster is not edited.**
+	No new alias, no confidence change, no new incident. A second actor selling a tracked actor's goods says something about the market, not about the operator — and a third party paying for access is a market signal, not corroboration. Only new evidence about the compromise itself moves the original grading.
+
+#### This-is-still-not-a-temporary-group
+
+Two or more clusters now exist with edges between them, which is the shape [Access-sale-scenario-2](Real-Examples/Access-sale-scenario-2.md) said was missing — so the reach for `<member>-TGR-<MOT>-####` is predictable, and wrong. [4.6](#4.6-minimum-evidence-for-promotion) gates promotion on two Diamond vertices in common with at least one being Capability or Infrastructure, and states that victim overlap alone is not evidence. Here the *only* shared vertex is Victim. A resale chain is a market, not an operator.
+
+> **The convergence itself can be tracked, where a member wants it as an object.**
+> [9.4](#9.4-curation-layer)'s `Global` campaign is the container for *multiple unrelated actors acting in parallel on a shared theme, target or resource*, and one access brokered by several parties is one resource. It is a deliberate authoring act and never inferred — a shared subject is cheap to detect and a campaign is not a trend — and it is optional: the clusters, the `related-to` edges and the per-incident grading are complete without it. Where one is authored, the write-up of the activity that made it relevant is a `threat-activity` report and the campaign object carries the operation ([Report-Types](Report-Types.md)).
 
 ---
 
@@ -823,7 +890,7 @@ STIX permits this explicitly: "Relationships are not restricted to those listed 
 |---|---|---|
 | **`part-of`** | **Framework-defined** | The attribution ladder — cluster → temporary group → mature adversary ([4.1](#4.1-three-tiers-of-object,-linked)) — and the identity hierarchy, victim organisation → sub-sector → sector ([6.1](#6.1-sectors)) |
 | `related-to` · `derived-from` · `duplicate-of` | Native — common to all SDOs and SCOs ([3.7](Easy-access/oasis-open/stix-2.1.md#3.7-common-relationships)) | Observed link without a grouping claim; succession and rebrands; collision resolution ([4.7](#4.7-mature-name-collisions-and-the-member-registry)) |
-| `attributed-to` · `targets` · `uses` · `originates-from` · `located-at` · `variant-of` · `exploits` · `indicates` | Native — defined in each SDO's own relationship table | The graph above, as drawn |
+| `attributed-to` · `targets` · `uses` · `originates-from` · `located-at` · `variant-of` · `exploits` · `indicates` · `based-on` | Native — defined in each SDO's own relationship table | The graph above, as drawn |
 
 > **`part-of` is the only one.**
 > It appears **zero times** in the STIX 2.1 specification, which is why it is declared here rather than cited. Every other edge in this document is native and is cited as native — including `variant-of` and `duplicate-of`, which are easy to assume are ours because the framework leans on them so heavily, and are not. A registry that over-claimed would reproduce, in a new place, the exact error it was written to fix.
@@ -1093,8 +1160,9 @@ Worked examples under [Real-Examples](Real-Examples/), each written so a reader 
 
 > ⚠️ **No STIX bundle ships yet.** The intent is that each sample is accompanied by the bundle it produces, generated by a committed deterministic builder, so narrative and serialisation can be diffed against each other rather than taken on trust — which is what [2.3](#2.3-why-stix-2.1-sits-differently-from-the-other-four) means by conformance being the one thing this framework can actually *fail* against. The builders and bundles are **forthcoming**; until they land, every mapping below is a hand-derived appendix, and the conformance claim is an editorial one.
 
-- [Access-sale-scenario](Real-Examples/Access-sale-scenario.md) — an underground-forum listing offering access to a traffic-control system. Written as a **filled-in `threat-alert`** following the submission standard in [Report-Types](Report-Types.md), so it doubles as the worked example of what a good submission looks like: metadata block with all three classification fields, key judgments, actions, then the full object mapping and relationship graph as appendices.
+- [Access-sale-scenario-1](Real-Examples/Access-sale-scenario-1.md) — an underground-forum listing offering access to a traffic-control system. Written as a **filled-in `threat-alert`** following the submission standard in [Report-Types](Report-Types.md), so it doubles as the worked example of what a good submission looks like: metadata block with all three classification fields, key judgments, actions, then the full object mapping and relationship graph as appendices.
 - [Access-sale-scenario-2](Real-Examples/Access-sale-scenario-2.md) — the same activity cluster as the sample above, observed 74 days later selling a different, already-completed breach. Its companion is deliberate: read together, the two samples show what changes on a *second* observation of a tracked cluster (confidence moves, the persona's counters refresh) and — the point of its Appendix B — what does **not**: two incidents on one cluster is not grounds to promote to a temporary group ([4.1](#4.1-three-tiers-of-object,-linked)).
+- [Access-sale-scenario-3](Real-Examples/Access-sale-scenario-3.md) — the same compromise as the two samples above, now being re-listed for sale by a second actor and republished with its proof-of-access material by a third. Written as a **filled-in `threat-activity`**, it is the worked example for [4.8](#4.8-when-several-actors-claim-one-activity): two further clusters in two different MOT classes, joined to the originating cluster by `related-to` and nothing stronger, with the doubt about each claim carried as Admiralty credibility on its own incident rather than as a rank on any actor.
 - [CRESCENTHARVEST](Real-Examples/CRESCENTHARVEST.md) — an unattributed espionage cluster (`cc-CL-STA-0001`), sourced from a real third-party report (Acronis TRU), showing the framework applied to a technical malware/campaign write-up rather than a dark-web listing: a `campaign` and `malware` object, ten ATT&CK techniques, and file/domain/IP indicators, all under a Cluster tier whose low-confidence attribution notes — but does not adopt — an overlap with activity reported elsewhere under different names.
 - [Graduation fixture](Real-Examples/graduation-fixture.md) — not a narrative sample but the specification of a synthetic **test bundle**: four independent, unattributed clusters with no relationships between them yet, built to exercise the automated-grouping workflow in [9.5](#9.5-automating-the-grouping-step) rather than to represent a real incident.
 
@@ -1185,6 +1253,12 @@ One-line definitions for terms used throughout this document without re-explanat
 ---
 
 ## Revision-history
+
+- **0.6** · 2026-09-06 — **One activity, several claimants.** A gap found in operational use rather than in review: §4 covered the ladder, personas, promotion evidence and name collisions, and said nothing about what to do when a second and a third actor start trading a compromise a tracked cluster already advertised.
+
+  - **When several actors claim one activity** ([4.8](#4.8-when-several-actors-claim-one-activity)) — the MAI gate that decides whether a claimant earns an object at all, one cluster per claimant with the MOT class derived rather than inherited, `related-to` as the only defensible edge between them, and the rule that a doubted claim is graded on the incident and never ranked on the cluster.
+  - The relationship registry in [9.1](#9.1-the-object-graph) gains `based-on`, which every sample emits on `indicator --based-on--> <SCO>` and which the registry had omitted. Native STIX, so `part-of` remains the only framework-defined type.
+  - No property is added, retyped or removed, so the `extension-definition` stays at **2.0.0** ([9.3](#9.3-classification-properties)).
 
 - **0.5** · 2026-09-05 — **The operational layer, and two breaking changes.** Nine sections added or rewritten in response to two external reviews.
 

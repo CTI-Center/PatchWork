@@ -30,7 +30,7 @@
 
 On 2026-06-08 13:16, a **SELLING** post appeared on an underground forum from the persona **BigBrother** (rank GOD, 24 posts, 21 threads, joined Jul 2025, reputation 46), offering access to the Smart Traffic Control Command Center of the Tehran Traffic Police. Asking price **1 BTC**, "no swap", video proof offered by PM. Contact given as a Session messenger ID.
 
-<img src="../Resources/2026-08-06.png" width="700" alt="Forum listing offering access to a traffic-control system">
+<img src="../Resources/img/2026-08-06.png" width="700" alt="Forum listing offering access to a traffic-control system">
 
 *The post date reads DD-MM-YY. Read as MM-DD-YY it would fall in the future, and it would also be inconsistent with the persona's "Joined Jul 2025 / 11 Months" tenure.*
 

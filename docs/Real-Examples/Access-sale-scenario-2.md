@@ -1,5 +1,5 @@
 > **Worked example 2.**
-> A filled-in [threat-alert](../Report-Templates/threat-alert.md) following the submission standard in [Report-Types](../Report-Types.md). Its companion is [Access-sale-scenario](Access-sale-scenario.md) — the **same activity cluster**, seen 74 days earlier. Read the two together: this one exists to show what the framework does when a tracked cluster is observed *again*, which is the case sample 1 could not exercise. `cc-` is **this member's** namespace token — pick your own ([4.2](../Patchwork-CTI-Framework.md#4.2-member-namespaces)).
+> A filled-in [threat-alert](../Report-Templates/threat-alert.md) following the submission standard in [Report-Types](../Report-Types.md). Its companion is [Access-sale-scenario-1](Access-sale-scenario-1.md) — the **same activity cluster**, seen 74 days earlier. Read the two together: this one exists to show what the framework does when a tracked cluster is observed *again*, which is the case sample 1 could not exercise. `cc-` is **this member's** namespace token — pick your own ([4.2](../Patchwork-CTI-Framework.md#4.2-member-namespaces)).
 >
 > No STIX bundle ships with this sample yet — none do ([10](../Patchwork-CTI-Framework.md#10.-samples)). Appendix A is written so a deterministic builder can be generated from it.
 
@@ -23,7 +23,7 @@
 
 ## Key-judgments
 
-- The listing is **the same operator as [Access-sale-scenario](Access-sale-scenario.md)**. The Session contact ID is byte-identical to the one in the June post, and the persona's forum counters advance monotonically from it (24→44 posts, 21→36 threads, reputation 46→49, "11 Months"→"1 Year", same Jul 2025 join). This is a second observation of `cc-CL-CRI-0028`, not a new cluster.
+- The listing is **the same operator as [Access-sale-scenario-1](Access-sale-scenario-1.md)**. The Session contact ID is byte-identical to the one in the June post, and the persona's forum counters advance monotonically from it (24→44 posts, 21→36 threads, reputation 46→49, "11 Months"→"1 Year", same Jul 2025 join). This is a second observation of `cc-CL-CRI-0028`, not a new cluster.
 - The seller claims a **completed breach of a national prisons authority** and offers a database of ~91,000 rows across 79 columns covering prisoners from all provinces of Iran. A CSV sample is offered on request and a JPEG sample is linked publicly.
 - The claim is **plausible but uncorroborated** (C/3). It is first-party and unverified. The offered samples were deliberately **not** retrieved (see *Handling*), so nothing has been done that could raise credibility — that is a conscious trade, not an omission.
 - **The data is already out.**
@@ -44,7 +44,7 @@ The post identifies the victim as *سازمان زندان‌ها و اقدام�
 
 No price is stated, no intrusion vector is described, and no date of compromise is given.
 
-<img src="../Resources/2026-08-21.png" width="700" alt="Forum listing offering data from an already-completed breach">
+<img src="../Resources/img/2026-08-21.png" width="700" alt="Forum listing offering data from an already-completed breach">
 
 *The post date reads DD-MM-YY, the same convention as the June listing. Read as MM-DD-YY it would be inconsistent with the persona's "Joined Jul 2025 / 1 Year" tenure and with the monotonic advance of the forum counters.*
 
@@ -79,7 +79,7 @@ Treat downstream harm — coercion, extortion, targeting on release — as the p
 
 | Detection method | Detail |
 | --- | --- |
-| Contact-identifier hunt | Session ID `05c342c1178cc1e5e23979ebd4ebd42c5a83173e10bcd0c78bb1c2790c73a31a6c` — shared with [Access-sale-scenario](Access-sale-scenario.md) |
+| Contact-identifier hunt | Session ID `05c342c1178cc1e5e23979ebd4ebd42c5a83173e10bcd0c78bb1c2790c73a31a6c` — shared with [Access-sale-scenario-1](Access-sale-scenario-1.md) |
 | Forum monitoring | Persona `BigBrother` — further listings, price changes, proof posts, tranche 2 |
 | Sample-hosting artifact | `hxxps://ibb[.]co/nNFpj16x` (defanged; not retrieved) |
 | ATT&CK | T1213 Data from Information Repositories — **inferred, not evidenced** |
@@ -96,7 +96,7 @@ The report's `object_refs` cover: the new incident, the existing activity cluste
 | Source | Reference | Reliability |
 | --- | --- | --- |
 | Underground forum listing (screenshot) | Captured 2026-08-21 | C — first-party claim, unverified |
-| Prior observation, same cluster | [Access-sale-scenario](Access-sale-scenario.md) — 2026-06-08 | C — corroborates the *operator*, not this claim |
+| Prior observation, same cluster | [Access-sale-scenario-1](Access-sale-scenario-1.md) — 2026-06-08 | C — corroborates the *operator*, not this claim |
 
 ---
 
