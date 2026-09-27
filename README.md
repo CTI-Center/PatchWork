@@ -32,6 +32,7 @@ Generated from the repository by [`tools/repo-tree`](tools/repo-tree/README.md) 
 ├── docs/
 │   ├── CONTRIBUTING.md             How to propose changes
 │   ├── Easy-access/                Local copies of the source standards
+│   ├── OpenCTI-Transfer-Plan.md    GTI-aligned OpenCTI migration proposal
 │   ├── Patchwork-CTI-Framework.md  The specification
 │   ├── Real-Examples/              Worked report samples
 │   ├── Report-Templates/           One skeleton per report type — 13 to author, 3 retired
