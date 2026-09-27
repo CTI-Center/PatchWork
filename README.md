@@ -1,6 +1,9 @@
+![381](docs/Resources/PatchWork_logo-transparent-croped.png)
+
+---
 This framework exists to turn analyst observations of adversary activity into an actionable, standards-conformant threat intelligence compatible with STIX 2.1, **in a record where each judgement stays revisable without destroying the ones around it**. **Patchwork** is a threat-intelligence framework for tracking adversaries and sharing reports, composed from five published standards — that patching-together is where the name comes from.
 
-> **Status: draft v0.5, circulated for community review.**
+> **Status: draft v0.6, circulated for community review.**
 > Several design choices were close calls and are marked as such in the text. Disagreement is useful — see  [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 This project began as personal documentation. As it grew, I realized that each standard contributes a piece of the puzzle I was looking for. I'm grateful you're here to build on what I started, and I value your time. This framework will be published once it reaches a version worth sharing.
@@ -29,6 +32,7 @@ Generated from the repository by [`tools/repo-tree`](tools/repo-tree/README.md) 
 ├── docs/
 │   ├── CONTRIBUTING.md             How to propose changes
 │   ├── Easy-access/                Local copies of the source standards
+│   ├── OpenCTI-Transfer-Plan.md    GTI-aligned OpenCTI migration proposal
 │   ├── Patchwork-CTI-Framework.md  The specification
 │   ├── Real-Examples/              Worked report samples
 │   ├── Report-Templates/           One skeleton per report type — 13 to author, 3 retired

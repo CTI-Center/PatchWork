@@ -9,6 +9,8 @@
 # =======================================================
 # Local cache
 tools/gtidocs-mirror/.cache/
+/docs/Resources/tools/gtidocs-mirror/.cache/
+/graphify-out
 # =======================================================
 # Python cache
 __pycache__/
