@@ -23,7 +23,7 @@ Please note: *the document structure was generated with AI assistance and may co
 
 ## Repository-layout
 
-Generated from the repository by [`tools/repo-tree`](docs/Resources/tools/repo-tree/README.md) — move a folder, re-run it, and this block follows. Edit the descriptions in `tools/repo-tree/descriptions.json`, not here.
+Generated from the repository by [`tools/repo-tree`](tools/repo-tree/README.md) — move a folder, re-run it, and this block follows. Edit the descriptions in `tools/repo-tree/descriptions.json`, not here.
 
 <!-- repo-tree:start -->
 
@@ -91,7 +91,7 @@ The framework, templates and documentation are **CC BY 4.0** — adopt and adapt
 
 Portions are adapted from the [CERT-EU Cyber Threat Intelligence Framework](https://cert.europa.eu/publications/threat-intelligence/cyber-threat-intelligence-framework/markdown), © CERT-EU, licensed CC BY 4.0.
 
-`docs/Easy-access/` holds local copies of the sources this framework builds on, so its citations can be followed without leaving the repo. **Those copies keep their own licences and are not covered by the CC BY 4.0 above.** Each records its origin, though the form varies: the gtidocs mirror carries a `retrieved:` date, the Unit 42 and Mandiant copies a `created:` date, and the CISA and OASIS copies state their origin in prose rather than in frontmatter. In particular `docs/Easy-access/GTI/gtidocs/` is an *unofficial* snapshot of the [Google Threat Intelligence documentation hub](https://gtidocs.virustotal.com/docs/), © Google, mirrored for reference only and refreshed by [`tools/gtidocs-mirror`](docs/Resources/tools/gtidocs-mirror/README.md) — check the live page linked at the foot of any archived file before relying on it.
+`docs/Easy-access/` holds local copies of the sources this framework builds on, so its citations can be followed without leaving the repo. **Those copies keep their own licences and are not covered by the CC BY 4.0 above.** Each records its origin, though the form varies: the gtidocs mirror carries a `retrieved:` date, the Unit 42 and Mandiant copies a `created:` date, and the CISA and OASIS copies state their origin in prose rather than in frontmatter. In particular `docs/Easy-access/GTI/gtidocs/` is an *unofficial* snapshot of the [Google Threat Intelligence documentation hub](https://gtidocs.virustotal.com/docs/), © Google, mirrored for reference only and refreshed by [`tools/gtidocs-mirror`](tools/gtidocs-mirror/README.md) — check the live page linked at the foot of any archived file before relying on it.
 
 
 ## Start-here
