@@ -1,119 +1,361 @@
-# OpenCTI transfer and GTI compatibility plan
+# OpenCTI and Google Threat Intelligence compatibility roadmap
 
-Status: proposal — implementation has not started. Owner, target OpenCTI version, deployment environment, Google TI entitlements, and budget: to be decided.
+Status: roadmap v0.2, based on a source audit rather than a greenfield assumption. Last reviewed: 2026-09-29. Owners, production deployment, Google Threat Intelligence (GTI) entitlements, connector release, budget and delivery dates remain to be decided.
 
-## 1. Goal and boundaries
+## 0. Audit basis and confidence
 
-Use OpenCTI as the maintained CTI platform and security boundary. Configure it to support a Google Threat Intelligence (GTI)-aligned analyst experience: GTI data ingestion, report categories, threat-object navigation, provenance, investigation, and sharing. Preserve the Patchwork CTI framework as a separately identified analytic layer rather than quietly redefining GTI objects. OpenCTI is based on STIX 2.1; the GTI API normally returns its own JSON and supports STIX bundles on specified endpoints. “GTI-compatible” therefore means documented, tested mappings and round-trip behaviour, not that GTI is itself a single conformance standard or that the UI must copy Google's product.[9][5]
+This plan covers two repositories with different roles:
 
-This is a **transfer of workflow and data semantics**, not a plan to fork OpenCTI on day one. Prefer configuration, dashboards, workflows and connectors for supported fields. Budget for an adapter/sidecar from the start: Patchwork's extension and identity rules are not guaranteed by stock OpenCTI. OpenCTI supports TLP:AMBER+STRICT and retains the highest marking of a type on updates/merges, but a GTI connector import must be shown to **apply** the correct marking before any object is visible to users. Test each path before promising fidelity; a major frontend fork is a last resort because it must be rebased and security-tested on every upgrade.[14][16][17]
-
-The source of truth for Patchwork's own semantics remains [the framework](Patchwork-CTI-Framework.md), [report types](Report-Types.md), [vocabularies](Vocabularies.md), and [sectors](Sectors.md). The checked-in GTI documentation under [Easy-access/GTI/gtidocs](Easy-access/GTI/gtidocs/) is an unofficial snapshot; use each page's `source` URL and recheck live documentation when implementing. See in particular [GTI STIX responses](Easy-access/GTI/gtidocs/reference/01-api-introduction/stix-responses.md) and [current/retired GTI report types](Easy-access/GTI/gtidocs/guides/07-report-analysis/report-types.md).
-
-## 2. Decisions to make before provisioning
-
-| Decision | Proposed default | Why / evidence required |
+| Repository | Audited state | Role |
 | --- | --- | --- |
-| Data contract | GTI objects as imported; Patchwork assertions separately attributed and namespaced | Patchwork explicitly differs from GTI: its adversary is an `intrusion-set`, personas are `threat-actor`, and its three attribution tiers remain separate linked objects; see [framework §2.2](Patchwork-CTI-Framework.md#2.2-where-the-standards-disagree,-and-who-wins) and [§4](Patchwork-CTI-Framework.md#4.-adversary-model-and-the-attribution-ladder). Do not auto-convert a GTI actor into a Patchwork Mature tier. |
-| Licensing | Confirm GTI API entitlement and OpenCTI edition *before* a pilot | The Google TI connector needs a GTI API key; reports need GTI Enterprise/Enterprise Plus. OpenCTI organization segregation, Authorized Members, Playbooks/automation, Fintel templates and audit-log features are Enterprise Edition; select paid EE or document CE alternatives before depending on them.[7][18] |
-| Tenant model | One organization for the first pilot; explicit later decision for multi-member sharing | OpenCTI organization segregation filters visibility in **one shared graph**, not isolated tenants. Test cross-organization name collisions, existence leaks, relationship visibility and connector-service-account privileges; for hard tenant isolation, evaluate separate instances.[10][16] |
-| UI | Configure supported fields; budget separate Patchwork capture UI | OpenCTI has configurable dashboards, existing attributes and taxonomies, but no documented configuration path for new arbitrary Patchwork fields/forms. Use a tested external workflow or scoped frontend change for dedicated forms.[2][3][17] |
-| Import scope | Start with a narrow reports-only window; enable other collections deliberately | The connector defaults to reports only, with campaigns, actors, malware, vulnerabilities, tools and IOCs opt-in; related report entities can still be fetched. API quota and dedup effects must be measured.[7] |
-| External redistribution | No automatic republication of licensed GTI content | Determine contract terms, allowed recipients, retention, PDF rights, and TLP/handling rules with the account owner before TAXII, public dashboards or exports. |
-| Version | Pin a tested OpenCTI and connector release pair | The connector README currently lists two minimum OpenCTI versions (6.5.1 and 6.7.7); treat this as unresolved documentation, and test the actual tagged image against the selected platform before deployment.[7] |
+| PatchWork (`/workspaces/PatchWork`) | Documentation and research corpus | Defines the Patchwork CTI model, vocabularies, report types, examples and desired STIX profile. It is not the application implementation. |
+| OpenCTI (`/workspaces/OpenCTI`) | Branch `feat/reputation-ui-enhancements-4424834575097079276`, commit `3828f28d50206e8594bea7de7b824f192cacee32`, package version `7.260910.0` | Full OpenCTI platform plus unreleased reputation/VT work that can accelerate this roadmap. |
 
-## 3. Target architecture
+The OpenCTI checkout is a dirty feature branch, not a clean tagged release. Its existing graph contained 36,688 nodes and was used to navigate the code before focused source inspection. All branch-only capability below is therefore `experimental` until it is rebased onto the chosen upstream release and passes build, unit, integration, authorization and upgrade tests.
+
+A focused reputation test run produced **six passing files and 29 passing tests**, but three suites failed to load because `reputation-domain.ts` has a parse error around lines 1360–1361. Restoring build/test health is the first delivery gate. No OpenCTI source code was changed during this audit.
+
+Use these evidence labels during delivery:
+
+- `stable candidate`: present in normal OpenCTI architecture; still verify on the pinned release.
+- `experimental`: present on the audited feature branch but not release-ready.
+- `external`: supplied by another repository or service and not audited here.
+- `planned`: must be designed and built.
+- `out of scope`: not required for Release 1.
+
+## 1. Goal and definition of compatibility
+
+Use OpenCTI as the maintained CTI platform and security boundary, then add the smallest integrations and extensions needed for a GTI-aligned analyst workflow and the Patchwork analytic model. Do not fork the whole platform or copy Google's branding and proprietary behavior.
+
+“GTI compatible” is not a single standard. GTI exposes native API schemas and selected STIX responses, while OpenCTI uses its own GraphQL model and STIX 2.1 conversion. Compatibility must be stated at four independently testable levels:
+
+1. **Standards:** valid STIX 2.1 and TAXII 2.1 exchange, plus a versioned Patchwork STIX profile.
+2. **Data:** explicit GTI JSON/STIX ↔ OpenCTI ↔ Patchwork mappings, identity rules and loss declarations.
+3. **Workflow/UI:** familiar search, reputation lookup, investigation, reports, entity navigation, saved views and alerting using OpenCTI building blocks.
+4. **API:** an optional GTI-shaped facade for named consumers. This is not part of the first release unless a real consumer contract requires it.
+
+Release 1 should deliver controlled GTI ingestion, Patchwork field round-tripping, a hardened reputation workflow, configured analyst views, policy-safe sharing and operational readiness. It should not claim full GTI product, hunting, sandbox, ASM, DTM, AI or REST API parity.
+
+The source of truth for Patchwork semantics remains [the framework](Patchwork-CTI-Framework.md), [report types](Report-Types.md), [vocabularies](Vocabularies.md) and [sectors](Sectors.md). The checked-in [GTI documentation snapshot](Easy-access/GTI/gtidocs/) is unofficial and must be revalidated against the live service before implementation.
+
+## 2. Audited capability disposition
+
+The implementation strategy is **reuse → configure → extend → build**.
+
+| Area | Audited OpenCTI capability | Decision |
+| --- | --- | --- |
+| STIX 2.1 | Store-to-STIX conversion and bundle construction exist in `opencti-graphql/src/database/stix-2-1-converter.ts`. | Reuse; add Patchwork/GTI round-trip fixtures and semantic comparison. |
+| Object identity | Deterministic standard IDs exist in `src/schema/identifier.js`. | Reuse, but isolate source IDs and test Patchwork mismatches before import. |
+| TAXII and feeds | TAXII publication/ingestion, rolling feeds, streams, filtering and tests exist. | Configure and harden; do not build a second TAXII stack. |
+| Search and entity UI | Global search and actor, campaign, malware, vulnerability, report and observable views exist. | Reuse and add provenance/mapping affordances only where needed. |
+| Dashboards and graph | Dashboards, public dashboards, investigation graph and workspaces exist. | Configure/export layouts; extend only for policy and Patchwork review states. |
+| Saved experience | Custom views, entity-layout customization, alerts/triggers and notifications exist. | Configure first; add sharing/ACL behavior only if the pilot proves a gap. |
+| Access control | Capabilities/RBAC, markings, Authorized Members and organization segregation exist. | Reuse, then prove enforcement on every derived object, edge, file and export. |
+| Extension framework | Module registration and GraphQL schema extension mechanisms exist. | Reuse for narrow modules; avoid a broad core fork. |
+| Custom fields | Backend, admin UI, entity rendering, validation/filtering and STIX export utilities exist behind `CUSTOM_FIELDS`. | Experimental accelerator; complete an import/round-trip proof before adoption. |
+| Reputation workspace | Workspace, observable tab, GraphQL, cache, credential vault and provider registry exist on this branch. | Repair and harden rather than rebuild; keep branch-only until release gates pass. |
+| Google TI feed connector | Not present here; the connector is in the separate OpenCTI connectors repository. | External dependency: pin, audit and integration-test an exact release. |
+| Patchwork policy/mapping | No source-ID registry, compatibility register, quarantine or Patchwork policy gate was found. | Build a small adapter/sidecar unless Phase 0 proves native modules sufficient. |
+| GTI-shaped REST API | Not present. | P2 decision; GraphQL/TAXII/streams are not GTI API compatibility. |
+
+### 2.1 Experimental reputation baseline
+
+The branch registers VirusTotal, MalwareBazaar, Triage, ANY.RUN and an OpenCTI-state card. It contains per-user encrypted credentials, provider timeouts, Redis caching, normalized verdicts, optional persistence, score/label updates, MalwareAnalysis and ATT&CK-oriented enrichment code, provider identities and an observable reputation tab.
+
+Useful controls already present include the `INVESTIGATION` capability gate, per-user ownership filters, platform-derived encryption, API-key redaction from GraphQL/audit data, endpoint deny-list validation and primary-organization membership validation.
+
+Do not yet describe this as production-ready GTI support:
+
+- the branch has a parse error and only focused unit coverage;
+- `endpoint_override` is stored and validated but is not consumed by provider calls;
+- provider failure returns an error verdict; it is not a demonstrated persisted-verdict fallback;
+- archive-on-lookup defaults to enabled and asks all live enrichment connectors supporting the observable type, not an explicitly selected GTI/VT connector;
+- primary organization and default markings are explicitly put on the persisted verdict, but propagation to the observable, derived entities, relationships, notes and files is unproven;
+- no explicit Authorized Members assignment was found in the reputation persistence path;
+- the “Vendor Service User” is synthesized from the caller, not independently provisioned as a least-privilege service account;
+- quota coordination, concurrency control, telemetry/SLOs, secret rotation, e2e authorization, migration and N/N+1 upgrade behavior remain unproven.
+
+These are hardening tasks, not reasons to discard the implementation.
+
+### 2.2 Experimental custom-fields baseline
+
+Custom fields support integer, string/Markdown, boolean, date, select and multi-select definitions with an admin UI and entity placement. Export flattens values into the OpenCTI STIX extension as `x_opencti_cf_*` properties. The `unflattenStixToCustomFieldValues` utility has unit tests, but no production ingestion caller was found; unknown definitions are deliberately skipped.
+
+Use custom fields as the first Patchwork authoring proof of concept, not as an assumed solution. Enable `CUSTOM_FIELDS`, define required fields, import an external bundle, display/edit/filter values, export, re-import and compare semantics. If import wiring or nested Patchwork semantics fail, keep the normative extension in an adapter/sidecar and use custom fields only as a UI/search projection.
+
+## 3. Decisions required before implementation
+
+| Decision | Proposed default | Required evidence |
+| --- | --- | --- |
+| Release 1 meaning | Feed import + Patchwork data fidelity + GTI-aligned workflows; no general GTI API facade | Approved supported/unsupported matrix and named user journeys. |
+| Platform baseline | Rebase onto a clean tagged OpenCTI release; carry only reviewed branch commits | Green build, migration plan, upstream-diff inventory and N/N+1 test. |
+| Connector | Pin an exact Google TI connector image/tag | Source review, emitted-bundle fixtures, quota/retry behavior and version contract. |
+| Data authority | GTI facts stay GTI-attributed; Patchwork judgments are separate and namespaced | Fixtures prove creators, markings and assertions do not collapse. |
+| Tenancy | Single organization for the pilot; decide soft segregation versus separate instances before expansion | Existence-leak, relationship, attachment, export and service-account tests. |
+| Custom fields | Run the native PoC first; retain a sidecar fallback | Import/edit/filter/export/re-import proof, including unknown definitions. |
+| Reputation keys | Centrally governed credentials or tightly controlled per-user BYOK | Rotation/revocation, quota ownership, audit and threat-model decision. |
+| Archive behavior | Default off until policy propagation and connector selection are proven | Explicit targeting, handling tests and user-visible configuration. |
+| Redistribution | No automatic TAXII/public-dashboard redistribution of licensed GTI content | Written entitlement, retention, recipient and export-policy decision. |
+| UI implementation | Configure existing OpenCTI/FDS surfaces before adding components | UAT gap list justifying every extension. |
+
+## 4. Target architecture
 
 ```text
-GTI API/authorized feed ──> stock connector ──> isolated staging OpenCTI
-           │                                  (no production merge yet)
-           └──> restricted raw source archive ──> mapping/identity gate
-Patchwork analyst input / sample bundles ────────> validation + extension sidecar
-                                                     │
-                                         approved production OpenCTI graph
-                                                     │
-                            configured dashboards / searches / gated exports
+Authorized GTI API / STIX endpoints
+               │
+               ▼
+ pinned Google TI connector or source client ─── quota / retry / checkpoint
+               │
+               ├── restricted raw reference or checksum
+               ▼
+ canonical source envelope + versioned mapping
+               │
+               ▼
+ identity / licence / marking gate ───────────── quarantine + review
+               │
+               ▼
+ isolated staging OpenCTI ─── reconciliation ─── production OpenCTI
+       │                                               │
+       │                         ┌─────────────────────┼──────────────────┐
+       ▼                         ▼                     ▼                  ▼
+ reputation (hardened)      existing search/UI   TAXII/streams     optional API facade
+                            + Patchwork fields   policy-filtered   (later, scoped)
 ```
 
-- The stock external-import connector is the **staging pilot** ingest route, not a direct production feed until identity safety is proven: it transforms external data into STIX 2.1 bundles and OpenCTI upserts same-named entities. Keep staging isolated so a GTI actor cannot merge with a Patchwork actor before the mapping gate. Give each connector a dedicated **Service Account** with the Connector role and scoped token stored in a secret manager; where organization segregation is enabled, service accounts bind to the main organization and bypass Authorized Members by default, so they are not a per-tenant isolation mechanism.[7][10][16]
-- In a restricted source archive/registry, keep original GTI ID, source URL, original type/name, source timestamp, raw payload reference or checksum, ingestion time, connector version and applicable markings. OpenCTI canonical STIX IDs may differ from source IDs; never promise that the source ID is the OpenCTI `standard_id`. Never rewrite `created_by_ref` so a GTI assertion looks like a Patchwork member assertion. The GTI STIX format includes a Google TI identity and can include extension definitions and pagination metadata.[5][16]
-- Keep transformation code separate from the stock connector if possible; if extension persistence or upstream mappings require modifying connector code, maintain a small, pinned patch with regression fixtures and an upstream contribution path. OpenCTI's workers decide identity and perform upserts after the connector submits a bundle; a connector's own dedup logic cannot override those rules. Gate or transform source objects **before** the production queue and verify that OpenCTI's server-side dedup cannot merge distinct assessments. Never silently collapse a many-to-many attribution relationship into one actor.[16]
-- Do not treat OpenCTI's GraphQL/TAXII/live-stream interfaces as a GTI-compatible API. They are OpenCTI interfaces; a GTI-shaped API would be a separately versioned adapter with its own auth and contract tests.[15]
+Architecture rules:
 
-## 4. Compatibility contract and first mapping register
+1. Stage and reconcile before production; neither connector nor UI is the security boundary.
+2. Key imports by `(source_system, source_object_id)`; preserve original ID, time, type, creator, source/checksum, component versions, markings and licence policy.
+3. Apply identity, provenance and handling decisions before the production queue, where an unsafe upsert may already have merged objects.
+4. Keep GTI facts, Patchwork assessments and manual equivalence decisions separately attributed and reversible.
+5. Fail closed on missing policy, invalid required fields, identity collision or unrecognized normative extension data.
+6. Use GraphQL/modules internally and STIX/TAXII for exchange. Never expose GraphQL shapes as a portable compatibility contract.
+7. Maintain a small, reviewable patch set and an upstream-contribution path.
 
-Maintain a versioned table with: GTI source endpoint and JSON field, GTI STIX field/object, OpenCTI type/field, Patchwork type/extension, transformation, information loss, identity key, licence/marking, fixture and test result. Mark each entry `direct`, `transformed`, `display-only`, `unsupported`, or `decision pending`. Start with these rows:
+## 5. Data and serialization contract
 
-| Source concept | Proposed target | Required test / risk |
+### 5.1 Canonical source envelope
+
+Every ingested object needs an envelope independent of its normalized STIX form:
+
+| Field group | Required values |
+| --- | --- |
+| Origin | `source_system`, `source_endpoint`, `source_object_id`, `source_type` |
+| Time | `source_created`, `source_modified`, `retrieved_at` |
+| Raw reference | `raw_media_type`, `raw_sha256`, `raw_payload_ref`, subject to licence policy |
+| Policy | creator identity, markings, Authorized Members decision, licence/retention class |
+| Reproducibility | connector, mapper, schema and Patchwork profile versions |
+| Operations | run ID, checkpoint, status, retries and reconciliation result |
+| Honesty | warnings, information loss, unsupported fields and quarantine reason |
+
+Do not store credentials, paid reports or licensed raw payloads in this repository.
+
+### 5.2 Representations
+
+| Representation | Role | Release 1 rule |
 | --- | --- | --- |
-| GTI report and its type | OpenCTI `report`; retain original GTI type/name and map to Patchwork `report_types` only when explicitly equivalent | Compare live GTI's current/decommissioned catalogue with [Patchwork's 13 authored, 3 retired and 11 feed-assigned values](Report-Types.md). Keep historical types importable but not selectable for new analyst-authored reports; never relabel a GTI report as Patchwork-authored.[12] |
-| GTI threat actor | Stock connector creates OpenCTI `intrusion-set`, including when nested under a report | GTI's own STIX response has `threat-actor` objects, whereas the stock connector chooses `intrusion-set`. Preserve original GTI type and ID; prohibit automatic identity merge with Patchwork's Cluster/Temporary/Mature `intrusion-set` and persona `threat-actor`. Explicitly model analyst-approved equivalence links.[5][7] |
-| GTI campaign, malware family, software toolkit, vulnerability, technique | OpenCTI `campaign`, `malware`, `tool`, `vulnerability`, `attack-pattern` | Check source references, relationship direction, missing relationships, update semantics and ATT&CK IDs on fixtures. Patchwork campaign `Individual`/`Global` is an analyst assertion, not inferred from a GTI campaign name. |
-| GTI domains, IPs, URLs and files | OpenCTI observables plus indicators *when the connector creates them* | Verify pattern, validity, source score, false-positive handling, dedup and export; do not translate GTI score into Patchwork source credibility or threat level.[7] |
-| Patchwork MAI | OpenCTI `incident` plus dated observation and source grading | **Known mismatch:** OpenCTI deduplicates Incidents by `name OR alias`; Patchwork requires `name + observed_date`. Distinct observations with the same name can merge and lose separate Admiralty provenance. Before ingest, test an immutable, human-readable observed-date/unique-token naming rule (or an isolation strategy) on two same-named incidents; retaining the extension alone does **not** change OpenCTI's identity key. Keep urgency (`threat_level`) separate from reliability/credibility; see [framework §§3.4, 7.1, 9.2–9.3](Patchwork-CTI-Framework.md).[16] |
-| Patchwork attribution ladder/persona | Separate linked `intrusion-set` objects; `threat-actor` persona | Patchwork defines `intrusion-set` → `intrusion-set` `part-of` itself; verify whether the pinned OpenCTI version accepts, displays, filters and re-exports that exact edge. If not, decide explicitly between a documented `related-to` projection with reversible mapping, a sidecar, or a maintained schema patch; do not silently substitute another relationship. Test namespace isolation and review/undo of grouping; see [framework §§4, 9.1](Patchwork-CTI-Framework.md). |
-| Patchwork classification | One fixed `extension-definition` and nested `property-extension` | Test import, persistence, filtering, analyst edit, API read, STIX export and re-import of `threat_level`, `threat_domain`, `activity_category`, `observed_date`, `attribution_tier`, `intent` (list) and `campaign_type`. If OpenCTI drops any field, use an explicit adapter/sidecar plus display projection; never claim lossless support until round-trip passes. Extension ID and version are specified in [framework §9.3](Patchwork-CTI-Framework.md#9.3-classification-properties). |
-| TLP and provenance | OpenCTI markings, groups/RBAC, creator/source identity | OpenCTI can enforce TLP:AMBER+STRICT, but the stock GTI connector documentation does not establish a default marking for every imported object. Before production, inspect emitted bundles and platform defaults; enforce source-appropriate TLP **and** licence/redistribution handling on entities, relationships and attachments at ingest, fail closed on missing policy, and test with a restricted user. Do not assume either that all GTI STIX payloads are unmarked or that the platform marks them automatically.[7][14][2] |
+| GTI native JSON | Source fidelity | Validate the supported subset and retain a controlled raw reference; never call it STIX. |
+| GTI STIX | Exchange where supported | Validate identities, extensions, relationships and pagination metadata. |
+| Canonical STIX 2.1 | Golden-test and adapter format | Deterministic serialization and semantic round-trip comparison. |
+| Patchwork STIX profile | Patchwork classifications and attribution | Fixed extension-definition ID/version and governed vocabularies. |
+| OpenCTI GraphQL | Internal application contract | Version-specific; never promise portability. |
+| TAXII/stream output | Policy-filtered sharing | Preserve or explicitly project markings, provenance and supported extensions. |
+| GTI-shaped REST | Optional future product | OpenAPI and explicit per-field/endpoint compatibility. |
 
-The stock connector defaults threat-actor and malware alias import to off because GTI aliases may conflict. Keep these defaults until adversary-collision tests pass; names and aliases are *not* proof of identity.[7] Compare actual upstream releases and fixtures, not only this plan's table.
+A field is supported only after the applicable path passes:
 
-## 5. UI and analyst workflow
+```text
+source → validate → normalize → serialize → OpenCTI import → query/filter
+       → UI display/edit policy → export → re-import → semantic comparison
+```
 
-**Configuration first:** create dashboards for a GTI-like landing view (new reports, tracked actors, campaigns, malware, vulnerabilities, IoCs, ATT&CK techniques, ingestion health); use saved filters, labels/vocabularies and workflows for triage, review, promotion and publication. Dashboards are permission-aware and exportable as configuration; dashboard layout is not a substitute for enforcing access control on the data.[2][3][4]
+Semantic equality, not byte equality, is the round-trip criterion. Expected projections and losses belong in a machine-readable compatibility report.
 
-**Patchwork-specific workflow:** build an analyst checklist/form prototype for `threat_level`, `threat_domain`, activity category, source reliability/credibility, TLP, observed date, member namespace, attribution tier and evidence links. Treat a dedicated Patchwork authoring surface as a planned deliverable unless the Phase 0 prototype proves a no-code workflow can capture **all** required fields and round-trip them through STIX; OpenCTI's customization of existing attributes is not evidence that arbitrary extension fields appear in stock forms.[17] Default screen sections: source facts vs analyst assessments, provenance/marking banner, evidence chronology, attribution ladder, report type picker, export preview. Imported data is read-only for transformation-owned fields; analyst changes create separately attributed assessments.
+### 5.3 Identity and first mapping register
 
-**Explicit limits:** no impersonation of GTI branding or assumption of access to Google's proprietary scoring/search/Graph UI; GTI-inspired navigation is a product-design target, not API compatibility. Assess accessibility, keyboard navigation, contrast and mobile layout with actual analysts. Record each UI change as configuration, separate extension, or core fork and measure the upgrade cost.
+The audited OpenCTI identifier logic currently uses:
 
-## 6. Phased delivery and gates
-
-| Phase | Work and concrete deliverable | Exit gate |
+| OpenCTI type | Identity contribution | Patchwork/GTI action |
 | --- | --- | --- |
-| 0. Inventory and legal (1–2 weeks, estimate) | Select owners, version/edition, deployment model, entitlements, data volumes, licensing/redistribution, threat model and 20 representative GTI/Patchwork fixtures. Prototype incident identity (`name + observed_date`), `intrusion-set` `part-of`, extension round-trip, marking-on-import and authoring fields. Freeze a compatibility matrix and unsupported-feature list. | Written decisions on editions, GTI access, export rights, Patchwork authority, required adapter/authoring surface and explicit alternatives for failed prototypes. No live ingest without this. |
-| 1. Secure OpenCTI baseline (1–2 weeks) | Isolated non-production install; named accounts/roles, marking policies, TLS, backups and restore drill, retention, secret rotation, monitoring, pinned image versions and update runbook. EE adds native activity monitoring/audit logs and UI-configured SSO; if CE is selected, document a tested external audit/auth approach or explicitly defer those features.[18] | Two-user access matrix tested, backup restored, upgrades rehearsed and no broad connector token; audit/SSO route documented for the chosen edition. |
-| 2. GTI ingest pilot (1–2 weeks) | Run pinned Google TI connector **only in isolated staging** with limited report types/date range and no PDF or bulk historical backfill initially. Inspect generated bundles and enforce marking policy before release; save fixtures, counts, source IDs, job state, quota/error metrics and a replay log. | Repeat import without unintended merges, recover from a simulated failure/quota pause, reconcile records, inspect actor/alias mapping, and prove restricted users cannot see imported objects that require markings. |
-| 3. Semantic adapter (2–4 weeks, scope depends on Phase 0) | Implement required identity isolation, source-ID registry, marking gate and any proven missing transformations: report-type mapping, Patchwork extension preservation, explicit attribution links, two-way STIX fixtures and quarantine for invalid/ambiguous data. | 20 fixture round-trips preserve normative Patchwork fields, TLP, provenance, distinct observations, version/revocation and links; unsupported fields reported, not discarded silently. |
-| 4. UI pilot (1–3 weeks) | Exportable dashboards, saved filters, triage workflow and report templates, plus the authoring surface selected in Phase 0. | Five analysts complete report authoring, attribution revision and restricted-data review without breaking provenance or markings; accessibility and upgrade smoke tests pass. |
-| 5. Controlled migration and operations (2–4 weeks) | Dry-run historical import in batches; mapping/reconciliation report, cutover and rollback plan, analyst training, runbooks, ownership and monthly upgrade rehearsal. | Signed-off reconciliation, access review, restore and rollback test; only then widen to production feeds/users. |
+| `report` | normalized `name + published` | Preserve source ID; test updates, same-title reports and timestamp precision. |
+| `incident` | normalized `name + created` | Patchwork wants `name + observed_date`; prove a deterministic projection or isolate with a source registry. An extension does not change the OpenCTI ID. |
+| `campaign` | normalized name | Treat same-name cross-source records as collision candidates. |
+| `intrusion-set` | normalized name | Isolate GTI actors from Patchwork Cluster/Temporary/Mature tiers until reviewed. |
+| `malware` | normalized name | Keep aliases disabled until collision tests pass; preserve family/tool semantics. |
+| threat-actor group | normalized `name + inner type` | Keep Patchwork persona meaning explicit; do not silently convert tiers/personas. |
 
-Time ranges are planning estimates, not commitments; capacity and licence access are unknown. Do not advance a phase with an open identity/marking/data-loss defect.
+Initial mappings:
 
-## 7. Test set and measurable acceptance
+| Source concept | Target proposal | Release gate |
+| --- | --- | --- |
+| GTI report/type | OpenCTI report plus retained original type; map to Patchwork `report_types` only when explicitly equivalent | Catalog, attachment, source-ID, marking and update tests pass. |
+| GTI actor | Follow the pinned connector's emitted type while retaining original type/ID | No merge with a Patchwork tier/persona without evidence-backed review. |
+| Campaign, malware, tool, vulnerability, ATT&CK | Corresponding OpenCTI objects/relationships | Direction, external ID, creator, lifecycle and missing-edge tests pass. |
+| Domains, IPs, URLs and files | Observables; indicators only when source semantics justify them | Canonicalization, pattern, score, false-positive, merge and export tests pass. |
+| Patchwork MAI | Incident plus dated observation/source grading | Same-named observations on different dates remain recoverable and attributable. |
+| Patchwork attribution ladder/persona | Separate linked objects with reversible review decisions | Required self-type `part-of` behavior imports, displays, filters and re-exports, or a documented reversible projection is used. |
+| Patchwork classification | Normative extension plus optional custom-field projection | All fields, including list-valued `intent`, round-trip without silent omission. |
+| TLP/provenance/licence | Markings, creator, organizations/Authorized Members and export policy | Restricted users cannot discover entity, edge, attachment or count. |
 
-1. **Schema:** validate GTI STIX fixtures, Patchwork sample bundles and extension-definition references with a STIX 2.1 validator; test unknown extensions, list-valued `intent`, missing `observed_date`, deprecated `x_` assumptions, and both serialisation directions.
-2. **Identity:** import the same fixture twice; modify and revoke; test two members choosing the same actor name, GTI name/alias collision, report `name` + `published`, incident `name` + `observed_date`. Assert no unintended merge or silent field loss; record the actual OpenCTI identity algorithm rather than assuming the framework's [§9.2](Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules) is its implementation.
-3. **Attribution:** cluster → temporary → mature promotion retains all tiers and the original evidence. Undo one grouping without rewriting other assessments. A GTI imported actor is not automatically a Patchwork mature actor.
-4. **Handling:** TLP-restricted actor/report and PDF are inaccessible through graph search, dashboard, API, export and a lower-privilege account. Test downstream TAXII/stream filters and licences separately.
-5. **Operations:** fixed-window ingest reconciles source IDs, deleted/updated objects, quota pause, restart, rollback and replay. Alert on failures, freshness lag, quarantine growth and anomalous volume. Restore from backup, then re-run the import and check idempotence.
-6. **Upgrade:** pin a reproducible release pair, run tests against the next OpenCTI/connector versions in staging, and measure drift in mappings, GraphQL schema, UI configuration and migration scripts.
+Names and aliases are matching signals, never proof of identity. Preserve revocation/deletion without erasing analyst relationships, reject out-of-order updates, and record reviewer/evidence/time/undo for every manual equivalence.
 
-## 8. Risks and non-goals
+## 6. UI and analyst workflow
 
-- **Lossy mapping is the primary risk.** GTI's native `threat-actor` versus stock connector `intrusion-set`, and Patchwork's distinct ladder/persona semantics, cannot be papered over with labels. Treat this as a product decision and a fixture-based integration test, not a cosmetic UI change.[5][7]
-- **Security is not inherited automatically.** OpenCTI provides access-control and marking mechanisms, but the deployment, secrets, backups, connector privileges and export rules must be operated and tested. Organization segregation has an Enterprise licensing boundary.[10][11][14]
-- **GTI data rights and API quotas** can limit the pilot. The connector documents resumable quota handling, but capacity and contractual sharing permissions must be confirmed for the actual subscription.[7]
-- **No full GTI clone, no replacement of GTI's licensed API, no promise of zero-maintenance OpenCTI, and no automatic conversion of GTI confidence scores into Patchwork grades.** The initial release should favor a faithful, auditable integration over feature parity.
+Extend the existing OpenCTI UI rather than creating a new shell.
 
-## 9. Immediate next actions
+| Release 1 experience | Existing building block | Work required |
+| --- | --- | --- |
+| Landing/landscape | Dashboards and public dashboards | Configure intelligence and ingest/review widgets; keep public dashboards disabled for licensed data by default. |
+| Universal search | `opencti-front/src/private/components/Search.tsx` | Add provenance/mapping facets only if missing; test permission-safe counts/snippets. |
+| IoC/reputation | Reputation workspace and observable tab | Fix build, harden credentials/archive/policy, and add partial/quota/offline states. |
+| Entity/report views | Existing routes and overview-layout customization | Add Patchwork/source sections, mapping warnings, export preview and read-only imported values. |
+| Investigation | Existing investigation graph | Add evidence chronology, reversible identity decisions, time/policy filters and safe export. |
+| Saved views and alerts | Custom views, triggers and notifications | Configure tracked entities/searches; test ownership, sharing and leakage. |
+| Patchwork authoring | Custom fields, forms, workflows and reports | Run native PoC; add the smallest FDS-based module only for unmet semantics. |
+| Operator view | Connector/ingestion administration plus mapping telemetry | Show tag, checkpoint, quota, lag, errors, quarantine, mapping version and reconciliation. |
 
-1. Confirm whether “GTI-compatible” means **GTI feed import and familiar analyst UI** (recommended first release) or **a GTI API-compatible surface** (a separate later product). Confirm whether Patchwork v0.6 remains the authoritative analyst model.
-2. Confirm OpenCTI edition, hosting, single-/multi-organization scope, GTI subscription/API entitlement, redistribution rights, owner and pilot analysts.
-3. Pin platform/connector tags and create a staging environment; document observed field behaviour in the compatibility matrix before selecting a UI implementation.
-4. Select 20 redacted fixtures from [Real-Examples](Real-Examples/) and authorized GTI test data. Never commit GTI credentials, paid PDFs or licensed raw payloads to this repository.
+Imported transformation-owned values are read-only. Analyst corrections create separately attributed assessments or explicit mapping decisions. Target WCAG 2.2 AA, keyboard access, responsive layout and explicit loading, empty, partial, rate-limit and error states. Use the Filigran Design System for frontend additions where components exist.
 
-## Sources
+## 7. Security, governance and operations
 
-[2] https://docs.opencti.io/latest/usage/dashboards
-[3] https://docs.opencti.io/latest/administration/ontologies
-[4] https://docs.opencti.io/latest/usage/workflows
-[5] https://gtidocs.virustotal.com/reference/stix-responses
-[7] https://github.com/OpenCTI-Platform/connectors/blob/master/external-import/google-ti-feeds/README.md
-[9] https://docs.opencti.io/latest/usage/data-model
-[10] https://docs.opencti.io/latest/administration/organization-segregation
-[11] https://docs.opencti.io/latest/administration/users
-[12] https://gtidocs.virustotal.com/docs/report-types
-[14] https://docs.opencti.io/latest/administration/segregation
-[15] https://docs.opencti.io/latest/deployment/integrations
-[16] https://docs.opencti.io/latest/usage/deduplication
-[17] https://docs.opencti.io/latest/administration/entities
-[18] https://docs.opencti.io/latest/administration/enterprise
+Release 1 must prove:
+
+- least-privilege human, connector and provider execution identities;
+- encryption, rotation, revocation and non-disclosure of provider secrets;
+- quota ownership and prevention of uncontrolled parallel vendor calls;
+- marking, organization and Authorized Members propagation to every derived object, edge, note, file and export;
+- absence of existence/count leaks through search, dashboards, graph, GraphQL, TAXII and streams;
+- safe endpoint handling, egress allow-listing and SSRF controls;
+- licence, retention, download and redistribution enforcement;
+- audit events for credentials/configuration, mapping, quarantine, merge and export;
+- backup/restore, replay, rollback and platform/connector N/N+1 upgrades;
+- metrics for freshness, errors, 429/quota, cache, queue lag, quarantine and reconciliation drift.
+
+Organization segregation is a shared-graph control, not hard multitenancy. Use separate instances if tests require hard isolation.
+
+## 8. Delivery phases and gates
+
+| Phase | Estimate | Deliverable | Exit gate |
+| --- | --- | --- | --- |
+| 0. Stabilize and freeze contract | 1–2 weeks | Clean release baseline; reputation parse/build fix; branch diff; edition/rights/tenancy decisions; connector tag; 20+ fixtures; custom-field and identity spikes | Green focused tests/typecheck; signed matrix; no rights blocker; spike results recorded. |
+| 1. Secure platform foundation | 1–2 weeks | Reproducible staging; roles, markings, organizations, service identities, secrets, backups; configured TAXII/streams/dashboards | Access matrix, restore, rotation and leakage tests pass; identities are least privilege. |
+| 2. GTI ingestion pilot | 2–3 weeks | Pinned external connector/client; narrow reports/IoCs window; source envelope; quota/checkpoint metrics and reconciliation | Repeat/restart/quota tests are idempotent; bundles captured; policy holds; no unexplained merge. |
+| 3. Semantic/serialization layer | 2–4 weeks | Mapping register; source-ID registry; identity/marking/licence gate; Patchwork extension/custom-field projection; quarantine | Golden corpus passes import/query/export/re-import with zero silent required-field/policy loss. |
+| 4. Analyst workflow | 2–3 weeks | Configured dashboards/search/views/alerts/investigation; hardened reputation; Patchwork authoring and operator telemetry | Five analysts complete critical tasks; provenance, access, accessibility and performance pass. |
+| 5. Production hardening | 2–4 weeks | Load/security/e2e/upgrade suites; migration rehearsal; SLOs, alerts, runbooks, training and rollback | Signed reconciliation, restore/rollback and N/N+1 rehearsal; no open P0/P1 defect. |
+
+With a stable four-to-six-person team and parallel work, target **6–9 weeks for a narrow pilot** and **10–16 weeks for production Release 1**. These are planning ranges. Estimate a GTI-shaped API, large backfill, hard multitenancy, hunting/sandbox parity, ASM, DTM or AI separately.
+
+Do not advance while build health, identity, marking, provenance, licence or silent-data-loss gates are open.
+
+## 9. Prioritized backlog
+
+| Epic | Priority | Deliverable | Acceptance evidence |
+| --- | --- | --- | --- |
+| REP-001 Branch stabilization | P0 | Parse/typecheck fixes, tests and clean rebase | Clean build; focused suite passes; reviewed diff. |
+| GOV-001 Scope and rights | P0 | Entitlements, retention, redistribution and ownership | Approved decision and data-flow diagram. |
+| ARC-001 Platform ADRs | P0 | Version, edition, hosting, tenancy, patch/upstream and connector decisions | ADRs include alternatives and rollback. |
+| SEC-001 Policy propagation | P0 | Markings/org/Authorized Members rules for all derived content | Cross-user leakage suite passes across UI/API/export. |
+| SEC-002 Provider credentials | P0 | Key model, rotation, quota and egress controls | Rotation/revocation and secret-leak tests pass. |
+| DATA-001 Compatibility register | P0 | Machine-readable object/field/relationship/status/loss map | Every Release 1 field has owner, fixture and status. |
+| DATA-002 Source registry | P0 | Envelope, bidirectional IDs, lifecycle and reconciliation | Collision, replay, out-of-order and undo tests pass. |
+| DATA-003 Patchwork STIX | P0 | Extension, vocabularies, examples and validator rules | Independent validation and semantic round-trip pass. |
+| DATA-004 Custom-fields PoC | P0 | Definition, import wiring, form/filter and round-trip proof | No silently skipped normative value; fallback recorded. |
+| ING-001 GTI connector pilot | P0 | Pinned connector, narrow scope and quota/checkpoint telemetry | Restart, 429, 5xx, malformed and repeat-import tests pass. |
+| ING-002 Policy gate | P0 | Identity, marking, licence/schema checks and quarantine | Invalid/ambiguous data fails closed and is replayable. |
+| REP-002 Reputation hardening | P0 | Targeted archive, safe default, real service identity, fallback semantics and integration tests | Vendor failure, cache, quota, policy, audit and auth tests pass. |
+| UI-001 Analyst configuration | P0 | Dashboards, search, layouts, custom views and alerts | Exportable config and UAT evidence. |
+| UI-002 Patchwork workflow | P0 | Authoring, evidence, mapping review and export preview | Fields/relationships round-trip without altering source facts. |
+| UI-003 Investigation | P1 | Time/evidence/policy graph and reversible decisions | UAT, permission and performance tests pass. |
+| OPS-001 Deployment/observability | P0 | IaC, secrets, metrics, alerts, SLOs and runbooks | Fresh staging build and failure/quota game day pass. |
+| OPS-002 Recovery/upgrades | P0 | Backup, restore, rollback and N/N+1 matrix | Timed rehearsal passes with reconciliation. |
+| QA-001 Golden corpus/CI | P0 | 20+ fixtures and compatibility report | CI blocks silent loss, merge and policy regressions. |
+| API-001 GTI facade | P2 | Consumer-approved subset and OpenAPI | Named need, contract tests and explicit incompatibilities. |
+
+P0 is required for Release 1. P1 may land in Release 1.1. P2 requires a separate product decision.
+
+## 10. Acceptance and quality objectives
+
+Required suites:
+
+1. **Build/migration:** lint, typecheck, focused unit/integration, schema generation, migrations and clean install.
+2. **Contract/data:** GTI native subset, STIX 2.1, absent/unknown fields, Unicode/timestamps/enums, Patchwork extensions and semantic re-import.
+3. **Identity/lifecycle:** repeat/out-of-order import, update, revoke/delete, source-ID resolution, report `name + published`, actual incident `name + created`, Patchwork `name + observed_date`, actor/malware collisions and reversible equivalence.
+4. **Reputation:** normalization, timeout/429/quota, cache/reanalyze, key isolation/rotation, archive-off default, explicit connector selection, actual offline semantics and no credential leakage.
+5. **Security:** markings, organizations, Authorized Members, object/edge/file visibility, direct access, search/count leakage, service identities, TAXII/stream/export and public dashboards.
+6. **UI:** analyst journeys, permission states, accessibility, keyboard/screen reader, responsive layout, partial/error/quota behavior and upgrade smoke tests.
+7. **Reliability:** representative load, checkpoint/replay, connector/platform outage, backup restore, rollback and N/N+1 upgrade.
+
+Initial objectives, calibrated after volume testing:
+
+- 100% of Release 1 fields and relationships in the compatibility register.
+- 100% of accepted objects carry source identity, mapping version and policy outcome.
+- Zero silent required-field, marking, provenance, licence or relationship loss.
+- Zero unintended identity merges in regression tests.
+- At least 99.5% successful processing of valid in-scope objects, excluding quarantine.
+- Agreed p95 source-to-search freshness, with quota pauses reported separately.
+- 100% replayability from a checkpoint and retained raw reference/checksum.
+- No open P0/P1 security, build or data-integrity defect at production release.
+- Five pilot analysts complete critical scenarios without a critical accessibility issue.
+
+An epic is done only when its contract status, implementation, migrations, authorization, observability, documentation, rollback and compatibility fixtures are complete.
+
+## 11. Deferred and missing features
+
+| Capability | Release decision |
+| --- | --- |
+| Full GTI API behavior | Deferred; define a subset only for a validated consumer. |
+| YARA/Livehunt/Retrohunt and sandbox control plane | Integrate/deep-link existing services first; decide after Release 1. |
+| Attack Surface Management | Release 2 at earliest; requires a separate asset/collector model. |
+| Digital Threat Monitoring/dark web | Release 2 at earliest after legal/collection review. |
+| AI/agentic analysis | Deferred until citation, evaluation, privacy and authorization controls exist. |
+| Proprietary GTI scoring/search/graph parity | Non-goal; map only documented, licensed fields and behavior. |
+| Hard multitenancy in one graph | Non-goal; use separate instances when hard isolation is required. |
+
+## 12. First 30 days
+
+### Week 1 — make the baseline trustworthy
+
+- Fix the reputation parse error in a dedicated implementation task and obtain green typecheck/tests.
+- Choose a clean OpenCTI release base; inventory branch commits to carry, upstream or discard.
+- Name product, CTI, security, platform, QA and GTI account/legal owners.
+- Approve Release 1 compatibility levels, non-goals and rights constraints.
+
+### Week 2 — freeze contracts and fixtures
+
+- Select the Google TI connector release and capture representative emitted bundles.
+- Build 20+ authorized/redacted fixtures covering collisions, markings, updates, revocation and malformed input.
+- Create the machine-readable compatibility register and source-envelope schemas.
+- Threat-model per-user keys, archive-by-default, synthetic provider users and cross-organization behavior.
+
+### Week 3 — retire the highest risks
+
+- Run the `CUSTOM_FIELDS` import/edit/filter/export/re-import spike.
+- Test report, incident, actor and malware identity against the real identifier implementation.
+- Test marking, organization and Authorized Members over a complete reputation/connector-derived subgraph.
+- Prove or reject Patchwork `intrusion-set` `part-of` and extension round-trips.
+
+### Week 4 — start the controlled pilot
+
+- Deploy reproducible staging with least-privilege accounts, backups and telemetry.
+- Run a narrow reports/IoCs connector window with quota/checkpoint/reconciliation reporting.
+- Configure dashboard, search/entity layouts, investigation and reputation from existing UI.
+- Publish spike results, unsupported behavior, revised estimates and backlog; proceed only if build, rights, identity and policy gates pass.
+
+## 13. Audited source evidence
+
+Key OpenCTI paths, relative to `/workspaces/OpenCTI`:
+
+- STIX/identity: `opencti-platform/opencti-graphql/src/database/stix-2-1-converter.ts`, `src/schema/identifier.js`.
+- TAXII/feeds: `src/modules/ingestion/ingestion-taxii-collection.ts`, `src/modules/dataSharing/taxiiCollection-domain.ts`, `src/http/httpTaxii.js`.
+- Custom fields: `src/modules/customField/`, frontend `settings/custom_fields/`, `EntitySettingCustomFields.tsx`, and `src/config/conf.js`.
+- Reputation: `src/modules/reputation/`, frontend `workspaces/reputation/`, and `tests/01-unit/modules/reputation/`.
+- Existing UI: frontend `Search.tsx`, `workspaces/dashboards/`, `workspaces/investigations/`, `custom_views/`, alerts/triggers and overview layouts.
+- Branch notes: `docs/GTI_SANDBOX_STIX_STANDARD.md`, `docs/VIRUSTOTAL_MALWARE_REPORT_PLAN.md`, `docs/reputation-feature-plan.md`.
+
+External material to revalidate at implementation time:
+
+- OpenCTI documentation: https://docs.opencti.io/latest/
+- Google TI connector: https://github.com/OpenCTI-Platform/connectors/tree/master/external-import/google-ti-feeds
+- GTI STIX responses: https://gtidocs.virustotal.com/reference/stix-responses
+- GTI report types: https://gtidocs.virustotal.com/docs/report-types

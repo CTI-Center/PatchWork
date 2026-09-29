@@ -100,6 +100,7 @@ Portions are adapted from the [CERT-EU Cyber Threat Intelligence Framework](http
 | Document | What it covers |
 | --- | --- |
 | **[The framework](docs/Patchwork-CTI-Framework.md)** | The specification itself — adversary model, attribution ladder, classification, confidence, sharing and STIX serialisation. Has its own [table of contents](docs/Patchwork-CTI-Framework.md#table-of-contents) and [glossary](docs/Patchwork-CTI-Framework.md#glossary). |
+| **[OpenCTI + GTI development roadmap](docs/OpenCTI-Transfer-Plan.md)** | Source-audited plan to reuse, configure and extend OpenCTI for GTI mappings, Patchwork serialization, analyst UI, security and production readiness. |
 | **[Report types](docs/Report-Types.md)** | Which report type to use when, a template for each of the 13 authored kinds, and the worked samples. |
 | **[Vocabularies](docs/Vocabularies.md)** · **[Sectors](docs/Sectors.md)** | The controlled value sets. |
 | **[Contributing](docs/CONTRIBUTING.md)** | How to propose a change, and what a good one looks like. |

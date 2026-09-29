@@ -4,8 +4,10 @@
 # Named explicitly rather than as `.*` — that pattern matched `.gitignore`
 # itself and `.github/`, so neither could ever be committed.
 .claude/
+.codex
 .obsidian/
 .remember/
+AGENTS.md
 # =======================================================
 # Local cache
 tools/gtidocs-mirror/.cache/
