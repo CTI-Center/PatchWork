@@ -1,0 +1,67 @@
+---
+title: "Global Landscape"
+section: reference
+retrieved: 2026-09-01
+---
+
+[gtidocs](../../README.md) › [API Reference](../README.md) › Global Landscape
+
+---
+
+## global-landscape
+
+- [Threat Actors, Malware & Tools, Campaigns, IoC Collection, Country and Industry Profiles](threat-actors-malware-tools-campaigns-ioc-collections.md)
+  - [List collections](threat-actors-malware-tools-campaigns-ioc-collections/list-collections.md)
+  - [Create a new collection](threat-actors-malware-tools-campaigns-ioc-collections/create-collection.md)
+  - [Get a collection](threat-actors-malware-tools-campaigns-ioc-collections/get-collection.md)
+  - [Delete a collection](threat-actors-malware-tools-campaigns-ioc-collections/delete-collection.md)
+  - [Update a collection](threat-actors-malware-tools-campaigns-ioc-collections/update-collection.md)
+  - [Add new associations, IoCs and TTPs to a collection](threat-actors-malware-tools-campaigns-ioc-collections/add-element-to-collection.md)
+  - [Delete associations, IoCs and TTPs from a collection](threat-actors-malware-tools-campaigns-ioc-collections/delete-element-from-collection.md)
+  - [Get Hunting rulesets associated with an IoC Collection](threat-actors-malware-tools-campaigns-ioc-collections/get-related-hunting-rulesets.md)
+  - [Delete Hunting rulesets association from IoC collection](threat-actors-malware-tools-campaigns-ioc-collections/delete-hunting-rulesets-relationship.md)
+  - [Add Hunting rulesets association to an IoC Collection](threat-actors-malware-tools-campaigns-ioc-collections/add-hunting-rulesets-relationship.md)
+  - [Get object descriptors related to a threat](threat-actors-malware-tools-campaigns-ioc-collections/get-threat-related-descriptors.md)
+  - [Get objects related to a threat](threat-actors-malware-tools-campaigns-ioc-collections/get-threat-relationships.md)
+  - [Get comments from a collection](threat-actors-malware-tools-campaigns-ioc-collections/get-collection-comments.md)
+  - [Add a comment to a collection](threat-actors-malware-tools-campaigns-ioc-collections/create-collection-comment.md)
+  - [Get MITRE tactics and techniques associated with a threat](threat-actors-malware-tools-campaigns-ioc-collections/get-threat-mitre-tree.md)
+  - [Search IoCs inside a threat](threat-actors-malware-tools-campaigns-ioc-collections/search-iocs-inside-a-threat.md)
+  - [Get a Threat's observed actions list](threat-actors-malware-tools-campaigns-ioc-collections/get-threat-timeline-events.md)
+  - [Export IOCs from a threat](threat-actors-malware-tools-campaigns-ioc-collections/export-threat-iocs.md)
+  - [Export aggregations / commonalities from a threat](threat-actors-malware-tools-campaigns-ioc-collections/export-threat-aggregations.md)
+  - [Export IOCs from a given threat's relationship](threat-actors-malware-tools-campaigns-ioc-collections/export-iocs-threat-relationship.md)
+  - [Subscribe to a threat object](threat-actors-malware-tools-campaigns-ioc-collections/create-threat-subscription-preferences.md)
+  - [Check subscription preferences from threat object](threat-actors-malware-tools-campaigns-ioc-collections/get-threat-subscription-preferences.md)
+  - [Delete subscription from a threat object](threat-actors-malware-tools-campaigns-ioc-collections/delete-threat-subscription-preferences.md)
+  - [Download IoCs batch from a given collection](threat-actors-malware-tools-campaigns-ioc-collections/iocs-batch-download.md)
+  - [Get Collection IoCs Deltas](threat-actors-malware-tools-campaigns-ioc-collections/ioc-deltas.md)
+- [Threat Profiles](threat-profiles.md)
+  - [List Threat Profiles](threat-profiles/list-threat-profiles.md)
+  - [Create a Threat Profile](threat-profiles/create-threat-profile.md)
+  - [Get a Threat Profile](threat-profiles/get-threat-profile.md)
+  - [Update a Threat Profiles](threat-profiles/update-threat-profile.md)
+  - [Delete a Threat Profile](threat-profiles/delete-threat-profile.md)
+  - [Get recommendations of a Threat Profile](threat-profiles/get-threat-profile-recommendations.md)
+  - [Get a Threat Profile's recommendations descriptors](threat-profiles/get-threat-profile-recommendations-descriptors.md)
+  - [Delete objects from a Threat Profile](threat-profiles/delete-threat-profile-recommendations.md)
+  - [Add objects to a Threat Profile](threat-profiles/add-threat-profile-recommendations.md)
+  - [Get objects related to a Threat Profile](threat-profiles/get-threat-profile-relationships.md)
+  - [Get object descriptors related to a Threat Profile](threat-profiles/get-threat-profile-related-descriptors.md)
+  - [Delete items from a Threat Profile](threat-profiles/delete-threat-profile-relationships.md)
+  - [Add or update relationships between a Threat Profile and other objects](threat-profiles/add-threat-profile-relationships.md)
+  - [Get a Threat Profile's timeline associations](threat-profiles/get-threat-profile-timeline-associations.md)
+  - [Export IoCs](threat-profiles/threat-profile-download.md)
+  - [Export URL for Large IoC Packages](threat-profiles/threat-profile_download-url.md)
+- [Dark Web](dark-web.md)
+  - [List Dark Web Communications](dark-web/list-ddw-communications.md)
+  - [Get a Dark Web Communication object](dark-web/get-ddw-communication.md)
+  - [Get objects related to a Dark Web Communication object](dark-web/get-ddw-communication-relationships.md)
+  - [Get a Dark Web Communication Channel object](dark-web/get-ddw-communication-channel.md)
+  - [Get Next Communication in a Channel](dark-web/get-ddw-channel-next-communications.md)
+  - [Get Previous Communication in a Channel](dark-web/get-ddw-channel-previous-communications.md)
+  - [Get a Dark Web User Profile](dark-web/get-ddw-user-profile.md)
+  - [Get a Dark Web Service object](dark-web/get-ddw-service.md)
+  - [Get objects related to a Dark Web Service object](dark-web/get-ddw-service-relationships.md)
+  - [Get Next Communication in a Thread](dark-web/get-ddw-thread-next-communications.md)
+  - [Get Previous Communication in a Thread](dark-web/get-ddw-thread-previous-communications.md)

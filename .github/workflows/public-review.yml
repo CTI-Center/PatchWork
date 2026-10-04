@@ -1,0 +1,22 @@
+name: Public documentation checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  public-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test GitHub navigation and export safety
+        run: |
+          python3 -m unittest discover -s tools/check-links -p 'test_*.py'
+          python3 -m unittest discover -s tools/public-review -p 'test_*.py'
+      - name: Validate all public Markdown links
+        run: python3 tools/check-links/check-links.py --public --all
+      - name: Verify a history-free public copy can be prepared
+        run: python3 tools/public-review/prepare-public.py --output dist/ci-review
