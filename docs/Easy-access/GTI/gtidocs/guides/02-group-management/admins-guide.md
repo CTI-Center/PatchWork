@@ -82,7 +82,7 @@ As we discussed, almost every action can be performed in 2 ways: via web interfa
   * [3.1. Google Threat Intelligence features consumption](#31-google-threat-intelligence-features-consumption)
     * [3.1.1. Getting current month group overall consumption](#311-getting-current-month-group-overall-consumption)
     * [3.1.2. Getting users individual consumption](#312-getting-users-individual-consumption)
-  * [3.2. Google Threat Intelligence API consumption](#32-google-threat-intelligence-asi-consumption)
+  * [3.2. Google Threat Intelligence API consumption](#32-google-threat-intelligence-api-consumption)
     * [3.2.1. Getting group overall API consumption](#321-getting-group-overall-api-consumption)
     * [3.2.2. Getting users individual API consumption](#322-getting-users-individual-api-consumption)
 * [4. Audit Log](#4-audit-log)
@@ -104,7 +104,7 @@ The resulting file will include the following information: username, first name,
 
 **Google Threat Intelligence API =>** The endpoint [/v3/groups/{id}/{relationship}](https://gtidocs.readme.io/reference/groups-relationships) returns the objects related to the group based on group's ID [(check group ID)](#group-information) and relationship which identifies the type of objects to request and whose values in this case are  "users" and "service\_accounts". Other endpoints provide the list of users and service accounts, but they don't provide the same information as the already mentioned one: [/v3/groups/{id}/relationships/users](https://gtidocs.readme.io/reference/get-group-users) and [/v3/groups/{id}/relationships/service\_accounts](https://gtidocs.readme.io/reference/get-service-accounts-of-a-group).
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ### 1.2.-users-management
 
@@ -118,13 +118,13 @@ Note that the roles and permissions shown here are determined by your license.
 
 ![](../../img/7de5de181bde3c8938acd7cad5a38cdf86c49dc34348c28a82a3d0de0cb68ef4-gti_1.2.0_roles_20260330.png)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 1.2.1.-adding-new-user-to-an-existing-google-threat-intelligence-group
 
 **Web interface =>** From **My group** menu option -> **USERS** tab -> **Add** dropdown button -> **User** option, a group administrator is able to create or add new members to their group by entering a comma-separated list of email addresses.
 
-The [**ROLES**](#120-setting-by-default-users-roles-and-permissions) tab determines the default roles and permissions for new users, however, administrators can override these settings for individual requests via the checkboxes provided in the **Add user** form.
+The [**ROLES**](#120-setting-default-users-roles-and-permissions) tab determines the default roles and permissions for new users, however, administrators can override these settings for individual requests via the checkboxes provided in the **Add user** form.
 
 Note that the roles and permissions shown here are determined by your license.
 
@@ -147,7 +147,7 @@ payload = {
 
 There's no specific endpoint for creating group administrators as in the web interface, although there's a way of granting group admin privileges to common users when needed. Check out the ["**Managing users privileges or role**"](#123-managing-user-privileges-or-role) section.
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 1.2.2.-removing-user-from-a-google-threat-intelligence-group
 
@@ -157,7 +157,7 @@ There's no specific endpoint for creating group administrators as in the web int
 
 **Google Threat Intelligence API =>** The [/v3/groups/{id}/relationships/users/{user\_id}](https://gtidocs.readme.io/reference/delete-user-from-group) endpoint removes a given user from a given group, based on their identifiers. [(Check group ID)](#group-information) [(Check user ID)](#user-information) When removing a user from the group, it becomes a free user with limited access to VirusTotal's products.
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 1.2.3.-managing-user-privileges-or-role
 
@@ -180,7 +180,7 @@ Users selected in the image below will get administrative access to DTM and stan
 
 **Google Threat Intelligence API =>** The [/v3/groups/{id}/relationships/users](https://gtidocs.readme.io/reference/patch-group-users-roles) endpoint allows to manage users roles and privileges based on their user IDs and the group ID parameter. [(Check user ID)](#user-information) [(Check group ID)](#group-information)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 1.2.4.-managing-user-api-allowance
 
@@ -208,7 +208,7 @@ payload = {
 }
 ```
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 1.2.5.-resetting-two-factor-authentication-for-a-user
 
@@ -216,7 +216,7 @@ payload = {
 
 ![](../../img/fa7fa87b2001d3b3f8e32631c72452a77277b18f11e86e641ae6c228969fd6a5-gti_1.2.5_2fa_20260428.png)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ### 1.3.-service-accounts-management
 
@@ -238,7 +238,7 @@ payload = {
 }
 ```
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 1.3.2.-removing-a-service-account-from-a-google-threat-intelligence-group
 
@@ -248,7 +248,7 @@ Please make sure that you are not going to interfere with any integration with G
 
 ![](../../img/85dd1c1f3d2c4b181de7a062fb3a323e4710afacffebe4a6a96254cc2092f6a4-gti_1.3.2_remove_service_account_202600204.png)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 1.3.3.-getting-a-service-accounts-api-key
 
@@ -262,7 +262,7 @@ Please make sure that you are not going to interfere with any integration with G
 
 **Google Threat Intelligence API =>** Although checking service accounts API keys is a very occasional activity and you might not need to automate it because the web interface serves well to this purpose, the [/v3/service\_accounts/{id}](https://gtidocs.readme.io/reference/get-a-service-account-object) endpoint can be used as well. It only requires the service account ID or name. [(Check service account ID)](#service-account-information)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ## 2.-group-management
 
@@ -284,7 +284,7 @@ As for the group avatar, on **My group** menu option, at the top left is a **Cha
 
 ![](../../img/67a0225cda9ca8d43a7a54ac2a1d368d1e549f2d94fc12a2da96667d08f93f9d-gti_2.1.1_3_avatar_20260204.png)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 2.1.2.-managing-ai-features-preferences
 
@@ -298,7 +298,7 @@ As for the group avatar, on **My group** menu option, at the top left is a **Cha
 > * **Code Insight & AI Summaries**: Generative AI features, including automated file and URL code analysis and AI-generated threat summaries, will be disabled.
 > * **API Usage Note**: While programmatic API access is governed by RBAC roles and your assigned Project ID, users in groups with AI features disabled will not be able to navigate to the web portal to retrieve their Project ID or review findings via the UI.
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ### 2.2.-security-features
 
@@ -308,7 +308,7 @@ As for the group avatar, on **My group** menu option, at the top left is a **Cha
 
 ![](../../img/ed07ca44a4d173d75b92434ebbdb3ddddd1029404688334c2114ef539a5899b7-gti_2.2.1_security_settings_timings_20260204.png)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 2.2.2.-single-sign-on---sso
 
@@ -373,7 +373,7 @@ payload = {
 
 Please note that since this parameter is rarely edited and the web interface is more than enough to cover it, we highly recommend editing this parameter manually through the web interface.
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 2.2.3.-two-factor-authentication-enforcement
 
@@ -391,7 +391,7 @@ Admin-enforced 2FA requirements override individual user preferences. Even if **
 
 Note that admins can **define sessions duration and expiration** as described [here](#221-editing-all-group-members-session-timings) and perform 2FA resets for individual users as detailed [here](#125-resetting-two-factor-authentication-for-a-user).
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ### 2.3.-private-scanning-settings
 
@@ -405,7 +405,7 @@ This configuration will be used by default, although users are able to configure
 
 ![](../../img/890d3544d0d77629d2e5c7484232cc01d9a4d50ab2041a43cb092cafe2587884-gti_2.3.1_2_private_scanning_20260204.png)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ## 3.-consumption
 
@@ -417,7 +417,7 @@ This configuration will be used by default, although users are able to configure
 
 ![](../../img/c0fcdcc00f7d6cfaa7769d6189fc505c341c939b24372a5a71b119de28614261-gti_3.1.1_current_month_group_consumption_20260204.png)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 3.1.2.-getting-users-individual-consumption
 
@@ -433,7 +433,7 @@ This configuration will be used by default, although users are able to configure
 
 ![](../../img/c4cb05ca9ccb3ef831c90e19506dffac96fd2afa8f2f49dc0d5c935d88c624f5-gti_3.1.2_1_user_individual_consumption_20260204.png)
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ### 3.2.-google-threat-intelligence-api-consumption
 
@@ -449,7 +449,7 @@ There are 2 additional sections showing the group's overall API consumption: **C
 
 **Google Threat Intelligence API =>** The [/v3/groups/{id}/api\_usage](https://gtidocs.readme.io/reference/group-api-usage) endpoint shows a group's API usage broken down by day and endpoint, pointing out the endpoints that really consume API as well as those that do not (`not_consuming_quota`). The data available includes only the last 30 natural days and the required parameter is the group ID. [(Check group ID)](#group-information) Additionally, you can specify the start day and last day parameters of the time range you want to track (yyyymmdd format).
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 #### 3.2.2.-getting-users-individual-api-consumption
 
@@ -459,7 +459,7 @@ There are 2 additional sections showing the group's overall API consumption: **C
 
 **Google Threat Intelligence API =>** The [/v3/users/{id}/api\_usage](https://gtidocs.readme.io/reference/user-api-usage) endpoint shows an user's API usage broken down by day and endpoint, pointing out the endpoints that really consume API as well as those that do not (`not_consuming_quota`). The data available includes only the last 30 natural days and the required parameter is the user ID. [(Check user ID)](#user-information) Additionally, you can specify the start day and last day parameters of the time range you want to track (yyyymmdd format).
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ## 4.-audit-log
 
@@ -477,7 +477,7 @@ The **User** filter, along with the **Username** and **User Email** fields in th
 
 Be aware that unlike the UI (where **Username** and **User Email** are direct columns), the API requires you to access the user who performed the action through the dedicated `user` relationship. Consult the endpoint document for details.
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ### 4.2.-exporting-logs
 
@@ -487,7 +487,7 @@ Be aware that unlike the UI (where **Username** and **User Email** are direct co
 
 **Google Threat Intelligence API =>** Use the [/api/v3/groups/{group}/activity\_log\_entries](https://gtidocs.readme.io/reference/get-activity-log) endpoint to retrieve activity logs in JSON format, applying the filters and relationships detailed in the endpoint documentation.
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ### 4.3.-seeing-details
 
@@ -497,7 +497,7 @@ Be aware that unlike the UI (where **Username** and **User Email** are direct co
 
 **Google Threat Intelligence API =>** The [/api/v3/groups/{group}/activity\_log\_entries](https://gtidocs.readme.io/reference/get-activity-log) endpoint retrieves activity logs allowing the application of filters and relationships as detailed in the endpoint documentation.
 
-[Back to top](#content-head)
+[Back to top](#walkthrough-guide-for-google-threat-intelligence-group-administrators)
 
 ---
 

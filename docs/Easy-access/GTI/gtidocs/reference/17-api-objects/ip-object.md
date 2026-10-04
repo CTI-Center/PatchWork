@@ -102,7 +102,7 @@ A IP address object contains the following attributes:
   * `suspicious`: <*integer*> number of reports saying that is suspicious.
   * `timeout`: <*integer*> number of timeouts when checking this URL.
   * `undetected`: <*integer*> number of reports saying that is undetected.
-* `last_https_certificate`: <*[SSL Certificate](#ssl-certificate)* > SSL Certificate object certificate information for that IP.
+* `last_https_certificate`: <*[SSL Certificate](ssl-certificate-object.md)* > SSL Certificate object certificate information for that IP.
 * `last_https_certificate_date`: <*integer*> date when the certificate shown in `last_https_certificate` was retrieved by Google TI. UTC timestamp.
 * `last_modification_date`: <*integer*> date when any of the IP's information was last updated. UTC timestamp.
 * `network`: <*string*> IPv4 network range to which the IP belongs.

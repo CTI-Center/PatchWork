@@ -30,7 +30,7 @@ Finally we'll take a deep dive into the Threat Intelligence module itself. This 
 
 > 🚧 Skipping introductory content
 >
-> If you'd like to skip the introductory content, you can jump straight to the **Threat Intelligence API Endpoints Mapping** section **[here](#threat-intelligence-api-endpoints-mapping)**!
+> If you'd like to skip the introductory content, you can jump straight to the **Threat Intelligence API Endpoints Mapping** section **[here](#threat-intelligence-api)**!
 
 # api-authentication
 
@@ -144,7 +144,7 @@ While these are some of the frequently encountered objects, Google TI offers a m
 | IoC | ID value |
 | --- | --- |
 | File | (`*`) Sha256 hash |
-| URL | Check here <a href="urls#url-identifiers">URL `id` representation</a> |
+| URL | Check here <a href="https://gtidocs.virustotal.com/docs/urls#url-identifiers">URL `id` representation</a> |
 | Domain | Domain name |
 | IP address | IP address |
 

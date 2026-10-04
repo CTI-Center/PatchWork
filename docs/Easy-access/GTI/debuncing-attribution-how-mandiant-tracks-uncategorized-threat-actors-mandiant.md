@@ -2,7 +2,7 @@
 title: "DebUNCing Attribution: How Mandiant Tracks Uncategorized Threat Actors | Mandiant"
 source: "https://cloud.google.com/blog/topics/threat-intelligence/how-mandiant-tracks-uncategorized-threat-actors"
 author:
-  - "[[Mandiant]]"
+  - "Mandiant"
 published: 2020-12-17
 created: 2026-08-31
 description:

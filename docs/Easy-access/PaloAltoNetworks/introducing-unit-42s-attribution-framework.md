@@ -2,10 +2,10 @@
 title: "Introducing Unit 42’s Attribution Framework"
 source: "https://unit42.paloaltonetworks.com/unit-42-attribution-framework/"
 author:
-  - "[[Andy Piazza]]"
-  - "[[Kyle Wilhoit]]"
-  - "[[David Fuertes]]"
-  - "[[Robert Falcone]]"
+  - "Andy Piazza"
+  - "Kyle Wilhoit"
+  - "David Fuertes"
+  - "Robert Falcone"
 published: 2025-07-31
 created: 2026-09-01
 description: "Peel back the layers on Unit 42's Attribution Framework. We offer a rare inside view into the system used to ultimately assign attribution to threat groups."

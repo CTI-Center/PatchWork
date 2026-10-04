@@ -17,9 +17,9 @@ retrieved: 2026-09-01
 The Google Threat Intelligence platform home page is divided into 4 main areas:
 
 [1. Top Bar](#1-top-bar)\
-[2. Left Navbar / Menu](#2-left-menu)\
+[2. Left Navbar / Menu](#2-left-navbar--menu)\
 [3. Main section](#3-main-section)\
-[4. Footer](#4-footer-links)
+[4. Footer](#4-footer)
 
 ![Google Threat Intel Homepage](https://storage.googleapis.com/gtidocresources/guides/introduction/images/gti_navigation_home_20240502_v2.png)
 

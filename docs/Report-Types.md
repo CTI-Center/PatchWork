@@ -1,20 +1,20 @@
-Every report carries a `report_types` value from `report_types_ov` (27 values, [Vocabularies 1.10](Vocabularies.md#1.10-report_types_ov)). This page exists so you can tell **which one to pick** and start from a real structure instead of a blank page. The values fall into three tiers and they are **not** interchangeable. Sixteen are Patchwork domain types: thirteen you [author](<#author-these-(13)>), and three [retired](<#retired-—-valid,-not-authored-(3)>) ones kept only so historical imports stay valid. The remaining eleven are STIX 2.1's own `report-type-ov`, which connectors apply to whatever they import ([feed-assigned](<#feed-assigned-types-(11)-—-no-template>)).
+Every report carries a `report_types` value from `report_types_ov` (27 values, [Vocabularies 1.10](Vocabularies.md#110-report_types_ov)). This page exists so you can tell **which one to pick** and start from a real structure instead of a blank page. The values fall into three tiers and they are **not** interchangeable. Sixteen are Patchwork domain types: thirteen you [author](<#author-these-13>), and three [retired](<#retired--valid-not-authored-3>) ones kept only so historical imports stay valid. The remaining eleven are STIX 2.1's own `report-type-ov`, which connectors apply to whatever they import ([feed-assigned](<#feed-assigned-types-11--no-template>)).
 
 > **One operation with a start and an end is a `campaign`, not a report type**
-> ([9.4](Patchwork-CTI-Framework.md#9.4-curation-layer)). Report the activity that made it relevant as `threat-activity`, and let the campaign object carry the operation itself.
+> ([9.4](Patchwork-CTI-Framework.md#94-curation-layer)). Report the activity that made it relevant as `threat-activity`, and let the campaign object carry the operation itself.
 
 ## Before-you-write,-four-things-that-bite
 
 1. **Title carries your member namespace token.**
-	Assertions a member authors are namespaced so two members' reports never collide on name-based dedup ([4.2](Patchwork-CTI-Framework.md#4.2-member-namespaces)). Pick your token once, changing it later forks every object that carries it.
+	Assertions a member authors are namespaced so two members' reports never collide on name-based dedup ([4.2](Patchwork-CTI-Framework.md#42-member-namespaces)). Pick your token once, changing it later forks every object that carries it.
 2. **`published` must be a stable anchor date.**
-	Reports deduplicate on **`name` + `published`** ([9.2](Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules)). A date that shifts when you revise forks a second report instead of updating the first. Anchor it to the earliest activity the report covers, never the latest.
+	Reports deduplicate on **`name` + `published`** ([9.2](Patchwork-CTI-Framework.md#92-identity-and-merge-rules)). A date that shifts when you revise forks a second report instead of updating the first. Anchor it to the earliest activity the report covers, never the latest.
 3. **Three types may also be produced by your own tooling**
 	`actor-profile`, `threat-activity`, `country-profile`. This is a statement about *your* environment, not about any upstream platform: if a member generates these from incident data, a hand-written one needs a distinct title or the two merge and one overwrites the other. Each template spells out the pattern to avoid. A member whose tooling generates other types should read the same warning onto those.
 4. **The three classification fields are not optional.**
-	Threat level, threat domain and activity category ([3](Patchwork-CTI-Framework.md#3.-what-we-track-and-how-we-scope-it)) are how a receiving member triages your report and scopes it against their own constituency. A report without them cannot be prioritised by anyone but you.
+	Threat level, threat domain and activity category ([3](Patchwork-CTI-Framework.md#3-what-we-track-and-how-we-scope-it)) are how a receiving member triages your report and scopes it against their own constituency. A report without them cannot be prioritised by anyone but you.
 
-Author identity on everything: **your own member identity**, emitted as `created_by_ref` ([8.2](Patchwork-CTI-Framework.md#8.2-provenance)).
+Author identity on everything: **your own member identity**, emitted as `created_by_ref` ([8.2](Patchwork-CTI-Framework.md#82-provenance)).
 
 ## Author-these-(13)
 
@@ -38,13 +38,13 @@ The **Description** and **Benefits** columns are **adapted from** the upstream c
 | `vulnerability-exploitation` | Weekly Vulnerability Exploitation Report | Summarises, on a periodic basis, important developments concerning vulnerabilities that may pose a critical or high risk to enterprises. Intended as a resource for decision makers on out-of-cycle patching decisions.                                                                                | Significant reduction in attack surface, actionable and timely intelligence.                                              | [vulnerability-exploitation](Report-Templates/vulnerability-exploitation.md) |                                                                                                                                         |
 
 > **The `OSINT Article` row is not one of the thirteen** —
-> the table is alphabetical, so it sits third rather than last. It is the source catalogue's single crowdsourced type — public reporting ingested automatically rather than written by an analyst — and Patchwork has no slug for it, which is why its Type cell is `—`. A third-party report you ingest arrives carrying a [feed-assigned](<#feed-assigned-types-(11)-—-no-template>) type instead, usually `threat-report`. It is kept here so the mapping to the source catalogue is complete rather than silently short.
+> the table is alphabetical, so it sits third rather than last. It is the source catalogue's single crowdsourced type — public reporting ingested automatically rather than written by an analyst — and Patchwork has no slug for it, which is why its Type cell is `—`. A third-party report you ingest arrives carrying a [feed-assigned](<#feed-assigned-types-11--no-template>) type instead, usually `threat-report`. It is kept here so the mapping to the source catalogue is complete rather than silently short.
 
 ## Retired-—-valid,-not-authored-(3)
 
 These three slugs entered the framework with the rest of the domain set, which was taken from a **connector's value set** rather than from a live product catalogue — and that value set is frozen at a catalogue its publisher has since retired ([source](Easy-access/GTI/gtidocs/guides/07-report-analysis/report-types.md#decommissioned-curated-reports-types-or-series)). Nothing here is about following Google. It is that a type nobody can point at a reason for is a type nobody should be offered.
 
-**They remain valid values.** A report imported from a historical feed may carry one, and a value set that invalidates records it previously accepted is exactly what [9.2](Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules) exists to prevent. They are not offered in the picker and should not be chosen for new work; each retired template is kept in place behind a banner pointing at its replacement.
+**They remain valid values.** A report imported from a historical feed may carry one, and a value set that invalidates records it previously accepted is exactly what [9.2](Patchwork-CTI-Framework.md#92-identity-and-merge-rules) exists to prevent. They are not offered in the picker and should not be chosen for new work; each retired template is kept in place behind a banner pointing at its replacement.
 
 | Type                   | Why it is not authored                                                                                                                                                            | Author this instead                                                                                             |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |

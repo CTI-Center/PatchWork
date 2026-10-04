@@ -82,7 +82,7 @@ The table below enumerates the UI tools available within Google Threat Intellige
 | <a href="../../06-ioc-investigation/retrohunt-guide.md" target="_blank"><b>Retrohunt</b></a> | Familiar from VirusTotal | <b>YARA rulesets</b> running against our extensive file database to pinpoint files that satisfy the rule's conditions (search in the past). |  |
 | <a href="../../06-ioc-investigation/ioc-stream-guide.md" target="_blank"><b>IoC Stream</b></a> | Familiar from VirusTotal | The <b>centralized notifications hub</b> for Livehunt and Retrohunt matches, Threat Intelligence objects subscriptions and Managed Threat Profiles. |  |
 | <a href="../../06-ioc-investigation/diff.md" target="_blank"><b>Diff</b></a> | Familiar from VirusTotal | The assistant for creating files-based Yara rules. |  |
-|  | <a href="../../07-report-analysis/reports-and-analysis.md#2.-reports-cards" target="_blank"><b>Reports & Analysis</b></a> | Familiar from VirusTotal | Curated reports from <b>Google Threat Intelligence</b> analysts or community <b>Partners</b> as well as <b>Crowdsourced</b> reports from the rest of the community. |
+|  | <a href="../../07-report-analysis/reports-and-analysis.md#2-reports-cards" target="_blank"><b>Reports & Analysis</b></a> | Familiar from VirusTotal | Curated reports from <b>Google Threat Intelligence</b> analysts or community <b>Partners</b> as well as <b>Crowdsourced</b> reports from the rest of the community. |
 | <a href="../../08-threat-graph/get-started-threat-graph.md" target="_blank"><b>Threat Graph</b></a> | Familiar from VirusTotal | Previously known as <b>VT Graph</b>, a tool for visually exploring relations between Indicators. |  |
 | <a href="../../09-private-scanning/private-scanning.md" target="_blank"><b>Private Scanning</b></a> | Familiar from VirusTotal | VirusTotal Private Scanning for files and URLs that cannot be shared with the rest of the community. |  |
 | <a href="../../10-vulnerability-intelligence/explore-vulnerabilities.md" target="_blank"><b>Vulnerability Intelligence</b></a> | New Capability in Google TI | A <b>curated database</b> providing actionable insights to prioritize and implement effective security fixes. |  |
@@ -160,7 +160,7 @@ Explore our [documentation portal](https://gtidocs.readme.io/docs/) to discover 
 
 To automate your workflows, we've compiled a comprehensive list of all [API v3](https://gtidocs.readme.io/reference/) endpoints, each with detailed descriptions to help you get started.
 
-Stay informed on the latest platform updates in our [Release Notes](/changelog) and discover our new webinars and relevant blog posts announced through our **In-app** notification tool.
+Stay informed on the latest platform updates in our [Release Notes](../../../changelog/README.md) and discover our new webinars and relevant blog posts announced through our **In-app** notification tool.
 
 Continue to ask for platform technical support on our Google Threat Intelligence [contact portal](https://www.virustotal.com/gui/contact-us/), and if you need immediate assistance for an incident from here you can contact our Incident Response Team which will be happy to help you.
 

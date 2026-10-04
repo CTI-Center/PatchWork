@@ -31,14 +31,14 @@ Follow either Method A or Method B as outlined in the [ASM Google Cloud Integrat
 
 ### additional-steps-to-scale-for-**method-a:**-creating-a-service-account-through-google-cloud-console
 
-Follow steps 1 through 12 as outlined in [Creating a Service Account through Google Cloud Console](asm-google-cloud-integration.md#method-a:-create-a-service-account-through-google-cloud-console). Then:
+Follow steps 1 through 12 as outlined in [Creating a Service Account through Google Cloud Console](asm-google-cloud-integration.md#method-a-create-a-service-account-through-google-cloud-console). Then:
 
 1. Browse to the [IAM settings](https://console.cloud.google.com/iam-admin/iam) for your organization and click **GRANT ACCESS**.
 
 ![](https://storage.googleapis.com/gtidocresources/guides/asm/images/asm_scale_gcloud_iam_20240927.png)
 
 2. In the **Grant Access** interface, in the **New principal** field, enter the email belonging to the service account that was created for the [ASM Google Cloud Integration](asm-google-cloud-integration.md).
-3. In the **Select a role** field, search for and select the role that was created in [step two of Creating a Service Account through Google Cloud Console](asm-google-cloud-integration.md#method-b:-create-a-service-account-through-gcloud-cli).
+3. In the **Select a role** field, search for and select the role that was created in [step two of Creating a Service Account through Google Cloud Console](asm-google-cloud-integration.md#method-b-create-a-service-account-through-gcloud-cli).
 
 ![](https://storage.googleapis.com/gtidocresources/guides/asm/images/asm_scale_gcloud_roles_20240927.png)
 
@@ -50,11 +50,11 @@ Follow steps 1 through 12 as outlined in [Creating a Service Account through Goo
 
 ![](https://storage.googleapis.com/gtidocresources/guides/asm/images/asm_scale_gcloud_20240927.png)
 
-5. Return to and complete [step 13 of Creating a Service Account through Google Cloud Console](asm-google-cloud-integration.md#method-a:-create-a-service-account-through-google-cloud-console).
+5. Return to and complete [step 13 of Creating a Service Account through Google Cloud Console](asm-google-cloud-integration.md#method-a-create-a-service-account-through-google-cloud-console).
 
 ### alternative-steps-to-scale-using-**method-b:**-creating-a-service-account-through-gcloud-cli
 
-Google Cloud only allows service accounts to be created at the project level, not the organizational level. Roles, however, are created at the organizational level and then assigned to the service account to provide organization-wide access. Therefore, the steps outlined here look similar to the steps outlined in [Method B: Creating a Service Account through gcloud CLI](asm-google-cloud-integration.md#method-b:-create-a-service-account-through-gcloud-cli). 
+Google Cloud only allows service accounts to be created at the project level, not the organizational level. Roles, however, are created at the organizational level and then assigned to the service account to provide organization-wide access. Therefore, the steps outlined here look similar to the steps outlined in [Method B: Creating a Service Account through gcloud CLI](asm-google-cloud-integration.md#method-b-create-a-service-account-through-gcloud-cli). 
 
 > ℹ️
 >
@@ -130,7 +130,7 @@ Google Cloud only allows service accounts to be created at the project level, no
    --description="Service Account for MASM GCP Integration" 
    --display-name="MASM GCP Integration Service Account"
    ```
-5. Bind the role created in [step 3](scale-google-cloud-integration.md#alternative-steps-to-scale-using-**method-b:**-creating-a-service-account-through-gcloud-cli) to the newly created service account.
+5. Bind the role created in [step 3](scale-google-cloud-integration.md#alternative-steps-to-scale-using-method-b-creating-a-service-account-through-gcloud-cli) to the newly created service account.
 
    Using the gcloud CLI, run the following command:
 

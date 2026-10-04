@@ -1,16 +1,16 @@
 Contents
-[1.0 Overview](#1.0-overview)
-[2.0 Purpose](#2.0-purpose)
-[3.0 Definitions](#3.0-definitions)
-[4.0 Guidance](#4.0-guidance)
-[5.0 STIX Submissions](#5.0-stix-submissions)
-[6.0 Defined Vocabulary Terms](#6.0-defined-vocabulary-terms)
-[7.0 AIS Markings](#7.0-ais-markings)
-[8.0 Personally Identifiable Information (PII)](<#8.0-personally-identifiable-information-(pii)>)
-[9.0 Protected Critical Infrastructure Information (PCII)](<#9.0-protected-critical-infrastructure-information-(pcii)>)
-[10.0 Versioning](#10.0-versioning)
-[11.0 Outreach Program](#11.0-outreach-program)
-[12.0 CISA Contact and Administration Information](#12.0-cisa-contact-and-administration-information)
+[1.0 Overview](#10-overview)
+[2.0 Purpose](#20-purpose)
+[3.0 Definitions](#30-definitions)
+[4.0 Guidance](#40-guidance)
+[5.0 STIX Submissions](#50-stix-submissions)
+[6.0 Defined Vocabulary Terms](#60-defined-vocabulary-terms)
+[7.0 AIS Markings](#70-ais-markings)
+[8.0 Personally Identifiable Information (PII)](<#80-personally-identifiable-information-pii>)
+[9.0 Protected Critical Infrastructure Information (PCII)](<#90-protected-critical-infrastructure-information-pcii>)
+[10.0 Versioning](#100-versioning)
+[11.0 Outreach Program](#110-outreach-program)
+[12.0 CISA Contact and Administration Information](#120-cisa-contact-and-administration-information)
 [Appendix A - AIS STIX Profile Fields](#appendix-a---ais-stix-profile-fields)
 [Appendix B - Confidence Level Criteria](#appendix-b---confidence-level-criteria)
 [Appendix C - AIS Submission Guidance Change Log](#appendix-c---ais-submission-guidance-change-log)
@@ -383,7 +383,6 @@ of 1GB and/or 1 Million STIX files.
 01/25/21
 Added new CISA template. Updated CISA email addresses and program
 URLs. Updated and finalized for public release.
-
 
 
 

@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""Validate internal Markdown links against Patchwork's authoring conventions.
+"""Validate internal Markdown links and GitHub-rendered heading anchors.
 
 Checks every tracked .md file for:
   - relative file links that do not resolve (images included, %20-decoded)
   - section anchors that match no heading in the target file
   - [[wikilinks]], which GitHub renders as literal text
 
-Anchors are matched in the Obsidian form the repo uses deliberately (README
-"Authoring-conventions"): heading text, whitespace collapsed to hyphens,
-lowercased, all other punctuation preserved. GitHub's slug algorithm is NOT
-used -- validating against it would report every anchor here as broken.
+Anchors use GitHub's rendered-heading form: lowercase text, spaces replaced
+by hyphens, punctuation/formatting removed, duplicate anchors numbered.
 
 Content inside fenced code blocks and inline code spans is ignored, so
 documentation *about* links is not mistaken for links.
@@ -18,12 +16,16 @@ documentation *about* links is not mistaken for links.
 documentation, so its broken breadcrumbs are theirs to fix, not ours, and at
 roughly forty findings per authored one they bury everything that is.
 
-Usage:  python3 tools/check-links/check-links.py [--quiet] [--all] [root]
+Usage:  python3 tools/check-links/check-links.py [--quiet] [--all] [--public] [root]
 Exit:   0 clean, 1 problems found.
 """
 
+import html
+import importlib.util
 import re
+import subprocess
 import sys
+import unicodedata
 import urllib.parse
 from pathlib import Path
 
@@ -40,61 +42,79 @@ INLINE_LINK = re.compile(
     r"(?:\s+\"[^\"]*\")?\)"
 )
 HTML_SRC = re.compile(r"<(?:img|a)\b[^>]*?\b(?:src|href)=\"(?P<target>[^\"]+)\"", re.I)
+HTML_ANCHOR = re.compile(r"<[^>]+\b(?:id|name)=[\"']([^\"']+)[\"']", re.I)
+REFERENCE = re.compile(r"^ {0,3}\[(?!\^)[^\]\n]+\]:\s*(?:<(?P<angle>[^<>\n]+)>|(?P<bare>\S+))", re.M)
 WIKILINK = re.compile(r"\[\[([^\]]+)\]\]")
-HEADING = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<text>.+?)\s*#*$", re.M)
+HEADING = re.compile(r"^ {0,3}(?:>\s*)*(?P<hashes>#{1,6})[ \t]+(?P<text>.+?)(?:[ \t]+#+)?[ \t]*$", re.M)
 FOOTNOTE_REF = re.compile(r"\[\^[^\]]+\]")
 FENCE = re.compile(r"^(?P<indent>[ \t]*)(?P<mark>```+|~~~+)(?P<info>.*)$")
 
 
-def strip_code(text: str) -> str:
-    """Blank out fenced blocks and inline spans, preserving line/column offsets."""
+def strip_fenced_code(text: str) -> str:
+    """Blank fenced blocks, retaining offsets and inline heading text."""
     lines = text.split("\n")
     fence_mark = None
     for i, line in enumerate(lines):
         m = FENCE.match(line)
         if fence_mark is None:
             if m:
-                fence_mark = m.group("mark")[0] * 3
-                lines[i] = ""
+                fence_mark = m.group("mark")
+                lines[i] = " " * len(line)
             continue
         # inside a fence: blank everything, close on a matching marker
         stripped = line.strip()
-        lines[i] = ""
-        if stripped.startswith(fence_mark) and not stripped.rstrip(fence_mark[0]):
+        lines[i] = " " * len(line)
+        if len(stripped) >= len(fence_mark) and not stripped.rstrip(fence_mark[0]):
             fence_mark = None
-    out = "\n".join(lines)
+    return "\n".join(lines)
+
+
+def strip_code(text: str) -> str:
+    """Blank code examples while retaining line/column offsets."""
+    out = strip_fenced_code(text)
     # inline code spans -> spaces, keeping length so columns stay honest
     return re.sub(r"`+[^`\n]*`+", lambda m: " " * len(m.group(0)), out)
 
 
-def anchor_form(heading_text: str, drop_underscores: bool = False) -> str:
-    """Heading text -> the anchor string this repo links to.
-
-    Underscores are kept by default. They are literal in every STIX vocabulary
-    name the headings carry -- `1.10-report_types_ov` -- and stripping them as
-    emphasis markers broke every anchor pointing at one.
-    """
+def anchor_form(heading_text: str) -> str:
+    """Rendered heading text -> GitHub anchor (without duplicate suffix)."""
     text = FOOTNOTE_REF.sub("", heading_text)
-    text = re.sub(r"[`*_]" if drop_underscores else r"[`*]", "", text)
-    return re.sub(r"\s+", "-", text.strip()).lower()
+    text = INLINE_LINK.sub(lambda m: m.group("text"), text)
+    text = re.sub(r"<[^>]*>", "", text)
+    # Preserve underscores inside code spans and identifiers; remove emphasis.
+    code = {}
+    def protect_code(match):
+        key = f"\x00{len(code)}\x00"
+        code[key] = match.group(1)
+        return key
+    text = re.sub(r"`+([^`]+)`+", protect_code, text)
+    text = re.sub(r"(?<!\w)_{1,2}(.+?)_{1,2}(?!\w)", r"\1", text)
+    text = text.replace("*", "").replace("~", "")
+    for key, value in code.items():
+        text = text.replace(key, value)
+    text = html.unescape(text).strip().lower()
+    text = "".join(c for c in text if c in " -_" or unicodedata.category(c)[0] not in "PSCZ")
+    return text.replace(" ", "-")
 
 
 def headings_of(path: Path, cache: dict) -> set:
     if path not in cache:
         try:
-            body = strip_code(path.read_text(encoding="utf-8"))
+            body = strip_fenced_code(path.read_text(encoding="utf-8"))
         except (OSError, UnicodeDecodeError):
             cache[path] = set()
             return cache[path]
         anchors = set()
         for m in HEADING.finditer(body):
             raw = m.group("text").strip()
-            # Both readings of "_": literal, and the _emphasis_ a heading may
-            # still use. Accepting either keeps this permissive -- the job is
-            # finding broken links, not adjudicating emphasis.
-            for variant in (anchor_form(raw), anchor_form(raw, drop_underscores=True)):
-                anchors.add(variant)
-                anchors.add(variant.rstrip("."))
+            base = anchor_form(raw)
+            anchor = base
+            suffix = 0
+            while anchor in anchors:
+                suffix += 1
+                anchor = f"{base}-{suffix}"
+            anchors.add(anchor)
+        anchors.update(html.unescape(m.group(1)) for m in HTML_ANCHOR.finditer(body))
         cache[path] = anchors
     return cache[path]
 
@@ -103,7 +123,7 @@ def line_of(text: str, pos: int) -> int:
     return text.count("\n", 0, pos) + 1
 
 
-def check_file(path: Path, root: Path, cache: dict) -> list:
+def check_file(path: Path, root: Path, cache: dict, published=None) -> list:
     problems = []
     raw = path.read_text(encoding="utf-8")
     body = strip_code(raw)
@@ -119,6 +139,7 @@ def check_file(path: Path, root: Path, cache: dict) -> list:
         for m in INLINE_LINK.finditer(body)
     ]
     targets += [(m.start(), m.group("target")) for m in HTML_SRC.finditer(body)]
+    targets += [(m.start(), m.group("angle") or m.group("bare")) for m in REFERENCE.finditer(body)]
 
     for pos, target in targets:
         target = target.strip()
@@ -127,11 +148,13 @@ def check_file(path: Path, root: Path, cache: dict) -> list:
 
         rel, _, anchor = target.partition("#")
         rel = urllib.parse.unquote(rel)
-        anchor = urllib.parse.unquote(anchor).lower()
+        anchor = urllib.parse.unquote(anchor)
 
         if rel:
             dest = (path.parent / rel).resolve()
-            if not dest.exists():
+            inside = dest == root or root in dest.parents
+            available = published is None or dest in published or (dest.is_dir() and any(dest in p.parents for p in published))
+            if not inside or not dest.exists() or not available:
                 hint = ""
                 if rel.startswith("docs/") and path.parent != root:
                     hint = " -- vault-root-absolute? links resolve from the containing file"
@@ -148,13 +171,35 @@ def check_file(path: Path, root: Path, cache: dict) -> list:
     return problems
 
 
+def markdown_files(root: Path) -> list[Path]:
+    """Check what Git would ship, not ignored caches or local graph output."""
+    try:
+        git_root = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=root, check=True, capture_output=True, text=True).stdout.strip()
+        if Path(git_root).resolve() != root.resolve():
+            raise OSError("export is not the enclosing checkout's root")
+        output = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=root, check=True, capture_output=True, text=True).stdout
+        files = [root / p for p in output.split("\0") if p.endswith(".md")]
+    except (OSError, subprocess.CalledProcessError):
+        files = list(root.rglob("*.md"))
+    skip = {".git", ".cache", ".codex", ".claude", ".obsidian", "__pycache__", "graphify-out"}
+    return sorted(set(p for p in files if p.is_file() and not skip.intersection(p.relative_to(root).parts)))
+
+
 def main() -> int:
     args = [a for a in sys.argv[1:] if not a.startswith("-")]
     quiet = "--quiet" in sys.argv or "-q" in sys.argv
     check_all = "--all" in sys.argv
     root = Path(args[0] if args else ".").resolve()
 
-    found = sorted(p for p in root.rglob("*.md") if ".git" not in p.parts)
+    found = markdown_files(root)
+    published = None
+    if "--public" in sys.argv:
+        helper = Path(__file__).resolve().parents[1] / "public-review/public_files.py"
+        spec = importlib.util.spec_from_file_location("public_files", helper)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        published = {(root / p).resolve() for p in module.public_paths(root)}
+        found = [p for p in found if p.resolve() in published]
     if not found:
         print(f"no markdown files under {root}", file=sys.stderr)
         return 1
@@ -166,7 +211,7 @@ def main() -> int:
     cache: dict = {}
     problems = []
     for path in files:
-        problems.extend(check_file(path, root, cache))
+        problems.extend(check_file(path, root, cache, published))
 
     for rel, line, msg in problems:
         print(f"{rel}:{line}: {msg}")

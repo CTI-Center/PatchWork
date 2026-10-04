@@ -112,7 +112,7 @@ To filter and analyze malware
 
 You can de-select **Malware** on the heat map page itself to easily compare **Malware** TTPs within the heat map view.
 
-If more than one Malware is selected and analyzed in the MITRE ATT\&CK framework, a heat map displays the number of selected Malware associated with each technique or sub-technique. You can download the heat map as a CSV or JSON for further analysis to aid in prioritizing mitigation efforts against the selected Malware families, check [Download the MITRE ATT\&CK heat map](#download-the-mitre-att\&ck-heat-map) for more details.
+If more than one Malware is selected and analyzed in the MITRE ATT\&CK framework, a heat map displays the number of selected Malware associated with each technique or sub-technique. You can download the heat map as a CSV or JSON for further analysis to aid in prioritizing mitigation efforts against the selected Malware families, check [Download the MITRE ATT\&CK heat map](#download-the-mitre-attck-heat-map) for more details.
 
 ---
 

@@ -204,7 +204,7 @@ The list below describes all the existing behaviour-related fields:
 | vt.behaviour.system\_property\_sets\[x].key      | string           | Property key.                                                                                                                                                                                                                                          |                                                                                                  |
 | vt.behaviour.system\_property\_sets\[x].value    | string           | New value for property.                                                                                                                                                                                                                                |                                                                                                  |
 
-[Back to top](#top)
+[Back to top](#behavior-hunting)
 
 ---
 

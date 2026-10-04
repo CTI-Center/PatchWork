@@ -48,7 +48,7 @@ Before proceeding, ensure the following requirements are met. Failure to meet th
 
 * **`misp-modules`** service must be installed, configured, and running on your MISP server. If it is not yet installed in MISP, please refer to the official MISP Modules installation [documentation](https://github.com/MISP/misp-modules).
 * **MISP Administrator Privileges**: you must have **administrator-level access** to your MISP instance to access *server settings* and *manage plugins*.
-* **Google TI API Key**: a valid API key is required to authenticate with the Google TI service. It is strongly recommended to use a [service account](../02-group-management/admins-guide.md#1.3.-service-accounts-management) API key rather than a key tied to an individual user account. Service account keys are better suited for automated systems. Please, notice that the usage of this integration entails API [quota consumption](../02-group-management/quota-consumption.md).
+* **Google TI API Key**: a valid API key is required to authenticate with the Google TI service. It is strongly recommended to use a [service account](../02-group-management/admins-guide.md#13-service-accounts-management) API key rather than a key tied to an individual user account. Service account keys are better suited for automated systems. Please, notice that the usage of this integration entails API [quota consumption](../02-group-management/quota-consumption.md).
 
 # 3.-configuration
 
@@ -64,7 +64,7 @@ This section details how to enable and configure the Google TI enrichment module
 * Enable the Module (*mandatory step*)
   * In the filtered results, locate the setting named **Plugin.Enrichment\_google\_threat\_intelligence\_enabled** and double-click on the value field and set it to **true**.
 * Configure the API Key setting (*mandatory step*)
-  * Locate the setting named **Plugin.Enrichment\_google\_threat\_intelligence\_apikey** and paste your Google TI [service account API key](../02-group-management/admins-guide.md#1.3.3.-getting-a-service-accounts-api-key).
+  * Locate the setting named **Plugin.Enrichment\_google\_threat\_intelligence\_apikey** and paste your Google TI [service account API key](../02-group-management/admins-guide.md#133-getting-a-service-accounts-api-key).
 * Configure Optional Parameters (*if required*)
   * The module offers additional settings for **proxy configuration** and **event limit**.
 

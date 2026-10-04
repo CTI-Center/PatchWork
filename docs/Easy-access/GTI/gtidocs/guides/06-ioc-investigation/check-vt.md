@@ -47,7 +47,7 @@ If you have a list of hashes (e.g. exported from some other application), with i
 
 ![Google Threat Intelligence multiple hashes search](https://storage.googleapis.com/gtidocresources/guides/ioc-investigation/images/intelligenceintroduction_multiplehashes_20240320.png)
 
-[Back to Top](#top)
+[Back to Top](#check-with-virustotal)
 
 # search-operators
 
@@ -97,7 +97,7 @@ More complex queries can be built via the use of parenthesis. Let us extend the 
 (engines:zbot OR engines:sinowal) NOT (tag:corrupt)
 ```
 
-[Back to Top](#top)
+[Back to Top](#check-with-virustotal)
 
 # example-use-cases
 
@@ -197,7 +197,7 @@ In the results report page you have different options:
 
 6. Links to related documentation.
 
-[Back to Top](#top)
+[Back to Top](#check-with-virustotal)
 
 ---
 

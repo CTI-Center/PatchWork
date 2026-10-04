@@ -60,7 +60,7 @@ There are two ***multi-tenancy*** types, and both of them feature a **parent gro
 >
 > Multi-tenancy supports **only two levels of group hierarchy**. Consequently, a child group cannot subsequently serve as a parent for additional tenants.
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ## group-id-and-group-token
 
@@ -72,7 +72,7 @@ Within this view, group setups and additional information are organized into dif
 
 ![](../../img/18fbe11abebdf449f98670e3f60992786099f5259b7714d6cc5db6eff4cb01e6-image.png)
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ## cross-tenant-platform-usage-and-consumption
 
@@ -107,7 +107,7 @@ headers = {
 response = requests.get(url, headers=headers)
 ```
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 # multi-tenancy-management
 
@@ -146,7 +146,7 @@ All group administrators get an email **notification when a quota is reached**, 
 
 ![](../../img/0f1b32371b9a2b9f260dd5f28b89d0ebba4ea9575a3e90013c956620b2340988-image.png)
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ### 2.-adopt-an-existing-group:-adoption-method
 
@@ -158,7 +158,7 @@ Once completed this step, an invitation email is sent to the administrators of t
 
 ![](../../img/a5955f4dedc0e51b3cadf3fae6f1f415ccd0202e32897918c2762352d9c8b67c-multitenancy_invite_20251103.png)
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ### 3.-delete-a-linked-tenant
 
@@ -186,7 +186,7 @@ When an organic tenant is deleted:
 * ASM, DTM, and all private elements (including Private Scannings files and URLs analysis reports) are not transferred.
 * Users that previously belonged to the tenant are removed from it and converted to free VirusTotal users.
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ## tenants-quota-allowance-and-add-ons-management
 
@@ -202,11 +202,11 @@ On the same **USAGE** tab of this edit view, parent group administrators can als
 
 ![](../../img/43195e1b4f29133bb3168e9dc4055231fbb38dc9e878fbd6f1a29bd0a287ef72-image.png)
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ## tenant-members-management
 
-Managing tenant members involves actions that mirror those doable on a standard isolated group as detailed in the [**Group members management**](admins-guide.md#1.-group-members-management) section of the [**Walkthrough guide for Google Threat Intelligence group administrators**](admins-guide.md), with one exception, **parent group administrator who are member of a tenant**.
+Managing tenant members involves actions that mirror those doable on a standard isolated group as detailed in the [**Group members management**](admins-guide.md#1-group-members-management) section of the [**Walkthrough guide for Google Threat Intelligence group administrators**](admins-guide.md), with one exception, **parent group administrator who are member of a tenant**.
 
 First, any **parent group administrators**, regardless of whether they are members of the tenant, must first navigate to the top right corner User menu -> **My group** option -> **TENANTS** tab. The **Summary** section then displays all linked tenants, whether they are organic or adopted.
 
@@ -222,35 +222,35 @@ With this view accessed, all actions in this section are restricted to the **USE
 
 Actions Available to Parent Group Administrators for Child Tenants:
 
-1. [Getting group members](admins-guide.md#1.1.-getting-group-members)
+1. [Getting group members](admins-guide.md#11-getting-group-members)
 
-   1.1. [Getting the list of users and service accounts](admins-guide.md#1.1.1.-getting-the-list-of-users-and-service-accounts)
+   1.1. [Getting the list of users and service accounts](admins-guide.md#111-getting-the-list-of-users-and-service-accounts)
 
-2. [Users management](admins-guide.md#1.2.-users-management)
+2. [Users management](admins-guide.md#12-users-management)
 
-   2.1. [Adding new user to an existing Google Threat Intelligence group](admins-guide.md#1.2.1.-adding-new-user-to-an-existing-google-threat-intelligence-group)
+   2.1. [Adding new user to an existing Google Threat Intelligence group](admins-guide.md#121-adding-new-user-to-an-existing-google-threat-intelligence-group)
 
-   2.2. [Adding new user to an existing Google Threat Intelligence group - automatically](admins-guide.md#122-adding-new-user-to-an-existing-google-threat-intelligence-group---automatically)
+   2.2. [Adding new user to an existing Google Threat Intelligence group - automatically](admins-guide.md#121-adding-new-user-to-an-existing-google-threat-intelligence-group)
 
-   2.3. [Removing user from a Google Threat Intelligence group](admins-guide.md#123-removing-user-from-a-google-threat-intelligence-group)
+   2.3. [Removing user from a Google Threat Intelligence group](admins-guide.md#122-removing-user-from-a-google-threat-intelligence-group)
 
-   2.4. [Managing user privileges or role](admins-guide.md#124-managing-user-privileges-or-role)
+   2.4. [Managing user privileges or role](admins-guide.md#123-managing-user-privileges-or-role)
 
-   2.5. [Managing user API quota allowance](admins-guide.md#125-managing-user-api-allowance)
+   2.5. [Managing user API quota allowance](admins-guide.md#124-managing-user-api-allowance)
 
-3. [Service accounts management](admins-guide.md#1.3.-service-accounts-management)
+3. [Service accounts management](admins-guide.md#13-service-accounts-management)
 
-   3.1. [Adding a new service account to an existing Google Threat Intelligence group](admins-guide.md#1.3.1.-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group)
+   3.1. [Adding a new service account to an existing Google Threat Intelligence group](admins-guide.md#131-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group)
 
-   3.2. [Removing a service account from a Google Threat Intelligence group](admins-guide.md#1.3.2.-removing-a-service-account-from-a-google-threat-intelligence-group)
+   3.2. [Removing a service account from a Google Threat Intelligence group](admins-guide.md#132-removing-a-service-account-from-a-google-threat-intelligence-group)
 
-   3.3. [Getting a service accounts API key](admins-guide.md#1.3.3.-getting-a-service-accounts-api-key)
+   3.3. [Getting a service accounts API key](admins-guide.md#133-getting-a-service-accounts-api-key)
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ## tenant-group-management
 
-Managing tenant group settings involves actions that mirror those available for a standard isolated group as detailed in the [**Group management**](admins-guide.md#2.-group-management) section of the [**Walkthrough guide for Google Threat Intelligence group administrators**](admins-guide.md).
+Managing tenant group settings involves actions that mirror those available for a standard isolated group as detailed in the [**Group management**](admins-guide.md#2-group-management) section of the [**Walkthrough guide for Google Threat Intelligence group administrators**](admins-guide.md).
 However, as mentioned in the previous section, an additional initial step is required: accessing the tenant's dedicated editing view.
 
 To do so, **parent group administrators** can go to the top right corner User menu -> **My group** option -> **TENANTS** tab. The **Summary** section lists all linked tenants, whether they are organic or adopted. Clicking a tenant name opens the editing view.
@@ -261,25 +261,25 @@ From the edit view, all actions described in this section can be performed from 
 
 Actions Available to Parent Group Administrators for Child Tenants:
 
-1. [General settings](admins-guide.md#2.1.-general-settings)
+1. [General settings](admins-guide.md#21-general-settings)
 
-   1.1. [Editing organization name, domain name and avatar](admins-guide.md#2.1.1.-editing-organization-name,-domain-name-and-avatar)
+   1.1. [Editing organization name, domain name and avatar](admins-guide.md#211-editing-organization-name-domain-name-and-avatar)
 
-2. [Security features](admins-guide.md#2.2.-security-features)
+2. [Security features](admins-guide.md#22-security-features)
 
-   2.1. [Editing all group members session timings](admins-guide.md#2.2.1.-editing-all-group-members-session-timings)
+   2.1. [Editing all group members session timings](admins-guide.md#221-editing-all-group-members-session-timings)
 
-   2.2. [Single Sign On - SSO](admins-guide.md#2.2.2.-single-sign-on---sso)
+   2.2. [Single Sign On - SSO](admins-guide.md#222-single-sign-on---sso)
 
-3. [Private Scanning settings](admins-guide.md#2.3.-private-scanning-settings)
+3. [Private Scanning settings](admins-guide.md#23-private-scanning-settings)
 
-   3.1. [Editing Private Scanning retention period and storage region](admins-guide.md#2.3.1.-editing-private-scanning-retention-period-and-storage-region)
+   3.1. [Editing Private Scanning retention period and storage region](admins-guide.md#231-editing-private-scanning-retention-period-and-storage-region)
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ## tenant-feature-consumption-monitoring
 
-Accessing tenant group features consumption mirrors the process detailed in the [**Consumption**](admins-guide.md#3.-consumption) section of the [**Walkthrough guide for Google Threat Intelligence group administrators**](admins-guide.md). The key difference is that it has to be performed from the tenant's dedicated view.
+Accessing tenant group features consumption mirrors the process detailed in the [**Consumption**](admins-guide.md#3-consumption) section of the [**Walkthrough guide for Google Threat Intelligence group administrators**](admins-guide.md). The key difference is that it has to be performed from the tenant's dedicated view.
 
 To do so, **parent group administrators** must navigate to the top right corner User menu -> **My group** option -> **TENANTS** tab and from the **Summary** section click on any of the listed linked tenants name.
 
@@ -287,19 +287,19 @@ To do so, **parent group administrators** must navigate to the top right corner 
 
 In this view, the **USAGE** tab displays features consumed via the UI, while the **API** tab shows API consumption, all within the context of the child tenant, rather than a main parent group.
 
-1. [Google Threat Intelligence features consumption](admins-guide.md#3.1.-google-threat-intelligence-features-consumption)
+1. [Google Threat Intelligence features consumption](admins-guide.md#31-google-threat-intelligence-features-consumption)
 
-   1.1. [Getting current month group overall consumption](admins-guide.md#3.1.1.-getting-current-month-group-overall-consumption)
+   1.1. [Getting current month group overall consumption](admins-guide.md#311-getting-current-month-group-overall-consumption)
 
-   1.2. [Getting users individual consumption](admins-guide.md#3.1.2.-getting-users-individual-consumption)
+   1.2. [Getting users individual consumption](admins-guide.md#312-getting-users-individual-consumption)
 
-2. [Google Threat Intelligence API consumption](admins-guide.md#3.2.-google-threat-intelligence-api-consumption)
+2. [Google Threat Intelligence API consumption](admins-guide.md#32-google-threat-intelligence-api-consumption)
 
-   2.1. [Getting group overall API consumption](admins-guide.md#3.2.1.-getting-group-overall-api-consumption)
+   2.1. [Getting group overall API consumption](admins-guide.md#321-getting-group-overall-api-consumption)
 
-   2.2. [Getting users individual API consumption](admins-guide.md#3.2.2.-getting-users-individual-api-consumption)
+   2.2. [Getting users individual API consumption](admins-guide.md#322-getting-users-individual-api-consumption)
 
-[Back to top](#content-head)
+[Back to top](#multi-tenancy)
 
 ---
 

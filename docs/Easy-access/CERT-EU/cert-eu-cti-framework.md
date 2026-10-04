@@ -18,7 +18,7 @@ licence_author: The Cybersecurity Service for the Union institutions, bodies, of
 * **[5. Threat domains](#threat-domains)**
 * **[6. Threat levels](#threat-levels)**
 * **[7. Threat actor levels](#threat-actor-levels)**
-* **[8. Tactics, techniques and procedures (TTPs)](<#tactics,-techniques-and-procedures-(ttps)>)**
+* **[8. Tactics, techniques and procedures (TTPs)](<#tactics-techniques-and-procedures-ttps>)**
 * **[9. Sectors of interest](#sectors-of-interest)**
 * **[10. Confidence and uncertainties](#confidence-and-uncertainties)**
 * **[11. Attribution](#attribution)**
@@ -267,4 +267,3 @@ These scores help determine which mitigations offer the greatest security value 
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1           | 13 February 2026 | Initial publication. ||
 | 2           | 8 April 2026 | Added "Reporting on geographic linkages" subsection under Attribution, clarifying how CERT-EU reports on geographic associations established by trusted partners and reliable sources. |
-

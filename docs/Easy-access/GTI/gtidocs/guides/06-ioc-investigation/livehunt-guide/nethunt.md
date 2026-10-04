@@ -490,7 +490,7 @@ condition:
 }
 ```
 
-* Notify new URLs whos domain resolve in a certain IP range ([IP range helper](#network-range-helper)):
+* Notify new URLs whos domain resolve in a certain IP range ([IP range helper](#network-range)):
 
 ```yara
 import "vt"

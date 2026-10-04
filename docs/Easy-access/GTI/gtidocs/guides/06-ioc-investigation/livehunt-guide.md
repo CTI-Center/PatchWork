@@ -50,7 +50,7 @@ Livehunt rules are organized into rulesets, which are simply a collection of YAR
 10. You can create a retrohunt job using this rule.
 11. You can run tests of the ruleset among a list of specific hashes.
 
-[Back to top](#top)
+[Back to top](#livehunt)
 
 # livehunt-notifications
 
@@ -58,7 +58,7 @@ The [IOC Stream view](ioc-stream-guide.md) is an evolution to the previous Liveh
 
 You will see different tabs for different Threat Feeds. Please check our [IOC Stream view](ioc-stream-guide.md) for more details.
 
-[Back to top](#top)
+[Back to top](#livehunt)
 
 # writing-yara-rules-for-livehunt
 
@@ -91,7 +91,7 @@ In the next links you will find more information on how to leverage the **vt** m
 * [Legacy vars](livehunt-guide/hunting-legacy-variables.md)
 * [Reference](livehunt-guide/hunting-reference.md)
 
-[Back to top](#top)
+[Back to top](#livehunt)
 
 ---
 

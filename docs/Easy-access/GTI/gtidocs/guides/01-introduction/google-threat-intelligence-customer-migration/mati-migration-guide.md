@@ -36,7 +36,7 @@ In Google Threat Intelligence, all members of a Mandiant **organization** are co
 
 ## 2.-users
 
-[**User**'s group roles](../../02-group-management/admins-guide.md#124-managing-user-privileges-or-role) are broadly categorized into two types: **Members** (regular users) and **Admins** (administrators). During the initial provisioning process, the first group administrator will be designated. This individual will be able to view certain features of other users and manage all users access and permissions. Group administrators can refer to [this resource](../../02-group-management/admins-guide.md) for a comprehensive overview of their capabilities on the platform.
+[**User**'s group roles](../../02-group-management/admins-guide.md#123-managing-user-privileges-or-role) are broadly categorized into two types: **Members** (regular users) and **Admins** (administrators). During the initial provisioning process, the first group administrator will be designated. This individual will be able to view certain features of other users and manage all users access and permissions. Group administrators can refer to [this resource](../../02-group-management/admins-guide.md) for a comprehensive overview of their capabilities on the platform.
 
 Furthermore, access to [Attack Surface Management](../../11-asm/asm-roles-and-permissions.md) (ASM) and [Digital Threat Monitoring](../../12-dtm/dtm-user-roles.md) (DTM) is managed separately. Similar levels of access are granted in Google TI based on the roles previously held by users in Mandiant.
 
@@ -50,7 +50,7 @@ Furthermore, access to [Attack Surface Management](../../11-asm/asm-roles-and-pe
 
 ## 3.-service-account
 
-Groups can also include **[service accounts](../../02-group-management/admins-guide.md#service-account-information)**, which are specifically designed for automation tasks. They are not tied to individual users, do not require an email address for [creation](../../02-group-management/admins-guide.md#1.3.1.-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group), and provide API authentication solely via API keys [accessible](../../02-group-management/admins-guide.md#1.3.3.-getting-a-service-accounts-api-key) only to group administrators.
+Groups can also include **[service accounts](../../02-group-management/admins-guide.md#service-account-information)**, which are specifically designed for automation tasks. They are not tied to individual users, do not require an email address for [creation](../../02-group-management/admins-guide.md#131-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group), and provide API authentication solely via API keys [accessible](../../02-group-management/admins-guide.md#133-getting-a-service-accounts-api-key) only to group administrators.
 
 Note that Service Accounts from Mandiant are not migrated to Google Threat Intelligence.
 
@@ -79,7 +79,7 @@ The table below enumerates the UI tools available within Google Threat Intellige
 | <a href="../../06-ioc-investigation/retrohunt-guide.md" target="_blank"><b>Retrohunt</b></a> | New Capability in Google TI | <b>YARA rulesets</b> running against our extensive file database to pinpoint files that satisfy the rule's conditions (search in the past). |  |
 | <a href="../../06-ioc-investigation/ioc-stream-guide.md" target="_blank"><b>IoC Stream</b></a> | New Capability in Google TI | The <b>centralized notifications hub</b> for Livehunt and Retrohunt matches, Threat Intelligence objects subscriptions and Managed Threat Profiles. |  |
 | <a href="../../06-ioc-investigation/diff.md" target="_blank"><b>Diff</b></a> | New Capability in Google TI | The assistant for creating files-based Yara rules. |  |
-| <b>Reports & Analysis</b> | <a href="../../07-report-analysis/reports-and-analysis.md#2.-reports-cards" target="_blank"><b>Reports & Analysis</b></a> | Familiar from Mandiant Advantage | Curated reports from <b>Google Threat Intelligence</b> analysts or community <b>Partners</b> as well as <b>Crowdsourced</b> reports from the rest of the community. |
+| <b>Reports & Analysis</b> | <a href="../../07-report-analysis/reports-and-analysis.md#2-reports-cards" target="_blank"><b>Reports & Analysis</b></a> | Familiar from Mandiant Advantage | Curated reports from <b>Google Threat Intelligence</b> analysts or community <b>Partners</b> as well as <b>Crowdsourced</b> reports from the rest of the community. |
 | <b>Threat Graph</b> | <a href="../../08-threat-graph/get-started-threat-graph.md" target="_blank"><b>Threat Graph</b></a> | New Capability in Google TI | Previously known as <b>VT Graph</b>, a tool for visually exploring relations between Indicators. |
 | <b>Private Scanning</b> | <a href="../../09-private-scanning/private-scanning.md" target="_blank"><b>Private Scanning</b></a> | New Capability in Google TI | VirusTotal Private Scanning for files and URLs that cannot be shared with the rest of the community. |
 | <b>Vulnerability Intelligence</b> | <a href="../../10-vulnerability-intelligence/explore-vulnerabilities.md" target="_blank"><b>Vulnerability Intelligence</b></a> | Familiar from Mandiant Advantage | A <b>curated database</b> providing actionable insights to prioritize and implement effective security fixes. |
@@ -92,8 +92,8 @@ The table below enumerates the UI tools available within Google Threat Intellige
 
 Legacy "out-of-the-box" (OOTB) integrations can still be used for proactive detection, allowing you to obtain curated Indicators of Compromise (IoCs) and merge Attack Surface Management (ASM) alerts into your preferred work management tools. To continue leveraging these, you'll need to **update to the new Google Threat Intelligence API Key** and we recommend to:
 
-1. [Create a Service Account](../../02-group-management/admins-guide.md#1.3.1.-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group) (note that only group administrators can do this)
-2. [Retrieve Service Account API key](../../02-group-management/admins-guide.md#1.3.3.-getting-a-service-accounts-api-key) (note that only group administrators can do this)
+1. [Create a Service Account](../../02-group-management/admins-guide.md#131-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group) (note that only group administrators can do this)
+2. [Retrieve Service Account API key](../../02-group-management/admins-guide.md#133-getting-a-service-accounts-api-key) (note that only group administrators can do this)
 3. Replace your current integration API key Secret (`api_secret`) with the new Service Account API key
 4. Replace your current integration API key ID (`api_key`) by the string `gti-user`
 
@@ -117,7 +117,7 @@ To automate your workflows, we've compiled a comprehensive list of all [API v3](
 >
 > Please refer to our [API migration guide](mati-api-migration-guide.md), created specifically for users transitioning from Mandiant Advantage.
 
-Stay informed on the latest platform updates in our [Release Notes](/changelog) and discover our new webinars and relevant blog posts announced through our **In-app** notification tool.
+Stay informed on the latest platform updates in our [Release Notes](../../../changelog/README.md) and discover our new webinars and relevant blog posts announced through our **In-app** notification tool.
 
 ![](../../../img/d8679b18ed2a3edb684196ff5eeefbf469a2c59c58877349b9cdca2df413fcb0-in_app_20260417.png)
 

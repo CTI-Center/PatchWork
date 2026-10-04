@@ -157,7 +157,7 @@ curl -X POST -H "x-goog-user-project: YOUR_ORG_PROJECT_ID" \
 
 #### threat-scenario-configurations
 
-The example below shows how to create a new [TechnologyWatchList](configurations.md#technologywatchlistconfig) threat scenario configuration.
+The example below shows how to create a new [TechnologyWatchList](configurations/configurations-overview.md#technologywatchlistconfig) threat scenario configuration.
 
 ```shell
 # Replace CONFIG_ID with the specific ID.

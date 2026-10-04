@@ -53,11 +53,17 @@ README = ROOT / "README.md"
 def repo_paths() -> list[str]:
     """Every path git would ship: tracked, plus untracked and not ignored."""
     try:
+        git_root = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=ROOT, capture_output=True, text=True, check=True,
+        ).stdout.strip()
+        if Path(git_root).resolve() != ROOT.resolve():
+            raise OSError("public copy is not the enclosing checkout's root")
         out = subprocess.run(
             ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
             cwd=ROOT, capture_output=True, text=True, check=True,
         ).stdout
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    except (subprocess.CalledProcessError, OSError):
         # not a git checkout - fall back to the filesystem, minus the obvious noise
         skip = {".git", ".obsidian", ".claude", ".remember", "__pycache__"}
         return sorted(

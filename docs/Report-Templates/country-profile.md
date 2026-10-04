@@ -11,7 +11,7 @@
 
 # <Title>-—-Country-Profile
 
-> ⚠️ **This type may also be generated automatically in your environment.** Where a member's own tooling emits `country-profile` reports from incident data, reports deduplicate on **name + published** ([9.2](../Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules)) — so a hand-written report that reuses the generated title pattern (something of the shape `<member>-<Country> cyber threat landscape <year>`) will **merge into and overwrite** the generated one. Give yours a distinct title. This is a statement about *your own* environment, not about any upstream platform ([Report-Types](<../Report-Types.md#before-you-write,-four-things-that-bite>)).
+> ⚠️ **This type may also be generated automatically in your environment.** Where a member's own tooling emits `country-profile` reports from incident data, reports deduplicate on **name + published** ([9.2](../Patchwork-CTI-Framework.md#92-identity-and-merge-rules)) — so a hand-written report that reuses the generated title pattern (something of the shape `<member>-<Country> cyber threat landscape <year>`) will **merge into and overwrite** the generated one. Give yours a distinct title. This is a statement about *your own* environment, not about any upstream platform ([Report-Types](<../Report-Types.md#before-you-write-four-things-that-bite>)).
 
 ## Report-metadata
 
@@ -24,10 +24,10 @@
 | Author | | **Your member identity** — becomes `created_by_ref` (§8.2) |
 | Source Reliability | | Admiralty `A`–`F` |
 | Info Credibility | | Admiralty `1`–`6` |
-| Threat level | | `High` \| `Medium` \| `Low` (§3.4) — urgency and proximity, **not** a confidence grade. Emitted as `threat_level` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
-| Threat domain | | **This report's scope claim rests on this field.** `Constituency` \| `National` \| `Regional` \| `Partner` \| `World` (§3.3). Highest applicable rung wins. Emitted as `threat_domain` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
-| Activity category | | One or more of the nine categories in §5.2 — emitted as `activity_category` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
-| Observed date | | **Required where this report records an incident.** When the activity was *observed*, not when this was written. It contributes to the incident's identity key (§9.2), so a wrong date forks a duplicate rather than updating. Emitted as `observed_date` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
+| Threat level | | `High` \| `Medium` \| `Low` (§3.4) — urgency and proximity, **not** a confidence grade. Emitted as `threat_level` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
+| Threat domain | | **This report's scope claim rests on this field.** `Constituency` \| `National` \| `Regional` \| `Partner` \| `World` (§3.3). Highest applicable rung wins. Emitted as `threat_domain` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
+| Activity category | | One or more of the nine categories in §5.2 — emitted as `activity_category` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
+| Observed date | | **Required where this report records an incident.** When the activity was *observed*, not when this was written. It contributes to the incident's identity key (§9.2), so a wrong date forks a duplicate rather than updating. Emitted as `observed_date` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
 
 ## Key-judgments
 
@@ -80,4 +80,3 @@
 | Source | Reference / URL | Reliability |
 | --- | --- | --- |
 |  |  |  |
-

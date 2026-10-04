@@ -38,7 +38,7 @@ To eliminate these friction points, Google Threat Intelligence (Google TI) intro
 
 Before initiating development, integrators must ensure their environment meets the following prerequisites:
 
-* **API Key:** A valid, provisioned Google TI (VirusTotal) Enterprise API key. As a best practice, use [Service Account API keys](../02-group-management/admins-guide.md#1.3.-service-accounts-management) rather than individual user API keys.
+* **API Key:** A valid, provisioned Google TI (VirusTotal) Enterprise API key. As a best practice, use [Service Account API keys](../02-group-management/admins-guide.md#13-service-accounts-management) rather than individual user API keys.
 * **Licensing Tier:** Access to the Enterprise or Enterprise +.
 * **HTTP Client:** Support for handling compressed stream encoding (`bzip2`) and paginated REST operations.
 
@@ -102,7 +102,7 @@ Note that:
 >
 > Keep in mind that **a single IoC can belong to multiple curated collections simultaneously**. If you run batch downloads across different collections, the same IoC may appear in multiple responses, representing its association with different curated objects. If you want to keep relationships with other collections as well, check your local system first when injecting a relationships field into the JSON and ensure your local data stays in sync with the new payload.
 
-The following [Implementation & Code Examples](#4-implementation--code-examples) section provides an advanced Python example, while the [Requests and Responses Examples](#7--requests-and-responses-examples) section contains sample API payloads.
+The following [Implementation & Code Examples](#4-implementation--code-examples) section provides an advanced Python example, while the [Requests and Responses Examples](#7-requests-and-responses-examples) section contains sample API payloads.
 
 ## `/collections/sync/ioc-deltas/{time}`---ioc-delta-feed-endpoint
 
@@ -139,7 +139,7 @@ Elements of interest should mirror the object types selected during your initial
 >
 > Note that the absence of a collection in this new `relationships` object, when compared to your local system, signals to the client that the IoC has been removed from that collection and the relationship between the IoC and the curated collection no longer exist.
 
-The following [Implementation & Code Examples](#4-implementation--code-examples) section provides an advanced Python example, while the [Requests and Responses Examples](#7--requests-and-responses-examples) section contains sample API payloads.
+The following [Implementation & Code Examples](#4-implementation--code-examples) section provides an advanced Python example, while the [Requests and Responses Examples](#7-requests-and-responses-examples) section contains sample API payloads.
 
 ***
 

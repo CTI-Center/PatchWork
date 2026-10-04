@@ -20,13 +20,13 @@ Your personal key will be listed in the section labeled **GOOGLE THREAT INTELLIG
 
 ![](../../img/69f5223c873bc3abdbc5131853cc6d369ac3f4d8ce503e12235e20d65a75906f-user_api_key_20260227.png)
 
-For **integrations**, Google TI **group administrators** can [create **Service Accounts** ](../02-group-management/admins-guide.md#1.3.1.-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group)and utilize [their API keys](../02-group-management/admins-guide.md#1.3.3.-getting-a-service-accounts-api-key) instead. These are ideal because they are not tied to a specific individual and do not require email addresses or the completion of invitation forms.
+For **integrations**, Google TI **group administrators** can [create **Service Accounts** ](../02-group-management/admins-guide.md#131-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group)and utilize [their API keys](../02-group-management/admins-guide.md#133-getting-a-service-accounts-api-key) instead. These are ideal because they are not tied to a specific individual and do not require email addresses or the completion of invitation forms.
 
 # legacy-mandiant-api-keys
 
 Customers using legacy Mandiant Threat Intelligence integrations **must replace their existing basic authentication configuration with a Google Threat Intelligence API key**. Following the [migration guide](google-threat-intelligence-customer-migration/mati-migration-guide.md#out-of-the-box-third-party-integrations), update your credentials as follows:
 
-* **API Secret** (`api_secret`): Replace your Mandiant API Secret with your [new Google TI Service Account](../02-group-management/admins-guide.md#1.3.1.-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group) [API key](../02-group-management/admins-guide.md#1.3.3.-getting-a-service-accounts-api-key).
+* **API Secret** (`api_secret`): Replace your Mandiant API Secret with your [new Google TI Service Account](../02-group-management/admins-guide.md#131-adding-a-new-service-account-to-an-existing-google-threat-intelligence-group) [API key](../02-group-management/admins-guide.md#133-getting-a-service-accounts-api-key).
 * **API Key ID** (`api_key`): Replace your Mandiant API Key ID with the string `gti-user`.
 
 ---

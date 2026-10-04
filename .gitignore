@@ -1,5 +1,14 @@
 # This keeps your local cache and junk out of everyone else's clone.
 # =======================================================
+# Release copies are separate, history-free distributions, not source files.
+/dist/
+# Private development material. Already-tracked files remain in Git history;
+# use tools/public-review for publication, never change this checkout's visibility.
+/docs/OpenCTI-Transfer-Plan.md
+/docs/GTI-Data-Structures.md
+/docs/GTI-OpenCTI-Backend-Plan.md
+/docs/design-system/
+/.openai/
 # Local app configs
 # Named explicitly rather than as `.*` — that pattern matched `.gitignore`
 # itself and `.github/`, so neither could ever be committed.

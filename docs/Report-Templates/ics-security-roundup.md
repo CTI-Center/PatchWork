@@ -1,5 +1,5 @@
 > [!WARNING] Retired — do not start a new report from this template
-> `ics-security-roundup` is a **retired** type. It is still a valid `report_types` value so historical imports stay readable, but nothing new should be authored with it ([why](<../Report-Types.md#retired-—-valid,-not-authored-(3)>)).
+> `ics-security-roundup` is a **retired** type. It is still a valid `report_types` value so historical imports stay readable, but nothing new should be authored with it ([why](<../Report-Types.md#retired--valid-not-authored-3>)).
 >
 > **Write this instead:**
 > [`news-analysis`](news-analysis.md) for the roundup, [`industry`](industry.md) for a standing picture of the OT/ICS sector, or [`vulnerability-exploitation`](vulnerability-exploitation.md) for the OT vulnerability half. A single ICS incident was always [`threat-alert`](threat-alert.md).
@@ -21,10 +21,10 @@
 | Author | | **Your member identity** — becomes `created_by_ref` (§8.2) |
 | Source Reliability | | Admiralty `A`–`F` |
 | Info Credibility | | Admiralty `1`–`6` |
-| Threat level | | `High` \| `Medium` \| `Low` (§3.4) — urgency and proximity, **not** a confidence grade. Emitted as `threat_level` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
-| Threat domain | | `Constituency` \| `National` \| `Regional` \| `Partner` \| `World` (§3.3). Highest applicable rung wins. Emitted as `threat_domain` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
-| Activity category | | One or more of the nine categories in §5.2 — emitted as `activity_category` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
-| Observed date | | **Required where this report records an incident.** When the activity was *observed*, not when this was written. It contributes to the incident's identity key (§9.2), so a wrong date forks a duplicate rather than updating. Emitted as `observed_date` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
+| Threat level | | `High` \| `Medium` \| `Low` (§3.4) — urgency and proximity, **not** a confidence grade. Emitted as `threat_level` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
+| Threat domain | | `Constituency` \| `National` \| `Regional` \| `Partner` \| `World` (§3.3). Highest applicable rung wins. Emitted as `threat_domain` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
+| Activity category | | One or more of the nine categories in §5.2 — emitted as `activity_category` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
+| Observed date | | **Required where this report records an incident.** When the activity was *observed*, not when this was written. It contributes to the incident's identity key (§9.2), so a wrong date forks a duplicate rather than updating. Emitted as `observed_date` in the Patchwork extension ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
 
 ## Key-judgments
 
@@ -70,4 +70,3 @@
 | Source | Reference / URL | Reliability |
 | --- | --- | --- |
 |  |  |  |
-

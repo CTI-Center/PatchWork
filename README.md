@@ -3,10 +3,12 @@
 ---
 This framework exists to turn analyst observations of adversary activity into an actionable, standards-conformant threat intelligence compatible with STIX 2.1, **in a record where each judgement stays revisable without destroying the ones around it**. **Patchwork** is a threat-intelligence framework for tracking adversaries and sharing reports, composed from five published standards — that patching-together is where the name comes from.
 
-> **Status: draft v0.6, circulated for community review.**
+> **Status: draft v0.7, circulated for community review.**
 > Several design choices were close calls and are marked as such in the text. Disagreement is useful — see  [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
-This project began as personal documentation. As it grew, I realized that each standard contributes a piece of the puzzle I was looking for. I'm grateful you're here to build on what I started, and I value your time. This framework will be published once it reaches a version worth sharing.
+This project began as personal documentation. As it grew, I realized that each standard contributes a piece of the puzzle I was looking for. I'm grateful you're here to build on what I started, and I value your time. This draft is shared for public review, not as a final standard.
+
+We are developing a threat-intelligence platform designed to be compatible with the Patchwork CTI framework. The platform is a work in progress, not a released or verified-conformant implementation. The framework remains platform-independent; this distribution contains its specification, templates, examples and tools, not the platform's internal development plans.
 
 Please note: *the document structure was generated with AI assistance and may contain errors.*
 
@@ -23,16 +25,17 @@ Please note: *the document structure was generated with AI assistance and may co
 
 ## Repository-layout
 
-Generated from the repository by [`tools/repo-tree`](tools/repo-tree/README.md) — move a folder, re-run it, and this block follows. Edit the descriptions in `tools/repo-tree/descriptions.json`, not here.
+This is the framework-only public distribution. [`tools/public-review`](tools/public-review/README.md) prepares a clean copy and regenerates its layout using [`tools/repo-tree`](tools/repo-tree/README.md). Edit the descriptions in `tools/repo-tree/descriptions.json`, not here.
 
 <!-- repo-tree:start -->
 
 ```markdown
+├── .github/                        Automated public documentation checks
+│   └── workflows/                  Link and public-export verification workflow
 ├── .gitignore                      Local caches and editor config kept out of the repo
 ├── docs/
 │   ├── CONTRIBUTING.md             How to propose changes
 │   ├── Easy-access/                Local copies of the source standards
-│   ├── OpenCTI-Transfer-Plan.md    GTI-aligned OpenCTI migration proposal
 │   ├── Patchwork-CTI-Framework.md  The specification
 │   ├── Real-Examples/              Worked report samples
 │   ├── Report-Templates/           One skeleton per report type — 13 to author, 3 retired
@@ -46,6 +49,7 @@ Generated from the repository by [`tools/repo-tree`](tools/repo-tree/README.md) 
 └── tools/                          Scripts — see each tool's own README
     ├── check-links/                Validates the internal links in docs/
     ├── gtidocs-mirror/             Refreshes the GTI documentation snapshot
+    ├── public-review/              Prepares a validated framework-only public copy
     └── repo-tree/                  Regenerates the tree on this page
 ```
 
@@ -57,15 +61,21 @@ This repo is written in [Obsidian](https://obsidian.md) and read on GitHub. The 
 
 ### Headings-are-kebab-case
 
-Words in a heading are joined with hyphens, and every cross-reference points at that text, lowercased:
+Words in a heading are joined with hyphens. Section links use GitHub's generated anchor, not the literal heading:
 
 ```markdown
 ### 4.1-Three-tiers-of-object,-linked
 
-[4.1](docs/Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked)
+[4.1](docs/Patchwork-CTI-Framework.md#41-three-tiers-of-object-linked)
 ```
 
-Obsidian matches an anchor against the literal heading text. GitHub matches a slug it builds by lowercasing the heading and deleting its punctuation. The two are not reconcilable — no single anchor string satisfies both — and this framework is authored in Obsidian day to day, so headings are written in the form Obsidian resolves. The cost is that section anchors do not scroll on github.com; the links still open the right file. Only whitespace becomes a hyphen. Everything else — dots, commas, em dashes, backticks — is preserved exactly.
+Published section links use **GitHub's generated anchors**: lowercase heading text, spaces replaced by hyphens, punctuation and formatting removed, with numbered suffixes for duplicate headings. Literal underscores in vocabulary identifiers remain. For example, the heading above generates `#41-three-tiers-of-object-linked`, not Obsidian's literal `#4.1-three-tiers-of-object,-linked`.
+
+When editing in Obsidian, preserve the published GitHub anchors rather than replacing them with literal-heading fragments. Check the public documents, including the reference copies, before publishing:
+
+```sh
+python3 tools/check-links/check-links.py --public --all
+```
 
 
 ### Obsidian-settings
@@ -100,7 +110,6 @@ Portions are adapted from the [CERT-EU Cyber Threat Intelligence Framework](http
 | Document | What it covers |
 | --- | --- |
 | **[The framework](docs/Patchwork-CTI-Framework.md)** | The specification itself — adversary model, attribution ladder, classification, confidence, sharing and STIX serialisation. Has its own [table of contents](docs/Patchwork-CTI-Framework.md#table-of-contents) and [glossary](docs/Patchwork-CTI-Framework.md#glossary). |
-| **[OpenCTI + GTI development roadmap](docs/OpenCTI-Transfer-Plan.md)** | Source-audited plan to reuse, configure and extend OpenCTI for GTI mappings, Patchwork serialization, analyst UI, security and production readiness. |
 | **[Report types](docs/Report-Types.md)** | Which report type to use when, a template for each of the 13 authored kinds, and the worked samples. |
 | **[Vocabularies](docs/Vocabularies.md)** · **[Sectors](docs/Sectors.md)** | The controlled value sets. |
 | **[Contributing](docs/CONTRIBUTING.md)** | How to propose a change, and what a good one looks like. |

@@ -6,15 +6,17 @@ Patchwork Signal is a product design layer for turning OpenCTI into a focused th
 
 This package is documentation-first. It defines the product contract that should be reviewed before production components are changed.
 
+Only this foundation proposal and the token source are included on the framework branch. The component contracts, product patterns, Stitch prompt pack and interactive specimen belong to separate platform development and are not linked here as if they were available. This design-system proposal is excluded from the framework-only public export.
+
 ## Start-here
 
 | Artifact | Purpose |
 | --- | --- |
 | [Token source](tokens.json) | Portable semantic tokens with dark/light modes and their FDS lineage. |
-| [Component contracts](components.md) | Anatomy, variants, states, accessibility, and OpenCTI reuse rules. |
-| [Product patterns](patterns.md) | Page-level composition for search, entities, reports, graphs, and dashboards. |
-| [Stitch prompt pack](stitch-brief.md) | Production-ready prompts for the three reference screens when Stitch MCP is connected. |
-| [Interactive specimen](specimen/index.html) | Offline browser preview of the tokens and principal workflows. |
+| Component contracts — not included on this branch | Anatomy, variants, states, accessibility, and OpenCTI reuse rules. |
+| Product patterns — not included on this branch | Page-level composition for search, entities, reports, graphs, and dashboards. |
+| Stitch prompt pack — not included on this branch | Production-ready prompts for the three reference screens when Stitch MCP is connected. |
+| Interactive specimen — not included on this branch | Offline browser preview of the tokens and principal workflows. |
 
 ## Design-principles
 
@@ -133,4 +135,4 @@ The reference material is used to learn from workflow conventions, not to reprod
 
 ## Stitch-status
 
-Stitch MCP was not available in the current tool environment when v0.1 was authored. The [Stitch prompt pack](stitch-brief.md) is the handoff contract: once the connector is available, generate the three reference screens, record the returned project/screen IDs there, and review the output against the acceptance checklist before treating it as design input.
+Stitch MCP was not available in the current tool environment when v0.1 was authored. The Stitch prompt pack is the platform handoff contract, maintained outside this branch: once the connector is available, generate the three reference screens, record the returned project/screen IDs there, and review the output against the acceptance checklist before treating it as design input.

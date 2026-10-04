@@ -131,7 +131,7 @@ This reference provides a detailed list of the various data types that can be ma
 | vt.BehaviourVerdict.TROJAN           |
 | vt.BehaviourVerdict.UNKNOWN\_VERDICT |
 
-[Back to top](#top)
+[Back to top](#reference)
 
 ## file-types
 
@@ -270,7 +270,7 @@ This reference provides a detailed list of the various data types that can be ma
 | vt.FileType.ZIP            | compressed zip                                           |
 | vt.FileType.ZLIB           | compressed zlib                                          |
 
-[Back to top](#top)
+[Back to top](#reference)
 
 ## google-ti-assessment-severity-types
 
@@ -281,7 +281,7 @@ This reference provides a detailed list of the various data types that can be ma
 | vt.GtiSeverity.SEVERITY\_MEDIUM |
 | vt.GtiSeverity.SEVERITY\_HIGH   |
 
-[Back to top](#top)
+[Back to top](#reference)
 
 ## google-ti-assessment-verdicts
 
@@ -292,7 +292,7 @@ This reference provides a detailed list of the various data types that can be ma
 | vt.GtiVerdict.VERDICT\_SUSPICIOUS |
 | vt.GtiVerdict.VERDICT\_MALICIOUS  |
 
-[Back to top](#top)
+[Back to top](#reference)
 
 ---
 

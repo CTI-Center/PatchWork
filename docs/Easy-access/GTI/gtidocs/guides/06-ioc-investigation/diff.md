@@ -112,7 +112,7 @@ The landing page allows you to create a new DIFF session. This requires you to c
 
 Note that the DIFF landing site lists the historical DIFF jobs that you launched in the past, this allows you to continue working with the identified patterns at a later stage and can come in handy if you mistakenly closed the browser tab.
 
-From this point onward the workflow is exactly the same as the one described in the [previous section](#vt-enterprise-search-list-workflow).
+From this point onward the workflow is exactly the same as the one described in the [previous section](#enterprise-search-list-workflow).
 
 To learn more about DIFF please refer to the [Frequently Asked Questions](diff/how-does-diff-work.md).
 

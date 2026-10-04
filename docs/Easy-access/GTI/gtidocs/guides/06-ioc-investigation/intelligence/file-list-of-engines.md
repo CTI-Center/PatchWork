@@ -70,7 +70,7 @@ This is the full list of allowed vendor prefixes:
 
 The list is subject to changes as new antivirus solutions are integrated in Google Threat Intelligence and existing ones change names so do not forget to visit it every once in a while.
 
-[Back to Top](#top)
+[Back to Top](#file---list-of-engines)
 
 ---
 

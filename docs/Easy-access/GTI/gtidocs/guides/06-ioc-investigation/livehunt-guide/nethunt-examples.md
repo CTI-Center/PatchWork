@@ -603,7 +603,7 @@ condition:
 
 Matches: URL
 
-⚠️ Useful for filetypes that are not automatically submmited to Google TI ([list](nethunt#filetypes-automatically-analysed)).
+⚠️ Useful for filetypes that are not automatically submmited to Google TI ([list](nethunt.md#filetypes-automatically-analysed)).
 
 ```cplusplus
 import "vt"
@@ -742,7 +742,7 @@ vt.net.domain.https_certificate.thumbprint == "AABBCCDD"
 
 Matches: URL
 
-⚠️ To obtain a dhash check: [obtaining a domain favicon dhash](nethunt.md#how-do-i-obtain-a-domain-favicon-hashes:).
+⚠️ To obtain a dhash check: [obtaining a domain favicon dhash](nethunt.md#how-do-i-obtain-a-domain-favicon-hashes).
 
 ```cplusplus
 import "vt"
@@ -788,7 +788,7 @@ condition:
 
 Matches: FILE
 
-⚠️ To convert an IP range to Integer match you can check: [generating IP integer range](nethunt.md#how-do-i-match-urls-in-certain-asn-number/ip-range,-etc:).
+⚠️ To convert an IP range to Integer match you can check: [generating IP integer range](nethunt.md#how-do-i-match-urls-in-certain-asn-numberip-range-etc).
 
 ```cplusplus
 import "vt"
@@ -826,7 +826,7 @@ condition:
 
 Matches: IP
 
-⚠️ To convert an IP range to Integer match you can check: [generating IP integer range](nethunt.md#how-do-i-match-urls-in-certain-asn-number/ip-range,-etc:).
+⚠️ To convert an IP range to Integer match you can check: [generating IP integer range](nethunt.md#how-do-i-match-urls-in-certain-asn-numberip-range-etc).
 
 ```cplusplus
 import "vt"

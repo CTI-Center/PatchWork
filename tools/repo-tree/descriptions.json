@@ -3,13 +3,14 @@
 
   "README.md": "",
   ".gitignore": "Local caches and editor config kept out of the repo",
+  ".github": "Automated public documentation checks",
+  ".github/workflows": "Link and public-export verification workflow",
   "LICENSE": "CC BY 4.0 — framework, templates, documentation",
   "LICENSE-MIT": "MIT — scripts and tooling",
 
   "docs": "",
   "docs/CONTRIBUTING.md": "How to propose changes",
   "docs/Easy-access": "Local copies of the source standards",
-  "docs/OpenCTI-Transfer-Plan.md": "GTI-aligned OpenCTI migration proposal",
   "docs/Patchwork-CTI-Framework.md": "The specification",
   "docs/Real-Examples": "Worked report samples",
   "docs/Report-Templates": "One skeleton per report type — 13 to author, 3 retired",
@@ -21,5 +22,6 @@
   "tools": "Scripts — see each tool's own README",
   "tools/check-links": "Validates the internal links in docs/",
   "tools/gtidocs-mirror": "Refreshes the GTI documentation snapshot",
+  "tools/public-review": "Prepares a validated framework-only public copy",
   "tools/repo-tree": "Regenerates the tree on this page"
 }

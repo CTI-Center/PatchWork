@@ -75,7 +75,7 @@ Before proceeding, ensure the following requirements are met. Failure to meet th
 
 * **Splunk Version Compatibility**: the current Google Threat Intelligence App for Splunk version is 1.4.3 and it is compatible with Splunk Enterprise, Splunk Cloud 10.0, 9.4, 9.3, 9.2. You can check the version history [here](https://splunkbase.splunk.com/app/7351).
 * **Splunk Administrator Privileges**: you need to have **administrator** access to your Splunk instance to install the application.
-* **Google TI API Key**: a valid **API key** is required to authenticate with the Google TI service. It is strongly recommended to use a [service account](../02-group-management/admins-guide.md#1.3.-service-accounts-management) API key rather than a key tied to an individual user account. Service account keys are better suited for automated systems. Please, notice that the usage of this integration entails API [quota consumption](../02-group-management/quota-consumption.md).
+* **Google TI API Key**: a valid **API key** is required to authenticate with the Google TI service. It is strongly recommended to use a [service account](../02-group-management/admins-guide.md#13-service-accounts-management) API key rather than a key tied to an individual user account. Service account keys are better suited for automated systems. Please, notice that the usage of this integration entails API [quota consumption](../02-group-management/quota-consumption.md).
 
 # 3.-installation
 

@@ -449,7 +449,7 @@ A string with citation ids.
 
 ## technologywatchlistconfig
 
-TechnologyWatchListConfig is the configuration for the technology watchlist threat scenario. See [Get Started](/threat-intelligence/guides/get-started#threat-scenario-configurations) for more details on creating and managing threat scenario configurations.
+TechnologyWatchListConfig is the configuration for the technology watchlist threat scenario. See [Get Started](https://gtidocs.virustotal.com/threat-intelligence/guides/get-started#threat-scenario-configurations) for more details on creating and managing threat scenario configurations.
 
 ```json
 {

@@ -1,7 +1,7 @@
 
 
 > **Worked example.**
-> This is a filled-in [threat-alert](../Report-Templates/threat-alert.md) following the submission standard in [Report-Types](../Report-Types.md). Appendix A is the full object mapping, written so a deterministic builder can be generated from it; no STIX bundle ships yet ([10](../Patchwork-CTI-Framework.md#10.-samples)). `cc-` is **this member's** namespace token — pick your own ([4.2](../Patchwork-CTI-Framework.md#4.2-member-namespaces)).
+> This is a filled-in [threat-alert](../Report-Templates/threat-alert.md) following the submission standard in [Report-Types](../Report-Types.md). Appendix A is the full object mapping, written so a deterministic builder can be generated from it; no STIX bundle ships yet ([10](../Patchwork-CTI-Framework.md#10-samples)). `cc-` is **this member's** namespace token — pick your own ([4.2](../Patchwork-CTI-Framework.md#42-member-namespaces)).
 
 ## Report-metadata
 
@@ -69,7 +69,7 @@ The report's `object_refs` cover: the incident, the activity cluster, the person
 
 | Evidence in the post | STIX object | Key fields |
 |---|---|---|
-| The seller's activity | **`intrusion-set`** | `name: cc-CL-CRI-0028` (cluster code, §4.3), **no aliases**, `attribution_tier: Cluster`, confidence 30, `organizational-gain` + `intent: [financial]` |
+| The seller's activity | **`intrusion-set`** | `name: cc-CL-CRI-2026-0028` (cluster code, §4.3), **no aliases**, `attribution_tier: Cluster`, confidence 30, `organizational-gain` + `intent: [financial]` |
 | Persona **BigBrother** | **`threat-actor`** | `name: BigBrother`, `x_opencti_type: Threat-Actor-Group`, `threat_actor_types: [criminal]` — the presented identity, joined by `intrusion-set --attributed-to--> threat-actor` (§4.4) |
 | The sale event itself | **`incident`** | `cc-Access sale: … — 2026-06-08`, `observed_date: 2026-06-08` (both, §9.2: the date is the structural key, the name keeps it readable), `incident_type: compromise`, `x_opencti_severity: high`¹, Admiralty **C/3** → `x_opencti_reliability: C - Fairly reliable`, confidence 60 |
 | "…of Tehran Traffic Police" | `identity` (organization) | sector `government:public administration and defense` |
@@ -85,7 +85,7 @@ The report's `object_refs` cover: the incident, the activity cluster, the person
 ```mermaid
 flowchart TB
   RPT["report [threat-alert]<br/>(container: object_refs → all)"] -.-> INC
-  INC["incident<br/>cc-Access sale … — 2026-06-08<br/>C/3 · High"] -->|attributed-to| IS["intrusion-set<br/>cc-CL-CRI-0028<br/>Cluster · conf 30"]
+  INC["incident<br/>cc-Access sale … — 2026-06-08<br/>C/3 · High"] -->|attributed-to| IS["intrusion-set<br/>cc-CL-CRI-2026-0028<br/>Cluster · conf 30"]
   IS -->|attributed-to| TA["threat-actor<br/>BigBrother (persona)"]
   INC -->|targets| ORG["identity (org)<br/>Tehran Traffic Police"]
   INC -->|targets| SYS["identity (system)<br/>Smart Traffic Control<br/>Command Center"]
@@ -105,19 +105,18 @@ flowchart TB
 # Appendix-B-—-Analytic-notes
 
 - **Why Cluster tier / confidence 30.**
-	A single persona and a single observation, with no infrastructure or capability corroboration — one Diamond vertex (adversary) plus a claimed victim. Creating a temporary group would need a second cluster to link to ([4.1](../Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked)); the Session ID is the pivot that might one day supply one.
+	A single persona and a single observation, with no infrastructure or capability corroboration — one Diamond vertex (adversary) plus a claimed victim. Creating a temporary group would need a second cluster to link to ([4.1](../Patchwork-CTI-Framework.md#41-three-tiers-of-object-linked)); the Session ID is the pivot that might one day supply one.
 - **Why the persona is its own object.**
-	`BigBrother` is a brand on a forum. It can be sold, abandoned after a takedown, or impersonated. Modelled as an alias of the cluster, any of those would force an edit to the activity record — and a second cluster adopting the same brand would silently merge into this one ([4.4](../Patchwork-CTI-Framework.md#4.4-personas-are-objects,-not-aliases)).
+	`BigBrother` is a brand on a forum. It can be sold, abandoned after a takedown, or impersonated. Modelled as an alias of the cluster, any of those would force an edit to the activity record — and a second cluster adopting the same brand would silently merge into this one ([4.4](../Patchwork-CTI-Framework.md#44-personas-are-objects-not-aliases)).
 - **Why Admiralty C/3 sits on the incident, not the actor.**
-	Reliability and credibility describe *this observation*. On the durable cluster they would be overwritten by the next one ([7.1](../Patchwork-CTI-Framework.md#7.1-admiralty-grading-attaches-to-the-observation)).
+	Reliability and credibility describe *this observation*. On the durable cluster they would be overwritten by the next one ([7.1](../Patchwork-CTI-Framework.md#71-admiralty-grading-attaches-to-the-observation)).
 - **Why High threat level with only C/3 sourcing.**
-	The two axes are independent ([3.4](../Patchwork-CTI-Framework.md#3.4-threat-levels)). Level reflects urgency and proximity — access to an operational traffic-control system, offered for sale today. Grade reflects how well-sourced the claim is. A thin source does not make an urgent threat less urgent; it makes it less certain.
+	The two axes are independent ([3.4](../Patchwork-CTI-Framework.md#34-threat-levels)). Level reflects urgency and proximity — access to an operational traffic-control system, offered for sale today. Grade reflects how well-sourced the claim is. A thin source does not make an urgent threat less urgent; it makes it less certain.
 - **Why `incident_type: compromise`.**
 	An access sale implies the system is already compromised. The sale is evidence of the intrusion, not the intrusion itself.
 - **Cluster code.**
-	`cc-CL-CRI-0028` came from the authoring member's code registry — issued on first sight, never renumbered ([4.3](../Patchwork-CTI-Framework.md#4.3-attribution-codes-are-assigned-once-and-never-reused)). The builder pins it as a literal so the sample reproduces standalone.
+	`cc-CL-CRI-2026-0028` came from the authoring member's code registry — issued on first sight, never renumbered ([4.3](../Patchwork-CTI-Framework.md#43-attribution-codes-are-assigned-once-and-never-reused)). The builder pins it as a literal so the sample reproduces standalone.
 
 ¹ `severity` is a reserved property name in STIX 2.1 and the validator hard-fails on it, so the bundle carries `x_opencti_severity`. OpenCTI's incident ingest reads a top-level `severity`; rename at push time if platform-native severity is wanted.
 
 ---
-

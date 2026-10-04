@@ -105,9 +105,9 @@ Most YARA rules are based in patterns found inside the files themselves, however
 
 | Field                                           | Type    | Description                                                                                                                                                                      | Example                                                                        |
 | ----------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| vt.metadata.gti\_assessment.severity.value      | string  | Severity of the file provided by Google Threat Intelligence. One of the values defined on the [Google TI assessment severity types](#google-ti-assessment-severity-types) table. | vt.metadata.gti\_assessment.severity.value == vt.GtiSeverity.SEVERITY\_MEDIUM  |
+| vt.metadata.gti\_assessment.severity.value      | string  | Severity of the file provided by Google Threat Intelligence. One of the values defined on the [Google TI assessment severity types](hunting-reference.md#google-ti-assessment-severity-types) table. | vt.metadata.gti\_assessment.severity.value == vt.GtiSeverity.SEVERITY\_MEDIUM  |
 | vt.metadata.gti\_assessment.threat\_score.value | integer | Threat score of the file provided by Google Threat Intelligence. This is a value between 1 and 100.                                                                              | vt.metadata.gti\_assessment.threat\_score.value > 0                            |
-| vt.metadata.gti\_assessment.verdict.value       | string  | Verdict of the file provided by Google Threat Intelligence. One of the values defined on the [Google TI assessment verdicts](#google-ti-assessment-verdicts) table.              | vt.metadata.gti\_assessment.verdict.value == vt.GtiVerdict.VERDICT\_SUSPICIOUS |
+| vt.metadata.gti\_assessment.verdict.value       | string  | Verdict of the file provided by Google Threat Intelligence. One of the values defined on the [Google TI assessment verdicts](hunting-reference.md#google-ti-assessment-verdicts) table.              | vt.metadata.gti\_assessment.verdict.value == vt.GtiVerdict.VERDICT\_SUSPICIOUS |
 
 ### submissions
 
@@ -120,7 +120,7 @@ Most YARA rules are based in patterns found inside the files themselves, however
 | vt.metadata.times\_submitted        | integer | Number of times the file has been submitted to Google Threat Intelligence. This is 1 for the first submission.                                                                            | vt.metadata.times\_submitted > 5                               |
 | vt.metadata.unique\_sources         | integer | Number of unique sources that have submitted this file.                                                                                                                                   | vt.metadata.unique\_sources > 3                                |
 
-[Back to top](#top)
+[Back to top](#file-hunting)
 
 ---
 

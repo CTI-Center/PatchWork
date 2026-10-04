@@ -1,5 +1,5 @@
 > **Worked example 3.**
-> A filled-in [malware-profile](../Report-Templates/malware-profile.md) for a real, third-party-reported campaign — standardised into Patchwork's model rather than authored from an original observation. No STIX bundle ships with this sample yet — none do ([10](../Patchwork-CTI-Framework.md#10.-samples)). Appendix A is the full object mapping, written so a deterministic builder can be generated from it. `cc-` is **this member's** namespace token — pick your own ([4.2](../Patchwork-CTI-Framework.md#4.2-member-namespaces)).
+> A filled-in [malware-profile](../Report-Templates/malware-profile.md) for a real, third-party-reported campaign — standardised into Patchwork's model rather than authored from an original observation. No STIX bundle ships with this sample yet — none do ([10](../Patchwork-CTI-Framework.md#10-samples)). Appendix A is the full object mapping, written so a deterministic builder can be generated from it. `cc-` is **this member's** namespace token — pick your own ([4.2](../Patchwork-CTI-Framework.md#42-member-namespaces)).
 >
 > Unlike the Access-sale scenarios, this is not a CTI Center original observation: it standardises a public Acronis Threat Research Unit (TRU) report into Patchwork's object model. That distinction is itself worth showing — most of what a member ingests will be someone else's reporting, not their own telemetry.
 
@@ -26,22 +26,22 @@
 > - `actor-profile` —
 > 	the report refuses attribution and holds the adversary at Cluster tier, confidence 30. There is no standing actor picture to profile.
 > - `threat-report` —
-> 	the [feed-assigned](<../Report-Types.md#feed-assigned-types-(11)-—-no-template>) values classify an imported report that has **no finer classification** available. This one has a finer classification. Note the reason is *not* that the report was standardised by hand — it is ingested third-party reporting, as the header above says.
+> 	the [feed-assigned](<../Report-Types.md#feed-assigned-types-11--no-template>) values classify an imported report that has **no finer classification** available. This one has a finer classification. Note the reason is *not* that the report was standardised by hand — it is ingested third-party reporting, as the header above says.
 >
 > **Why Medium.**
-> [3.4 Threat levels](../Patchwork-CTI-Framework.md#3.4-threat-levels) lists "a focused espionage campaign against a sector of interest" as its own Medium example — this is that case. It is not High: nothing here evidences current, direct targeting of a specific member's constituency the way the Access-sale scenarios' named national authority does.
+> [3.4 Threat levels](../Patchwork-CTI-Framework.md#34-threat-levels) lists "a focused espionage campaign against a sector of interest" as its own Medium example — this is that case. It is not High: nothing here evidences current, direct targeting of a specific member's constituency the way the Access-sale scenarios' named national authority does.
 >
 > **Why World.**
-> [3.3 Threat domains](../Patchwork-CTI-Framework.md#3.3-threat-domains) ranks domains by relation to *a member's* constituency. CRESCENTHARVEST targets a civilian population (Iranian protest supporters, journalists, diaspora), not an organisation any generic member instantiation is likely to count as its constituency, its own country, or a declared partner interest — so it falls to World under a typical instantiation. A member whose constituency is itself Iranian civil-society-facing would instantiate this differently, which is exactly the point of domains being constituency-relative rather than fixed.
+> [3.3 Threat domains](../Patchwork-CTI-Framework.md#33-threat-domains) ranks domains by relation to *a member's* constituency. CRESCENTHARVEST targets a civilian population (Iranian protest supporters, journalists, diaspora), not an organisation any generic member instantiation is likely to count as its constituency, its own country, or a declared partner interest — so it falls to World under a typical instantiation. A member whose constituency is itself Iranian civil-society-facing would instantiate this differently, which is exactly the point of domains being constituency-relative rather than fixed.
 
 ## Key-judgments
 
-- **The activity is unattributed and stays at Cluster tier**, `cc-CL-STA-0001`, confidence 30. The source report notes TTP, code and lure overlaps with Iranian-nexus activity Check Point has reported under other names (Educated Manticore / Nimbus Manticore) — this is recorded as a **noted overlap, not an attribution**: infrastructure is fresh and non-overlapping, so nothing here supports a `derived-from` or `related-to` edge to those other trackings yet ([4.1](../Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked)).
+- **The activity is unattributed and stays at Cluster tier**, `cc-CL-STA-2026-0001`, confidence 30. The source report notes TTP, code and lure overlaps with Iranian-nexus activity Check Point has reported under other names (Educated Manticore / Nimbus Manticore) — this is recorded as a **noted overlap, not an attribution**: infrastructure is fresh and non-overlapping, so nothing here supports a `derived-from` or `related-to` edge to those other trackings yet ([4.1](../Patchwork-CTI-Framework.md#41-three-tiers-of-object-linked)).
 - **The targeting is the population, not an organisation.**
 	Victims are modelled as a `group` identity — "Iranian protestors, dissidents, journalists and diaspora" — rather than a named organisation, because the source report describes a targeted demographic, not a breached entity. This is a different victim shape than either Access-sale scenario, both of which target a specific organisation.
 - **Motivation is `STA` (state), intent `espionage`.**
 	`resource_level: government` and long-term information theft against a politically-defined population, not a monetisable target, are the basis — nothing here reads as financially motivated.
-- **The malware and the campaign share a name** (`CRESCENTHARVEST`) in the source report; the framework keeps them as separate STIX objects (`campaign` and `malware`) linked by `uses`, consistent with [9.1](../Patchwork-CTI-Framework.md#9.1-the-object-graph) — a shared public name is not a reason to collapse two different kinds of object into one.
+- **The malware and the campaign share a name** (`CRESCENTHARVEST`) in the source report; the framework keeps them as separate STIX objects (`campaign` and `malware`) linked by `uses`, consistent with [9.1](../Patchwork-CTI-Framework.md#91-the-object-graph) — a shared public name is not a reason to collapse two different kinds of object into one.
 
 ## What-happened
 
@@ -59,7 +59,7 @@ The campaign objective is long-term information theft rather than a single extra
 
 ### Attribution-note
 
-The source report notes overlaps in TTPs, code and lures with Iranian-nexus activity Check Point has publicly tracked under other names (Educated Manticore / Nimbus Manticore), but describes the observed infrastructure in this campaign as fresh and non-overlapping with that prior reporting. Patchwork records this as free text on the Cluster-tier `intrusion-set`'s description, **not** as a `related-to` or `derived-from` edge to any object representing those other trackings — an edge would assert a link the evidence doesn't yet carry ([4.1](../Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked), [4.5](../Patchwork-CTI-Framework.md#4.5-attribution-doctrine)).
+The source report notes overlaps in TTPs, code and lures with Iranian-nexus activity Check Point has publicly tracked under other names (Educated Manticore / Nimbus Manticore), but describes the observed infrastructure in this campaign as fresh and non-overlapping with that prior reporting. Patchwork records this as free text on the Cluster-tier `intrusion-set`'s description, **not** as a `related-to` or `derived-from` edge to any object representing those other trackings — an edge would assert a link the evidence doesn't yet carry ([4.1](../Patchwork-CTI-Framework.md#41-three-tiers-of-object-linked), [4.5](../Patchwork-CTI-Framework.md#45-attribution-doctrine)).
 
 ## Who's-affected
 
@@ -115,13 +115,13 @@ Hand-derived, and written to be mechanically buildable: a deterministic builder 
 | Acronis TRU (authoring vendor) | `identity` (organization) | `name: Acronis Threat Research Unit (TRU)` |
 | Targeted population | `identity` (group) | `name: Iranian protestors, dissidents, journalists and diaspora` |
 | Actor origin / primary victim geography | `location` | `name: Iran`, `country: IR`, `region: western-asia` |
-| The unattributed adversary | `intrusion-set` | `name: cc-CL-STA-0001`, `attribution_tier: Cluster`, `primary_motivation: organizational-gain`, `intent: [espionage]`, `resource_level: government`, confidence 30 |
+| The unattributed adversary | `intrusion-set` | `name: cc-CL-STA-2026-0001`, `attribution_tier: Cluster`, `primary_motivation: organizational-gain`, `intent: [espionage]`, `resource_level: government`, confidence 30 |
 | The operation | `campaign` | `name: CRESCENTHARVEST`, `first_seen: 2026-01-09`, confidence 70 |
 | The implant | `malware` | `name: CRESCENTHARVEST`, `is_family: true`, `malware_types: [remote-access-trojan, spyware, keylogger]`, 10 `capabilities` values, `implementation_languages: [c++]`, `architecture_execution_envs: [x86-64]` |
 | Each ATT&CK technique | `attack-pattern` × 10 | `mitre-attack` external reference + kill-chain phase (see table above) |
-| Each file hash | `indicator` × 7 | `pattern: [file:hashes.'SHA-256' = '<sha256>']`, `pattern_type: stix`, `valid_from: 2026-01-09`. No `valid_until` — a hash does not stop identifying its file ([9.6](../Patchwork-CTI-Framework.md#9.6-indicators-and-sightings)) |
-| C2 domain | `indicator` | `pattern: [domain-name:value = 'servicelog-information.com']`, `pattern_type: stix`, `valid_from: 2026-01-09`, `valid_until: 2027-01-09` — bounded because domains get re-registered ([9.6](../Patchwork-CTI-Framework.md#9.6-indicators-and-sightings)); the 12-month window is this member's choice, not a framework default |
-| C2 IP | `indicator` | `pattern: [ipv4-addr:value = '185.242.105.230']`, `pattern_type: stix`, `valid_from: 2026-01-09`, `valid_until: 2027-01-09` — bounded because addresses get reassigned ([9.6](../Patchwork-CTI-Framework.md#9.6-indicators-and-sightings)) |
+| Each file hash | `indicator` × 7 | `pattern: [file:hashes.'SHA-256' = '<sha256>']`, `pattern_type: stix`, `valid_from: 2026-01-09`. No `valid_until` — a hash does not stop identifying its file ([9.6](../Patchwork-CTI-Framework.md#96-indicators-and-sightings)) |
+| C2 domain | `indicator` | `pattern: [domain-name:value = 'servicelog-information.com']`, `pattern_type: stix`, `valid_from: 2026-01-09`, `valid_until: 2027-01-09` — bounded because domains get re-registered ([9.6](../Patchwork-CTI-Framework.md#96-indicators-and-sightings)); the 12-month window is this member's choice, not a framework default |
+| C2 IP | `indicator` | `pattern: [ipv4-addr:value = '185.242.105.230']`, `pattern_type: stix`, `valid_from: 2026-01-09`, `valid_until: 2027-01-09` — bounded because addresses get reassigned ([9.6](../Patchwork-CTI-Framework.md#96-indicators-and-sightings)) |
 | The report itself | `report` | `report_types: [malware-profile]`, `published: 2026-07-09`, `created_by_ref:` Acronis TRU, confidence 75 (credibility 2, §7.1), `x_opencti_reliability: B - Usually reliable` |
 
 ## Relationship-graph
@@ -129,7 +129,7 @@ Hand-derived, and written to be mechanically buildable: a deterministic builder 
 ```mermaid
 flowchart TB
   RPT["report [malware-profile]<br/>(container: object_refs → all)"] -.-> CAM
-  CAM["<b>campaign</b><br/>CRESCENTHARVEST<br/>conf 70"] -->|attributed-to| IS["intrusion-set<br/>cc-CL-STA-0001 · Cluster<br/>conf 30"]
+  CAM["<b>campaign</b><br/>CRESCENTHARVEST<br/>conf 70"] -->|attributed-to| IS["intrusion-set<br/>cc-CL-STA-2026-0001 · Cluster<br/>conf 30"]
   CAM -->|uses| MAL["<b>malware</b><br/>CRESCENTHARVEST<br/>RAT + infostealer"]
   IS -->|uses| MAL
   IS -->|originates-from| IRAN["location<br/>Iran"]

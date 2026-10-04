@@ -27,7 +27,7 @@ Attack Surface Management (ASM)'s Akamai integration gives you more visibility b
 Adding this integration requires two steps: 
 
 1. [Create API Key in the Akamai API Clients utility](#create-api-key-in-akamai)
-2. [Provide Akamai API Credentials for ASM integration](##provide-akamai-api-credentials-for-asm-integration)
+2. [Provide Akamai API Credentials for ASM integration](#provide-akamai-api-credentials-for-asm-integration)
 
 ## create-api-key-in-akamai
 

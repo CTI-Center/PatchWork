@@ -14,7 +14,7 @@ retrieved: 2026-09-01
 
 # threat-profiles
 
-**Threat Profiles** serve as a customized lens through which you can view and analyze Google Threat Intelligence's vast data, by defining specific criteria such as the targeted industries, target regions, source regions, malware roles, and actors motivations. These criteria are then leveraged by our system to identify and recommend the most relevant threats ([Threat Actors](threat-actors-card.md), [Campaigns](campaigns.md), [Malware & Tools](malware-tools.md), [IoC Collections](ioc-collections.md), [Vulnerabilities](../10-vulnerability-intelligence/explore-vulnerabilities.md) and [Reports](../07-report-analysis/reports-and-analysis.md#2.-reports-cards)) and create a personalized Threat Profile tailored to your organization's unique risk profile allowing users to focus on threats that matter most.
+**Threat Profiles** serve as a customized lens through which you can view and analyze Google Threat Intelligence's vast data, by defining specific criteria such as the targeted industries, target regions, source regions, malware roles, and actors motivations. These criteria are then leveraged by our system to identify and recommend the most relevant threats ([Threat Actors](threat-actors-card.md), [Campaigns](campaigns.md), [Malware & Tools](malware-tools.md), [IoC Collections](ioc-collections.md), [Vulnerabilities](../10-vulnerability-intelligence/explore-vulnerabilities.md) and [Reports](../07-report-analysis/reports-and-analysis.md#2-reports-cards)) and create a personalized Threat Profile tailored to your organization's unique risk profile allowing users to focus on threats that matter most.
 
 Note that all web interface functionalities are also accessible and automatable via our API. Visit the [**API documentation** here](https://gtidocs.readme.io/reference/create-threat-profile).
 
@@ -80,7 +80,7 @@ Apart from this you have other buttons to:
 
 ## 2.1.-recommendations
 
-**Recommendations** are [Threat Actors](threat-actors-card.md), [Campaigns](campaigns.md), [Malware & Tools](malware-tools.md), [IoC Collections](ioc-collections.md), [Vulnerabilities](../10-vulnerability-intelligence/explore-vulnerabilities.md) and [Reports](../07-report-analysis/reports-and-analysis.md#2.-reports-cards) objects associated with a Threat Profile by our system. This module takes into consideration the Threat Profile configuration settings and matching criteria to only link relevant objects.
+**Recommendations** are [Threat Actors](threat-actors-card.md), [Campaigns](campaigns.md), [Malware & Tools](malware-tools.md), [IoC Collections](ioc-collections.md), [Vulnerabilities](../10-vulnerability-intelligence/explore-vulnerabilities.md) and [Reports](../07-report-analysis/reports-and-analysis.md#2-reports-cards) objects associated with a Threat Profile by our system. This module takes into consideration the Threat Profile configuration settings and matching criteria to only link relevant objects.
 
 | Matching criteria/categories | Matching configuration                                                                                       |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------ |

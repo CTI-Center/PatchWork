@@ -1,7 +1,7 @@
 > **Worked example 2.**
-> A filled-in [threat-alert](../Report-Templates/threat-alert.md) following the submission standard in [Report-Types](../Report-Types.md). Its companion is [Access-sale-scenario-1](Access-sale-scenario-1.md) — the **same activity cluster**, seen 74 days earlier. Read the two together: this one exists to show what the framework does when a tracked cluster is observed *again*, which is the case sample 1 could not exercise. `cc-` is **this member's** namespace token — pick your own ([4.2](../Patchwork-CTI-Framework.md#4.2-member-namespaces)).
+> A filled-in [threat-alert](../Report-Templates/threat-alert.md) following the submission standard in [Report-Types](../Report-Types.md). Its companion is [Access-sale-scenario-1](Access-sale-scenario-1.md) — the **same activity cluster**, seen 74 days earlier. Read the two together: this one exists to show what the framework does when a tracked cluster is observed *again*, which is the case sample 1 could not exercise. `cc-` is **this member's** namespace token — pick your own ([4.2](../Patchwork-CTI-Framework.md#42-member-namespaces)).
 >
-> No STIX bundle ships with this sample yet — none do ([10](../Patchwork-CTI-Framework.md#10.-samples)). Appendix A is written so a deterministic builder can be generated from it.
+> No STIX bundle ships with this sample yet — none do ([10](../Patchwork-CTI-Framework.md#10-samples)). Appendix A is written so a deterministic builder can be generated from it.
 
 ## Report-metadata
 
@@ -23,18 +23,18 @@
 
 ## Key-judgments
 
-- The listing is **the same operator as [Access-sale-scenario-1](Access-sale-scenario-1.md)**. The Session contact ID is byte-identical to the one in the June post, and the persona's forum counters advance monotonically from it (24→44 posts, 21→36 threads, reputation 46→49, "11 Months"→"1 Year", same Jul 2025 join). This is a second observation of `cc-CL-CRI-0028`, not a new cluster.
+- The listing is **the same operator as [Access-sale-scenario-1](Access-sale-scenario-1.md)**. The Session contact ID is byte-identical to the one in the June post, and the persona's forum counters advance monotonically from it (24→44 posts, 21→36 threads, reputation 46→49, "11 Months"→"1 Year", same Jul 2025 join). This is a second observation of `cc-CL-CRI-2026-0028`, not a new cluster.
 - The seller claims a **completed breach of a national prisons authority** and offers a database of ~91,000 rows across 79 columns covering prisoners from all provinces of Iran. A CSV sample is offered on request and a JPEG sample is linked publicly.
 - The claim is **plausible but uncorroborated** (C/3). It is first-party and unverified. The offered samples were deliberately **not** retrieved (see *Handling*), so nothing has been done that could raise credibility — that is a conscious trade, not an omission.
 - **The data is already out.**
 	Unlike the June listing, there is no access here to revoke and no window to close. This is breach response and data-subject protection, not prevention.
-- Attribution stays at **Cluster** tier. Two incidents on one cluster do not make a temporary group ([4.1](../Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked)) — see Appendix B.
+- Attribution stays at **Cluster** tier. Two incidents on one cluster do not make a temporary group ([4.1](../Patchwork-CTI-Framework.md#41-three-tiers-of-object-linked)) — see Appendix B.
 
 ### Why-High
 
 Sample 1 earned High from *access to an operational system being sold now* — live, ongoing, closable. **That argument does not transfer here**, and reusing it would be dishonest: the compromise is finished and the access is not on offer.
 
-High rests instead on [3.4](../Patchwork-CTI-Framework.md#3.4-threat-levels)'s *significant incident affecting the constituency*. §3.4 flags that Patchwork deliberately does not define "significant incident" and leaves it to each member, so the assumption is stated rather than assumed: **CTI Center treats the bulk exposure of ~91,000 records held by a national authority, concerning a population that cannot take any protective action on its own behalf, as significant.** A member whose instantiation differs will grade this differently, and should.
+High rests instead on [3.4](../Patchwork-CTI-Framework.md#34-threat-levels)'s *significant incident affecting the constituency*. §3.4 flags that Patchwork deliberately does not define "significant incident" and leaves it to each member, so the assumption is stated rather than assumed: **CTI Center treats the bulk exposure of ~91,000 records held by a national authority, concerning a population that cannot take any protective action on its own behalf, as significant.** A member whose instantiation differs will grade this differently, and should.
 
 ## What-happened
 
@@ -56,7 +56,7 @@ Recorded here because the reasoning is the point of a worked example, not only i
 	Retrieving either would mean taking possession of the personal data of incarcerated people to confirm a claim that action does not depend on. The URL is recorded **defanged** — it is an artifact of the sale, not personal data, and is a legitimate observable — but nothing behind it was fetched.
 - **The dataset is described and quantified, never reproduced.**
 	~91,000 rows, 79 columns, and not one field name or record beyond that.
-- This is [8.3](../Patchwork-CTI-Framework.md#8.3-handling-obligations-—-acknowledged,-not-specified) PII minimisation applied at collection time rather than at sharing time. §8.3 notes free-text description fields as the obvious risk surface; a screenshot and an eager analyst are another.
+- This is [8.3](../Patchwork-CTI-Framework.md#83-handling-obligations--acknowledged-not-specified) PII minimisation applied at collection time rather than at sharing time. §8.3 notes free-text description fields as the obvious risk surface; a screenshot and an eager analyst are another.
 
 ## Who's-affected
 
@@ -106,9 +106,9 @@ The report's `object_refs` cover: the new incident, the existing activity cluste
 
 | Evidence in the post | STIX object | New / reused | Key fields |
 |---|---|---|---|
-| The seller's activity | **`intrusion-set`** | **reused** | `name: cc-CL-CRI-0028` — the *same* code, not a new one ([4.3](../Patchwork-CTI-Framework.md#4.3-attribution-codes-are-assigned-once-and-never-reused)). Still `attribution_tier: Cluster`. Confidence **30 → 45** |
+| The seller's activity | **`intrusion-set`** | **reused** | `name: cc-CL-CRI-2026-0028` — the *same* code, not a new one ([4.3](../Patchwork-CTI-Framework.md#43-attribution-codes-are-assigned-once-and-never-reused)). Still `attribution_tier: Cluster`. Confidence **30 → 45** |
 | Persona **BigBrother** | **`threat-actor`** | **reused** | Description refreshed to the 2026-08-21 counters (44 posts / 36 threads / rep 49). Same object, same `attributed-to` edge |
-| The sale event itself | **`incident`** | **new** | `cc-Data sale: Iran Prisons Organization — 2026-08-21`, `observed_date: 2026-08-21` (both, [9.2](../Patchwork-CTI-Framework.md#9.2-identity-and-merge-rules): the date is the structural key, the name keeps it readable), `incident_type: compromise`, `x_opencti_severity: high`, Admiralty **C/3** → `x_opencti_reliability: C - Fairly reliable`, confidence 60 |
+| The sale event itself | **`incident`** | **new** | `cc-Data sale: Iran Prisons Organization — 2026-08-21`, `observed_date: 2026-08-21` (both, [9.2](../Patchwork-CTI-Framework.md#92-identity-and-merge-rules): the date is the structural key, the name keeps it readable), `incident_type: compromise`, `x_opencti_severity: high`, Admiralty **C/3** → `x_opencti_reliability: C - Fairly reliable`, confidence 60 |
 | "…prisons organization…" | `identity` (organization) | **new** | State Organization of Prisons and Security and Corrective Measures, sector `government:public administration and defense` |
 | "[IRAN]" / "all provinces" | `location` | **reused** | Country **Iran** only. **No city object** — the victim is a national authority, unlike sample 1's Tehran-scoped one |
 | "91k rows … 79 columns" | *(no object)* | — | Recorded in the incident description as a quantity. No `observed-data`, no artifact, nothing derived from the sample |
@@ -116,7 +116,7 @@ The report's `object_refs` cover: the new incident, the existing activity cluste
 | Session messenger ID | **`indicator`** + `user-account` SCO | **reused** | Same pattern on `user-account:account_login`, `indicator_types: [attribution]`. Add `indicates` → the new incident; the `indicates` → intrusion-set edge already exists |
 | Forum persona account | `user-account` SCO | **reused** | `account_type: forum`, `related-to` the threat-actor |
 | Sample image link | `url` SCO + `indicator` | **new** | `url:value = 'https://ibb.co/nNFpj16x'`, `indicator_types: [attribution]`, `based-on` the SCO. Defanged in prose only — STIX patterns carry the live value |
-| The observation as product | **`report`** | **new** | `report_types: [threat-alert]`, `published: 2026-08-21`, `threat_level: High`, `threat_domain: Constituency`, `activity_category: ["Cybercrime", "Data exposure and leaks"]` ([9.3](../Patchwork-CTI-Framework.md#9.3-classification-properties)) |
+| The observation as product | **`report`** | **new** | `report_types: [threat-alert]`, `published: 2026-08-21`, `threat_level: High`, `threat_domain: Constituency`, `activity_category: ["Cybercrime", "Data exposure and leaks"]` ([9.3](../Patchwork-CTI-Framework.md#93-classification-properties)) |
 
 ## Relationship-graph
 
@@ -126,7 +126,7 @@ Dashed nodes already existed before this report; solid nodes are new.
 flowchart TB
   RPT["report [threat-alert]<br/>(container: object_refs → all)"] -.-> INC
   INC["<b>incident (new)</b><br/>cc-Data sale: Iran Prisons Org — 2026-08-21<br/>C/3 · High"] -->|attributed-to| IS
-  IS["intrusion-set<br/>cc-CL-CRI-0028<br/>Cluster · conf 30→45"] -->|attributed-to| TA["threat-actor<br/>BigBrother (persona)"]
+  IS["intrusion-set<br/>cc-CL-CRI-2026-0028<br/>Cluster · conf 30→45"] -->|attributed-to| TA["threat-actor<br/>BigBrother (persona)"]
   INC0["incident<br/>cc-Access sale … — 2026-06-08<br/>(sample 1, untouched)"] -->|attributed-to| IS
   INC -->|targets| ORG["<b>identity (org, new)</b><br/>State Organization of Prisons<br/>and Security and Corrective Measures"]
   INC -->|targets| IR["location Iran"]
@@ -149,7 +149,7 @@ flowchart TB
 # Appendix-B-—-Analytic-notes
 
 - **Why this is not a temporary group — the point of this sample.**
-	Two observations of the same operator look like grounds for promotion, and under Mandiant's or Unit 42's rename-in-place model something would change here. Under Patchwork nothing does. The promotion gate at [4.1](../Patchwork-CTI-Framework.md#4.1-three-tiers-of-object,-linked) requires a relationship between **≥2 clusters**; what exists here is **one cluster with two incidents**. A cluster is "one coherent body of activity", and same persona plus byte-identical contact ID is as coherent as a body of activity gets. Creating `cc-TGR-CRI-####` over a single cluster would assert a grouping with nothing to group.
+	Two observations of the same operator look like grounds for promotion, and under Mandiant's or Unit 42's rename-in-place model something would change here. Under Patchwork nothing does. The promotion gate at [4.1](../Patchwork-CTI-Framework.md#41-three-tiers-of-object-linked) requires a relationship between **≥2 clusters**; what exists here is **one cluster with two incidents**. A cluster is "one coherent body of activity", and same persona plus byte-identical contact ID is as coherent as a body of activity gets. Creating `cc-TGR-CRI-YYYY-####` over a single cluster would assert a grouping with nothing to group.
 
 - **What *would* promote it.** A second, independently-coded cluster that links to this one — the Session ID reappearing under a different handle in unrelated activity, shared infrastructure, or a matching data-handling pattern (same forum, same sample-hosting service, same column-count boasting) traced to a body of activity we did not already attribute to BigBrother. Then two clusters exist, a `related-to` or `part-of` edge is warranted, and a temporary group has something to sit above.
 
@@ -157,16 +157,16 @@ flowchart TB
 	§4.1 forbids rewriting *history*; it does not freeze an assessment. The section says confidence "describes the assessment", and the assessment has genuinely improved: two observations, two distinct victims, and a durable pivot present in both. Nothing historical is disturbed — the June incident object, its C/3 grading and its own confidence are untouched, and a reader can still reconstruct exactly what was believed on 2026-06-08. Confidence 45 keeps it below any hand-wave promotion threshold, which is appropriate: still one Diamond vertex firmly evidenced (adversary), with victims claimed but capability and infrastructure unevidenced.
 
 - **Why the code is reused, not reissued.**
-	`cc-CL-CRI-0028` was issued on first sight and is never renumbered ([4.3](../Patchwork-CTI-Framework.md#4.3-attribution-codes-are-assigned-once-and-never-reused)). Issuing `cc-CL-CRI-00xx` for this listing would fork the cluster and strand June's evidence in a separate object. Note also that the registry is keyed by the **cluster**, not the persona — if BigBrother turned out to be a shared or sold account tomorrow, the code would stay put and the correction would happen on the `attributed-to` edge.
+	`cc-CL-CRI-2026-0028` was issued on first sight and is never renumbered ([4.3](../Patchwork-CTI-Framework.md#43-attribution-codes-are-assigned-once-and-never-reused)). Issuing `cc-CL-CRI-YYYY-00xx` for this listing would fork the cluster and strand June's evidence in a separate object. Note also that the registry is keyed by the **cluster**, not the persona — if BigBrother turned out to be a shared or sold account tomorrow, the code would stay put and the correction would happen on the `attributed-to` edge.
 
 - **Why the persona is refreshed but not forked.**
-	The brand is the same brand ([4.4](../Patchwork-CTI-Framework.md#4.4-personas-are-objects,-not-aliases)). Updating the threat-actor description with the new counters is a fact refresh on a presented identity, and it costs nothing analytically — precisely because the persona is a separate object, none of the activity record moves when it changes. Had the handle been carried as an alias of the intrusion-set instead, this second listing under an evolved profile would have had nowhere clean to go.
+	The brand is the same brand ([4.4](../Patchwork-CTI-Framework.md#44-personas-are-objects-not-aliases)). Updating the threat-actor description with the new counters is a fact refresh on a presented identity, and it costs nothing analytically — precisely because the persona is a separate object, none of the activity record moves when it changes. Had the handle been carried as an alias of the intrusion-set instead, this second listing under an evolved profile would have had nowhere clean to go.
 
 - **Why Admiralty grading sits on the new incident, not the cluster.**
-	The June observation was graded C/3 and this one is graded C/3 independently ([7.1](../Patchwork-CTI-Framework.md#7.1-admiralty-grading-attaches-to-the-observation)). They happen to match; if this listing had arrived with corroboration from the victim it would be C/2 or B/2 and June's C/3 would still stand. A grade on the cluster would be overwritten by whichever observation landed last, which is the failure mode §7.1 exists to prevent.
+	The June observation was graded C/3 and this one is graded C/3 independently ([7.1](../Patchwork-CTI-Framework.md#71-admiralty-grading-attaches-to-the-observation)). They happen to match; if this listing had arrived with corroboration from the victim it would be C/2 or B/2 and June's C/3 would still stand. A grade on the cluster would be overwritten by whichever observation landed last, which is the failure mode §7.1 exists to prevent.
 
 - **Why two activity categories.**
-	`Cybercrime` covers the monetisation; `Data exposure and leaks` covers what actually happens to the data subjects. [5.2](../Patchwork-CTI-Framework.md#5.2-activity-categories) states these overlap by design and that an activity may carry more than one — this is that case, and dropping the second would erase the harm from the record. The cluster's MOT class stays `CRI`; the two vocabularies answer different questions and neither derives from the other.
+	`Cybercrime` covers the monetisation; `Data exposure and leaks` covers what actually happens to the data subjects. [5.2](../Patchwork-CTI-Framework.md#52-activity-categories) states these overlap by design and that an activity may carry more than one — this is that case, and dropping the second would erase the harm from the record. The cluster's MOT class stays `CRI`; the two vocabularies answer different questions and neither derives from the other.
 
 - **Why `incident_type: compromise` and not something about theft.**
 	"We hacked into their System" is a compromise claim, and `compromise` is the value sample 1 already emits — reusing it keeps the two incidents queryable as one series. Patchwork defines no `incident_type_ov` of its own ([Vocabularies](../Vocabularies.md) defines no incident-type vocabulary), so coining `data-theft` here would invent a private value in a framework whose stated rationale for its vocabularies is conformance. The *sale of already-exfiltrated data* is carried in the incident description, where prose belongs, not in a made-up enum.

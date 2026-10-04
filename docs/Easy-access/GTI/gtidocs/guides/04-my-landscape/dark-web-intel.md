@@ -36,7 +36,7 @@ In today's threat landscape, security teams are often overwhelmed by a high volu
 >
 > The **Relevance System** behind the **My Landscape** module is currently in **Beta**. While it provides powerful predictive and tailored threat insights, you should continue to use existing security controls like **Digital Threat Monitoring (DTM)** and **Attack Surface Management (ASM)** in parallel to ensure comprehensive coverage during this phase.
 
-**Access Roles**: Your experience within the My Landscape module and Relevance System will depend on your assigned [role](../02-group-management/admins-guide.md#1.2.0.-setting-default-users-roles-and-permissions):
+**Access Roles**: Your experience within the My Landscape module and Relevance System will depend on your assigned [role](../02-group-management/admins-guide.md#120-setting-default-users-roles-and-permissions):
 
 * **GTI Alerts Admin:** Required to set up the initial Organization Profile, configure integrations, and manage system-wide alert thresholds.
 * **GTI Alerts User:** Designed for day-to-day analysts. Users can view dashboards, investigate alerts, change alert statuses, and provide feedback, but cannot change the core organizational configuration.

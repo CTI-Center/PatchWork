@@ -34,7 +34,7 @@ YARA offers a mechanism for [defining custom variables](https://virustotal.githu
 | tags                | vt.metadata.tags                      | string becomes a dictionary, to replicate previous functionality you could use: for any tag in vt.metadata.tags : ( tag == "signed" )                           |
 | vhash               | vt.metadata.vhash                     |                                                                                                                                                                 |
 
-[Back to top](#top)
+[Back to top](#legacy-variables)
 
 ---
 

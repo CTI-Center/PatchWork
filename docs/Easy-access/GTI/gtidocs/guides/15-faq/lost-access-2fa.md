@@ -14,7 +14,7 @@ retrieved: 2026-09-01
 
 # i-lost-access-to-my-authentication-device/offline-codes-for-2fa
 
-To regain access if your 2FA device or offline codes are unavailable, request a [2FA reset](../02-group-management/admins-guide.md#1.2.5.-resetting-two-factor-authentication-for-a-user)   from any of your group administrators.
+To regain access if your 2FA device or offline codes are unavailable, request a [2FA reset](../02-group-management/admins-guide.md#125-resetting-two-factor-authentication-for-a-user)   from any of your group administrators.
 
 ---
 

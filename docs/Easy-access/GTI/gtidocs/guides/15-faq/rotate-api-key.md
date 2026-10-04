@@ -24,7 +24,7 @@ To rotate your API key, log in to the platform and access the **API Key** sectio
 >
 > Note that once rotated, **any requests made using the old API key will fail immediately**. Ensure you **update all active scripts, tools, and integrations with the new key** immediately after rotation to avoid service disruption.
 >
-> For automated integrations and production environments, we highly recommend using [Service Account API keys](../02-group-management/admins-guide.md#1.3.-service-accounts-management). These are more resilient and better suited for long-term programmatic access than individual user keys.
+> For automated integrations and production environments, we highly recommend using [Service Account API keys](../02-group-management/admins-guide.md#13-service-accounts-management). These are more resilient and better suited for long-term programmatic access than individual user keys.
 
 ---
 

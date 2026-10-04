@@ -161,7 +161,7 @@ You can track your requested articles ingestions on the **MY OSINT** tab of the 
 
 [Threat Profiles](../05-global-landscape/manage-threat-profiles.md) provide a customized view of the threat landscape. By defining specific criteria, a machine learning module recommends the most relevant threat intelligence objects to create a personalized profile tailored to your organization's unique risk profile, allowing you to focus on what matters most.
 
-Apart from the automated Recommendations, you can customize your Threat Profiles by [manually adding reports to them](../05-global-landscape/manage-threat-profiles.md#managing-recommendations---adding-new-objects-to-a-threat-profile).
+Apart from the automated Recommendations, you can customize your Threat Profiles by [manually adding reports to them](../05-global-landscape/manage-threat-profiles.md#212-managing-recommendations---adding-and-deleting-objects).
 There are two ways to do this:
 
 * From a **Report** card by clicking the **Follow** button at the top.

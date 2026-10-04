@@ -31,9 +31,9 @@ In a file\_behaviour object you will find these attributes:
 * `files_deleted`  <*list of strings*> names of the files deleted.
 * `files_attribute_changed`: <*list of strings*> full path of files subject to some sort of active attribute modification.
 * `has_html_report`: \<boolean> whether there is an HTML report for this behaviour analysis.
-* `has_evtx`: \<boolean> whether there is a EVTX file for this behaviour analysis. Check out [/file\_behaviours/\{sandbox\_id}/evtx](#file-behaviour-evtx) for more information.
-* `has_memdump`: \<boolean> whether there is a memdump file for this behaviour analysis. Check out [/file\_behaviours/\{sandbox\_id}/memdump](#file-behaviour-memdump).
-* `has_pcap`: \<boolean> whether there is a PCAP network capture for this behaviour analysis. Check out [/file\_behaviours/\{sandbox\_id}/pcap](#file_behaviours_pcap) for more information.
+* `has_evtx`: \<boolean> whether there is a EVTX file for this behaviour analysis. Check out [/file\_behaviours/\{sandbox\_id}/evtx](../03-ioc-investigation/files-behaviours/file-behaviour-evtx.md) for more information.
+* `has_memdump`: \<boolean> whether there is a memdump file for this behaviour analysis. Check out [/file\_behaviours/\{sandbox\_id}/memdump](../03-ioc-investigation/files-behaviours/file-behaviour-memdump.md).
+* `has_pcap`: \<boolean> whether there is a PCAP network capture for this behaviour analysis. Check out [/file\_behaviours/\{sandbox\_id}/pcap](../03-ioc-investigation/files-behaviours/file_behaviours_pcap.md) for more information.
 * `hosts_file`: <*string*> the hosts file field stores the content of the local hostname-ip mapping  hosts file IF AND ONLY IF the file was modified, else this field is not  populated.
 * `ids_alerts`: <*list of dictionaries*> list of IDS alerts, sorted by timestamp. Every item contains the following keys:
   * `alert_context`: <*dictionary*> matched alert context:
@@ -57,7 +57,7 @@ In a file\_behaviour object you will find these attributes:
 * `services_started`: <*list of strings*>  new services started.
 * `services_stopped`: <*list of strings*> services stopped during the execution of the given file.
 * `services_deleted`: <*list of strings*> services deleted during the execution of the given file.
-* `services_bound`: <*list of strings*> service binding, mainly in Android, see: <[https://developer.android.com/guide/components/bound-services.html>](https://developer.android.com/guide/components/bound-services.html>).
+* `services_bound`: <*list of strings*> service binding, mainly in Android, see: <[https://developer.android.com/guide/components/bound-services.html>](https://developer.android.com/guide/components/bound-services.html).
 * `windows_searched`: <*list of strings*> names of windows that are searched for.
 * `windows_hidden`: <*list of strings*>  names of windows that are set up to be invisible.
 * `mutexes_opened`: <*list of strings*> name of the mutexes for which the file acquires a handle.

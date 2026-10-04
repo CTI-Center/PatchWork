@@ -238,7 +238,7 @@ Execute the following steps in the Google Cloud's web console:
    ```
    Created service account [masm-integration-svc-account].
    ```
-5. Bind the role created in [Step 3](asm-google-cloud-integration.md#method-b:-create-a-service-account-through-gcloud-cli) to the service account created in the previous step.
+5. Bind the role created in [Step 3](asm-google-cloud-integration.md#method-b-create-a-service-account-through-gcloud-cli) to the service account created in the previous step.
 
    Using the gcloud CLI, run the following command:
 
