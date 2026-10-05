@@ -8,7 +8,7 @@
 >
 > These `[!tip]` callouts are guidance, not content — delete each one as you fill its section.
 
-# <Title>-—-Patch-Report
+# `<Title>`-—-Patch-Report
 
 ## Report-metadata
 

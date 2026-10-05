@@ -9,7 +9,7 @@
 >
 > These `[!tip]` callouts are guidance, not content — delete each one as you fill its section.
 
-# <Title>-—-Executive-Perspective
+# `<Title>`-—-Executive-Perspective
 
 ## Report-metadata
 

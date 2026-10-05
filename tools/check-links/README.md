@@ -50,7 +50,9 @@ The skip is never silent: the summary line says how many files it passed over, s
 
 ## Wiring-it-into-something
 
-Nothing runs it automatically. As a CI step:
+The public-review workflow runs this on pushes and pull requests. The
+[tagged documentation build](../documentation/README.md) also checks all
+Git-shippable Markdown and generates a validated public copy. As a CI step:
 
 ```yaml
 - run: python3 tools/check-links/check-links.py --public --all

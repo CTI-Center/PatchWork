@@ -254,11 +254,11 @@ What the indicator **asserts** about the pattern it carries — whether that pat
 
 ## 2.-The-motivation-model
 
-Financially-motivated crime cannot be a distinct `attack-motivation-ov` value — there is no `financial-gain`. The two connectors resolve this **differently**, and we follow Mandiant's:
+The suggested `attack-motivation-ov` vocabulary has no distinct `financial-gain` value. STIX [2.14](Easy-access/oasis-open/stix-2.1.md#214-open-vocabulary) permits other strings in an open vocabulary, but consumers may ignore them; being outside the suggested set is an interoperability concern, not automatically a conformance failure. Patchwork uses the suggested values and follows Mandiant's mapping. The two connector mappings described here differ:
 
 | Producer | How financial motivation is emitted |
 |---|---|
-| **GTI connector** | Passes GTI's **raw** string through (`AttackMotivationOV(motivation)` on an open vocab) → `primary_motivation = "Financial"` (non-conformant; a GTI limitation) |
+| **GTI connector** | Passes GTI's **raw** string through (`AttackMotivationOV(motivation)` on an open vocab) → `primary_motivation = "Financial"` (outside the suggested vocabulary; consumers may ignore it) |
 | **Mandiant connector** | Explicit map: `"Financial Theft" → organizational-gain` (also `"Military Advantage"`, `"Political Advantage"`, `"Disruption"` → `organizational-gain`) |
 | **Ours** | `organizational-gain` + `intent`, matching Mandiant |
 

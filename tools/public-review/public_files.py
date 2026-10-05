@@ -6,10 +6,12 @@ from pathlib import Path
 PUBLIC = (
     "README.md", "LICENSE", "LICENSE-MIT", ".gitignore", ".github",
     "docs/CONTRIBUTING.md", "docs/Patchwork-CTI-Framework.md",
+    "docs/Member-Registry.md", "docs/Publication-Checklist.md",
+    "docs/Third-Party-Notices.md",
     "docs/Report-Types.md", "docs/Vocabularies.md", "docs/Sectors.md",
     "docs/Report-Templates", "docs/Real-Examples", "docs/Resources",
     "docs/Easy-access", "tools/check-links", "tools/repo-tree",
-    "tools/gtidocs-mirror", "tools/public-review",
+    "tools/gtidocs-mirror", "tools/public-review", "tools/documentation",
 )
 
 

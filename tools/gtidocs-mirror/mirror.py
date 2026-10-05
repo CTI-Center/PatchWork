@@ -74,7 +74,7 @@ SECTIONS = {
 
 USER_AGENT = (
     "Mozilla/5.0 (X11; Linux x86_64) patchwork-gtidocs-mirror/1.0 "
-    "(+https://github.com/CTI-Center-Organization/Patch-CTI-Framework)"
+    "(+https://github.com/CTI-Center/PatchWork)"
 )
 
 HERE = os.path.dirname(os.path.abspath(__file__))

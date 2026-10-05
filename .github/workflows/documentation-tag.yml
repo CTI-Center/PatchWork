@@ -1,0 +1,77 @@
+name: Tagged documentation build
+run-name: Documentation build for ${{ github.ref_name }}
+
+on:
+  push:
+    tags:
+      - 'docs-v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: documentation-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DOCS_TAG: ${{ github.ref_name }}
+    steps:
+      - name: Check out the tagged snapshot and complete branch history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Require a tag in development history
+        run: python3 tools/documentation/check_tag.py --tag "$DOCS_TAG"
+      - name: Compile and test every tool directory
+        run: |
+          mkdir -p dist/reports
+          python3 -m compileall -q tools
+          for tool in tools/*/; do
+            python3 -m unittest discover -s "$tool" -p 'test_*.py' 2>&1 | tee -a dist/reports/tool-tests.log
+          done
+      - name: Smoke-test the tool command-line interfaces without network refreshes
+        run: |
+          python3 tools/check-links/check-links.py --public
+          python3 tools/repo-tree/repo-tree.py --help
+          python3 tools/public-review/prepare-public.py --help
+          python3 tools/gtidocs-mirror/mirror.py --help
+      - name: Check the public layout and all Markdown documents
+        run: |
+          python3 tools/repo-tree/repo-tree.py --public --check 2>&1 | tee dist/reports/layout-check.log
+          python3 tools/check-links/check-links.py --all 2>&1 | tee dist/reports/all-links.log
+          python3 tools/check-links/check-links.py --public --all 2>&1 | tee dist/reports/public-links.log
+      - name: Generate the complete framework-only documentation package
+        run: |
+          python3 tools/public-review/prepare-public.py --output dist/documentation 2>&1 | tee dist/reports/export.log
+          python3 dist/documentation/tools/repo-tree/repo-tree.py --public --check
+          python3 dist/documentation/tools/repo-tree/repo-tree.py --public --print | tee dist/reports/repository-layout.txt
+      - name: Upload the validated documentation package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: patchwork-documentation-${{ github.ref_name }}-${{ github.run_attempt }}
+          path: dist/documentation/
+          # Only the allowlisted export is uploaded, never the source checkout.
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload diagnostic reports even when a check fails
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: documentation-reports-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dist/reports/
+          if-no-files-found: ignore
+          retention-days: 30

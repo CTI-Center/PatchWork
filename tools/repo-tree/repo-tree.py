@@ -139,13 +139,22 @@ def main() -> int:
     ap.add_argument("--check", action="store_true", help="exit 1 if README is stale")
     ap.add_argument("--print", dest="show", action="store_true", help="print, write nothing")
     ap.add_argument("--depth", type=int, default=2, help="levels to descend (default 2)")
+    ap.add_argument("--public", action="store_true", help="use the framework-only export allowlist")
     args = ap.parse_args()
 
     desc = json.loads(DESCRIPTIONS.read_text()) if DESCRIPTIONS.exists() else {}
     # keys starting with "_" are notes to the reader, not paths
     desc = {k.rstrip("/"): v for k, v in desc.items() if not k.startswith("_")}
 
-    rows = flatten(nest(repo_paths(), args.depth))
+    if args.public:
+        # Checking or printing an exported package must not add cache files to it.
+        sys.dont_write_bytecode = True
+        sys.path.insert(0, str(ROOT / "tools/public-review"))
+        from public_files import public_paths
+        paths = public_paths(ROOT)
+    else:
+        paths = repo_paths()
+    rows = flatten(nest(paths, args.depth))
     tree, missing, stale = render(rows, desc)
     block = f"{START}\n\n```markdown\n{tree}\n```\n\n{END}"
 

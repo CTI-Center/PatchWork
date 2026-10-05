@@ -3,9 +3,10 @@
 Regenerates the **Repository-layout** tree in the top-level [README](../../README.md) from the repository itself, so moving a folder and re-running is the whole update.
 
 ```bash
-python3 tools/repo-tree/repo-tree.py              # rewrite README.md
-python3 tools/repo-tree/repo-tree.py --check      # exit 1 if README is stale
-python3 tools/repo-tree/repo-tree.py --print      # write nothing, show the tree
+python3 tools/repo-tree/repo-tree.py --public             # rewrite the public README layout
+python3 tools/repo-tree/repo-tree.py --public --check     # exit 1 if that layout is stale
+python3 tools/repo-tree/repo-tree.py --public --print     # write nothing, show the public tree
+python3 tools/repo-tree/repo-tree.py --print              # show the whole working checkout
 python3 tools/repo-tree/repo-tree.py --depth 3    # descend one level further
 ```
 
@@ -16,6 +17,11 @@ Python 3.9+, standard library only. Output is deterministic, so running it twice
 The tree was hand-maintained and drifted. It listed `img/`, `report-types.md`, `samples/` and `templates/` long after those became `Resources/`, `Report-Types.md`, `Real-Examples/` and `Report-Templates/` — so a reader's first impression of the repo was a map of a repo that no longer existed.
 
 ## What-it-lists
+
+`--public` uses the same explicit allowlist as the public-export tool, excluding
+internal plans and designs even if Git tracks them. Use it for the framework-only
+README and documentation builds. Without that flag, the existing checkout-wide
+Git/filesystem behavior is unchanged:
 
 What git would ship: tracked files, plus untracked files `.gitignore` does not exclude, **intersected with what is actually on disk**. Three consequences worth knowing:
 
@@ -38,16 +44,17 @@ Either one makes it exit non-zero, so `--check` refuses a layout change that lef
 
 ## Wiring-it-into-something
 
-Nothing runs it automatically. To have CI refuse a stale README, `--check` is the whole integration:
+The documentation workflows automatically check the public layout. To run the
+same check locally:
 
 ```yaml
-- run: python3 tools/repo-tree/repo-tree.py --check
+- run: python3 tools/repo-tree/repo-tree.py --public --check
 ```
 
 As a pre-commit hook, regenerate and re-stage instead:
 
 ```bash
-python3 tools/repo-tree/repo-tree.py && git add README.md
+python3 tools/repo-tree/repo-tree.py --public && git add README.md
 ```
 
 ## Markers
