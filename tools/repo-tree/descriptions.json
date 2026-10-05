@@ -4,7 +4,7 @@
   "README.md": "",
   ".gitignore": "Local caches and editor config kept out of the repo",
   ".github": "Automated public documentation checks",
-  ".github/workflows": "Link and public-export verification workflow",
+  ".github/workflows": "Documentation checks and tag-triggered builds",
   "LICENSE": "CC BY 4.0 — framework, templates, documentation",
   "LICENSE-MIT": "MIT — scripts and tooling",
 
@@ -21,6 +21,7 @@
 
   "tools": "Scripts — see each tool's own README",
   "tools/check-links": "Validates the internal links in docs/",
+  "tools/documentation": "Validates development tags for documentation builds",
   "tools/gtidocs-mirror": "Refreshes the GTI documentation snapshot",
   "tools/public-review": "Prepares a validated framework-only public copy",
   "tools/repo-tree": "Regenerates the tree on this page"

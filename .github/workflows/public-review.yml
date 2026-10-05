@@ -11,11 +11,20 @@ jobs:
   public-review:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
       - name: Test GitHub navigation and export safety
         run: |
-          python3 -m unittest discover -s tools/check-links -p 'test_*.py'
-          python3 -m unittest discover -s tools/public-review -p 'test_*.py'
+          python3 -m compileall -q tools
+          for tool in tools/*/; do
+            python3 -m unittest discover -s "$tool" -p 'test_*.py'
+          done
+      - name: Check the framework-only README layout
+        run: python3 tools/repo-tree/repo-tree.py --public --check
       - name: Validate all public Markdown links
         run: python3 tools/check-links/check-links.py --public --all
       - name: Verify a history-free public copy can be prepared

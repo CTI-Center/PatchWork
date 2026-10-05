@@ -59,6 +59,14 @@ class PublicExportTests(unittest.TestCase):
         self.assertIn("exists", result.stdout + result.stderr)
         self.assertEqual(sentinel.read_text(), "keep me")
 
+    def test_documentation_workflow_helper_is_included_in_public_copy(self):
+        self.file("tools/documentation/check_tag.py", "print('check development tag')\n")
+        self.file(".github/workflows/documentation-tag.yml", "name: Documentation build\n")
+        result = self.export()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertTrue((self.output / ".github/workflows/documentation-tag.yml").exists())
+        self.assertTrue((self.output / "tools/documentation/check_tag.py").exists())
+
     def test_public_links_cannot_point_to_private_files(self):
         self.file("docs/OpenCTI-Transfer-Plan.md")
         self.file("README.md", "[Private](docs/OpenCTI-Transfer-Plan.md)\n")

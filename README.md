@@ -15,6 +15,7 @@ Please note: *the document structure was generated with AI assistance and may co
 ## Table-of-contents
 
 - [Repository-layout](#repository-layout)
+- [Documentation-automation](#documentation-automation)
 - [Authoring-conventions](#authoring-conventions)
   - [Headings-are-kebab-case](#headings-are-kebab-case)
   - [Obsidian-settings](#obsidian-settings)
@@ -31,7 +32,7 @@ This is the framework-only public distribution. [`tools/public-review`](tools/pu
 
 ```markdown
 ├── .github/                        Automated public documentation checks
-│   └── workflows/                  Link and public-export verification workflow
+│   └── workflows/                  Documentation checks and tag-triggered builds
 ├── .gitignore                      Local caches and editor config kept out of the repo
 ├── docs/
 │   ├── CONTRIBUTING.md             How to propose changes
@@ -48,12 +49,23 @@ This is the framework-only public distribution. [`tools/public-review`](tools/pu
 ├── README.md
 └── tools/                          Scripts — see each tool's own README
     ├── check-links/                Validates the internal links in docs/
+    ├── documentation/              Validates development tags for documentation builds
     ├── gtidocs-mirror/             Refreshes the GTI documentation snapshot
     ├── public-review/              Prepares a validated framework-only public copy
     └── repo-tree/                  Regenerates the tree on this page
 ```
 
 <!-- repo-tree:end -->
+
+## Documentation-automation
+
+Push a `docs-v*` tag from `development` to run all offline tool tests, check the
+complete Markdown collection and generate a validated documentation package.
+Download the package and reports from the GitHub Actions run's **Artifacts**
+section. The build verifies development ancestry and excludes transfer plans,
+Git history and local backups; it does not create bot commits or publish a release.
+See [the build instructions](tools/documentation/README.md) for tagging and local
+verification commands.
 
 ## Authoring-conventions
 
