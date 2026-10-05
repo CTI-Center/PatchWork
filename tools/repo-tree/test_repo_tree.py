@@ -60,6 +60,11 @@ class PublicLayoutTests(unittest.TestCase):
         self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
         self.assertTrue((self.root / "docs/design-system/internal.md").exists())
 
+    def test_public_print_does_not_add_bytecode_caches_to_the_package(self):
+        result = self.run_tree("--public", "--print")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(list(self.root.rglob("__pycache__")), [])
+
     def test_default_print_still_lists_internal_git_files(self):
         result = self.run_tree("--print")
         self.assertIn("design-system", result.stdout)

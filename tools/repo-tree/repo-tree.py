@@ -147,6 +147,8 @@ def main() -> int:
     desc = {k.rstrip("/"): v for k, v in desc.items() if not k.startswith("_")}
 
     if args.public:
+        # Checking or printing an exported package must not add cache files to it.
+        sys.dont_write_bytecode = True
         sys.path.insert(0, str(ROOT / "tools/public-review"))
         from public_files import public_paths
         paths = public_paths(ROOT)

@@ -77,3 +77,12 @@ python3 tools/public-review/prepare-public.py --output dist/documentation-local
 
 The output directory must be new. Never upload the original checkout or the
 entire `dist/` directory; it may contain local recovery backups.
+
+## Artifact-storage-limits
+
+GitHub can reject uploads when the account's Actions storage quota is exhausted,
+even when every test, link check and generation step succeeded. The workflow
+keeps this failure visible rather than claiming a downloadable package exists.
+Free appropriate Actions artifact storage or adjust the account's storage limit,
+then rerun or push a new build tag. GitHub reports that quota usage can take
+6–12 hours to recalculate. No artifact deletion or billing changes are automated.
