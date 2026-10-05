@@ -6,6 +6,10 @@ images and repository tools are included. Development plans, application prototy
 hosting configuration, local caches and Git metadata are not copied. Unknown new
 top-level documents are excluded until deliberately added to `public_files.py`.
 
+The [publication checklist](../../docs/Publication-Checklist.md),
+[member registry](../../docs/Member-Registry.md) and
+[third-party notices](../../docs/Third-Party-Notices.md) are included in the copy.
+
 ## Prepare-the-copy
 
 From the original repository root, using Python 3.9+ (standard library only):
@@ -36,6 +40,8 @@ history. The public copy contains no `.git` directory and inherits none of that
 history. Never add the original checkout as a remote and push its branches or tags
 to the public repository.
 
-Inspect the generated copy, review the source-document licences described in the
-[project README](../../README.md#licence), then publish only its contents. This
+Inspect the generated copy and complete the owner approval gates in the
+[publication checklist](../../docs/Publication-Checklist.md), including the
+[source-document rights review](../../docs/Third-Party-Notices.md), then publish
+only its contents. A validated export does not establish redistribution rights. This
 tool does not create a Git repository, push code or change repository visibility.

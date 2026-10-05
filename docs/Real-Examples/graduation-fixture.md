@@ -19,7 +19,7 @@ Four independent, unattributed activity clusters, each with exactly one incident
 | `cc-CL-UNK-2025-9003` | synthetic-gamma | `UNK` | Synthetic event against Target Gamma | 2025-05-01 – 2025-05-07 |
 | `cc-CL-CRI-2025-9004` | synthetic-delta | `CRI` | Synthetic event against Target Delta | 2025-02-01 – 2025-02-07 |
 
-All four clusters carry `attribution_tier: Cluster` and confidence 30 (the Cluster-tier baseline), and are namespaced under the `cc` example member token ([4.2](../Patchwork-CTI-Framework.md#42-member-namespaces)). Each incident is linked to its cluster by a single `attributed-to` relationship — 4 clusters, 4 incidents, 4 edges, 0 cluster-to-cluster relationships. IDs are fixed, sequential placeholders (`intrusion-set--00000000-0000-4000-8000-000000009001` and similar), not the UUIDv5-derived IDs the samples' forthcoming builders will use — this bundle is meant to be regenerated or edited directly for a given test, not treated as a stable, citable sample the way those are.
+All four clusters carry `attribution_tier: Cluster` and confidence 30 (a chosen fixture value, **not** a framework-mandated tier baseline), and are namespaced under the `cc` example member token ([4.2](../Patchwork-CTI-Framework.md#42-member-namespaces)). Each incident is linked to its cluster by a single `attributed-to` relationship — 4 clusters, 4 incidents, 4 edges, 0 cluster-to-cluster relationships. IDs are fixed, sequential placeholders (`intrusion-set--00000000-0000-4000-8000-000000009001` and similar), not the UUIDv5-derived IDs the samples' forthcoming builders will use — this bundle is meant to be regenerated or edited directly for a given test, not treated as a stable, citable sample the way those are.
 
 ## What-using-it-looks-like
 

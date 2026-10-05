@@ -9,7 +9,7 @@
 >
 > These `[!tip]` callouts are guidance, not content — delete each one as you fill its section.
 
-# <Title>-—-Actor-Profile
+# `<Title>`-—-Actor-Profile
 
 > ⚠️ **This type may also be generated automatically in your environment.** Where a member's own tooling emits `actor-profile` reports from incident data, reports deduplicate on **name + published** ([9.2](../Patchwork-CTI-Framework.md#92-identity-and-merge-rules)) — so a hand-written report that reuses the generated title pattern (something of the shape `<member>-<Actor> (<handle>) — activity profile`) will **merge into and overwrite** the generated one. Give yours a distinct title. This is a statement about *your own* environment, not about any upstream platform ([Report-Types](<../Report-Types.md#before-you-write-four-things-that-bite>)).
 

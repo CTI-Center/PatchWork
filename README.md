@@ -1,16 +1,18 @@
-![381](docs/Resources/PatchWork_logo-transparent-croped.png)
+![Patchwork CTI Framework logo](docs/Resources/PatchWork_logo-transparent-croped.png)
 
 ---
-This framework exists to turn analyst observations of adversary activity into an actionable, standards-conformant threat intelligence compatible with STIX 2.1, **in a record where each judgement stays revisable without destroying the ones around it**. **Patchwork** is a threat-intelligence framework for tracking adversaries and sharing reports, composed from five published standards — that patching-together is where the name comes from.
+This framework turns analyst observations of adversary activity into actionable threat intelligence designed for STIX 2.1 exchange, **in a record where each judgement stays revisable without destroying the ones around it**. **Patchwork** is a threat-intelligence framework for tracking adversaries and sharing reports, composed from five published standards — that patching-together is where the name comes from.
 
-> **Status: draft v0.7, circulated for community review.**
-> Several design choices were close calls and are marked as such in the text. Disagreement is useful — see  [CONTRIBUTING.md](docs/CONTRIBUTING.md).
+> **Status: draft v0.7.1, prepared for community review.**
+> Several design choices were close calls and are marked as such in the text. Disagreement is useful — see [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 This project began as personal documentation. As it grew, I realized that each standard contributes a piece of the puzzle I was looking for. I'm grateful you're here to build on what I started, and I value your time. This draft is shared for public review, not as a final standard.
 
 We are developing a threat-intelligence platform designed to be compatible with the Patchwork CTI framework. The platform is a work in progress, not a released or verified-conformant implementation. The framework remains platform-independent; this distribution contains its specification, templates, examples and tools, not the platform's internal development plans.
 
-Please note: *the document structure was generated with AI assistance and may contain errors.*
+Please note: *the document structure was generated with AI assistance and may contain errors.* Public review is not a certification of an implementation's STIX conformance.
+
+Maintainers: complete the [publication checklist](docs/Publication-Checklist.md) before making a distribution public. Passing the automated checks does not approve third-party redistribution or remove private material from the original repository's history.
 
 ## Table-of-contents
 
@@ -37,12 +39,15 @@ This is the framework-only public distribution. [`tools/public-review`](tools/pu
 ├── docs/
 │   ├── CONTRIBUTING.md             How to propose changes
 │   ├── Easy-access/                Local copies of the source standards
+│   ├── Member-Registry.md          Member tokens and mature-name registrations
 │   ├── Patchwork-CTI-Framework.md  The specification
+│   ├── Publication-Checklist.md    Technical checks and owner approval before publication
 │   ├── Real-Examples/              Worked report samples
 │   ├── Report-Templates/           One skeleton per report type — 13 to author, 3 retired
 │   ├── Report-Types.md             Which report type to use, and when
 │   ├── Resources/                  Diagrams and screenshots referenced by the docs
 │   ├── Sectors.md                  Sector taxonomy
+│   ├── Third-Party-Notices.md      Source attribution and redistribution review requirements
 │   └── Vocabularies.md             Controlled value sets
 ├── LICENSE                         CC BY 4.0 — framework, templates, documentation
 ├── LICENSE-MIT                     MIT — scripts and tooling
@@ -114,6 +119,8 @@ The framework, templates and documentation are **CC BY 4.0** — adopt and adapt
 
 Portions are adapted from the [CERT-EU Cyber Threat Intelligence Framework](https://cert.europa.eu/publications/threat-intelligence/cyber-threat-intelligence-framework/markdown), © CERT-EU, licensed CC BY 4.0.
 
+The [third-party notices](docs/Third-Party-Notices.md) identify the reference copies and the redistribution checks still required before publication. Attribution alone is not permission to redistribute a source.
+
 `docs/Easy-access/` holds local copies of the sources this framework builds on, so its citations can be followed without leaving the repo. **Those copies keep their own licences and are not covered by the CC BY 4.0 above.** Each records its origin, though the form varies: the gtidocs mirror carries a `retrieved:` date, the Unit 42 and Mandiant copies a `created:` date, and the CISA and OASIS copies state their origin in prose rather than in frontmatter. In particular `docs/Easy-access/GTI/gtidocs/` is an *unofficial* snapshot of the [Google Threat Intelligence documentation hub](https://gtidocs.virustotal.com/docs/), © Google, mirrored for reference only and refreshed by [`tools/gtidocs-mirror`](tools/gtidocs-mirror/README.md) — check the live page linked at the foot of any archived file before relying on it.
 
 
@@ -124,4 +131,6 @@ Portions are adapted from the [CERT-EU Cyber Threat Intelligence Framework](http
 | **[The framework](docs/Patchwork-CTI-Framework.md)** | The specification itself — adversary model, attribution ladder, classification, confidence, sharing and STIX serialisation. Has its own [table of contents](docs/Patchwork-CTI-Framework.md#table-of-contents) and [glossary](docs/Patchwork-CTI-Framework.md#glossary). |
 | **[Report types](docs/Report-Types.md)** | Which report type to use when, a template for each of the 13 authored kinds, and the worked samples. |
 | **[Vocabularies](docs/Vocabularies.md)** · **[Sectors](docs/Sectors.md)** | The controlled value sets. |
+| **[Member registry](docs/Member-Registry.md)** | Token reservations and mature-name registrations; example tokens are not registrations. |
+| **[Publication checklist](docs/Publication-Checklist.md)** | Validation, privacy, third-party rights and history-free publication gates. |
 | **[Contributing](docs/CONTRIBUTING.md)** | How to propose a change, and what a good one looks like. |

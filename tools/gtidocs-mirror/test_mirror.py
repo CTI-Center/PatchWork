@@ -1,8 +1,10 @@
 """Offline regression coverage for mirror conversion; no live GTI requests."""
 
 import importlib.util
+import io
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 
 SPEC = importlib.util.spec_from_file_location("gti_mirror", Path(__file__).with_name("mirror.py"))
@@ -11,6 +13,17 @@ SPEC.loader.exec_module(mirror)
 
 
 class MirrorConversionTests(unittest.TestCase):
+    def test_http_request_identifies_the_current_project(self):
+        response = io.BytesIO(b"# Documentation\n")
+        response.headers = {"Content-Type": "text/markdown"}
+        # Only the external transport is mocked; the HTTP request is real.
+        with patch.object(mirror.urllib.request, "urlopen", return_value=response) as transport:
+            body, content_type = mirror._raw_get("https://example.invalid/docs", timeout=5)
+        request = transport.call_args.args[0]
+        self.assertIn("(+https://github.com/CTI-Center/PatchWork)",
+                      request.get_header("User-agent"))
+        self.assertEqual((body, content_type), (b"# Documentation\n", "text/markdown"))
+
     def test_transforms_headings_but_preserves_fenced_examples(self):
         page = mirror.Page({"slug": "example", "title": "Example"}, "guides", "group")
         page.raw = "# API Guide\n\n## Analysis / Sandbox\n\n```python\n# Do Not Change\n```\n"

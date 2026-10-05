@@ -1,6 +1,6 @@
 # Contributing
 
-Patchwork is a draft, v0.7, circulated for community review. Several design choices in [Patchwork-CTI-Framework.md](Patchwork-CTI-Framework.md) were close calls, and the document says so wherever that's true. Disagreement is useful — it's the point of publishing a draft rather than sitting on it.
+Patchwork is a draft, v0.7.1, prepared for community review. Several design choices in [Patchwork-CTI-Framework.md](Patchwork-CTI-Framework.md) were close calls, and the document says so wherever that's true. Disagreement is useful — it's the point of publishing a draft rather than sitting on it.
 
 ## Where-to-start
 
@@ -18,3 +18,9 @@ Patchwork is a draft, v0.7, circulated for community review. Several design choi
 ## Keeping-the-revision-history-honest
 
 `Patchwork-CTI-Framework.md` ends with a **Revision history** list, running newest first. A substantive change to the framework should add a new entry at the **top**, in the form `- **<version>** · <date> — <one paragraph on what changed and why>`. Add to it, don't rewrite past entries. That list is itself an application of the framework's own principle: the record should accumulate, not quietly absorb its own history.
+
+## Registering-a-member-or-mature-name
+
+Use a pull request to update [Member-Registry.md](Member-Registry.md). Supply the member's stable lowercase token, exact STIX identity name and a contact approved for public collision/retraction traffic. A proposed token or name is not reserved until the registration is accepted. Maintainers record the UTC acceptance time; do not invent a registration date or include private contact details without consent.
+
+Mature-name proposals must satisfy the collision checks in [4.7](Patchwork-CTI-Framework.md#47-mature-name-collisions-and-the-member-registry). Preserve earlier registrations and record corrections rather than silently removing their history.

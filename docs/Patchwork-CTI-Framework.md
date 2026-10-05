@@ -1,16 +1,16 @@
 ---
 title: Patchwork CTI-Framework
 created: 2026-08-31
-updated: 2026-10-04
+updated: 2026-10-05
 status: draft — for community review
-Version: "0.7"
+Version: "0.7.1"
 ---
 
-> TL:DR
+> TL;DR
 > - **What this document is:**
 > 	The description of what the framework classifies, with what vocabularies, under what confidence and sharing rules, and how each construct traces back to  the standard it was borrowed from.
 > - **How it was created.**
-> 	We composed several publicly available, market-leading standards into one framework, That patching-together is why the framework is named **Patchwork**.
+> 	We composed several publicly available standards into one framework. That patching-together is why the framework is named **Patchwork**.
 
 ---
 
@@ -32,7 +32,7 @@ Version: "0.7"
 ---
 ## 1.-Purpose-and-scope
 
-This framework exists to turn analyst observations of adversary activity into an actionable, standards-conformant threat intelligence compatible with STIX 2.1, **in a record where each judgement stays revisable without destroying the ones around it**.
+This framework turns analyst observations of adversary activity into actionable threat intelligence designed for STIX 2.1 exchange, **in a record where each judgement stays revisable without destroying the ones around it**.
 
 **The problem it solves.**
 	Threat intelligence is a record of provisional judgements, and correction is routine rather than exceptional. Most data models make correction destructive: renaming an actor, merging two clusters, or re-grading a source overwrites the reasoning that produced the earlier view, so the record can no longer show what was believed, on what evidence, or why it changed. Every construct below exists to keep each judgement separable, from the evidence that supports it, and from the other judgements around it.
@@ -90,7 +90,7 @@ The framework borrows Mandiant's and Unit 42's **published methodology**. It doe
 - **Sector taxonomy.**
 	Neither vendor taxonomy is adopted. The framework defines its own hierarchy and supplies a mapping *into* it ([6.1](#61-sectors)).
 - **How to carry non-standard properties.**
-	Earlier drafts of this framework used `x_`-prefixed custom properties. STIX 2.1 **deprecates** that mechanism — its [11](<Easy-access/oasis-open/stix-2.1.md#11-customizing-stix-deprecated>) is titled "Customizing STIX (Deprecated)" — in favour of `extension-definition` objects ([7.3](Easy-access/oasis-open/stix-2.1.md#73-extension-definition)). Here STIX **wins**: the six classification properties now ride on a single nested `property-extension` ([9.3](#93-classification-properties)). This is the one entry in this list resolved *against* the framework's earlier choice rather than against a source standard.
+	Earlier drafts of this framework used `x_`-prefixed custom properties. STIX 2.1 **deprecates** that mechanism — its [11](<Easy-access/oasis-open/stix-2.1.md#11-customizing-stix-deprecated>) is titled "Customizing STIX (Deprecated)" — in favour of `extension-definition` objects ([7.3](Easy-access/oasis-open/stix-2.1.md#73-extension-definition)). Here STIX **wins**: the seven classification properties now ride on a single nested `property-extension` ([9.3](#93-classification-properties)). This is the one entry in this list resolved *against* the framework's earlier choice rather than against a source standard.
 
 ### 2.3-Why-STIX-2.1-sits-differently-from-the-other-four
 
@@ -254,7 +254,7 @@ The tests earn their keep at the edges. Four worked cases, each of which analyst
 | Case | Significant? | Why |
 |---|---|---|
 | Ransomware encrypts a file server the constituency uses; restored from backup in four hours, nothing published | **Yes**, test 1 | The test is disruption *caused or capable of being caused*. Fast recovery is a good outcome, not evidence the incident was minor — grading on recovery speed rewards luck and preparation identically |
-| A phishing email harvests one user's credential; the SOC catches it before any use | **No** | "Capable of causing" describes the incident as it occurred, not the worst case it might have become. Every credential phish is *capable* of catastrophe in that looser reading, which would make the term meaningless |
+| A phishing email is blocked before any credential is submitted; no system or data is compromised | **No**, absent another member-defined impact | The attempt alone does not meet tests 1–4. If a usable credential is actually compromised and confers onward access, test 4 applies even if the SOC prevents its use |
 | A vendor is breached, exposing constituency data the vendor held | **Yes**, test 2 | Significance follows the **data**, not the box. The compromised system is not the member's; the exposure is |
 | A public website is defaced, no data touched, restored in twenty minutes | **Member's call** | Fails tests 1–4 on any ordinary reading. Whether it clears test 5 on reputational cost is exactly the judgement a member is expected to make and write down |
 
@@ -455,7 +455,7 @@ A name that survives all three is minted and announced to the registry in the sa
 
 [4.2](#42-member-namespaces) requires every member to hold a namespace token, and until 0.5 the framework never said where that token is recorded or how anyone resolves one. A token that only its owner can interpret defeats the purpose: a reader who receives `acme-CL-CRI-2026-0023` needs to know who `acme` is.
 
-The registry is a single file in this repository, maintained by pull request, holding one row per member:
+The registry is [Member-Registry.md](Member-Registry.md), maintained by pull request, holding one row per member and a separate table of registered mature names. Example tokens in this document do not reserve a namespace; registration requires an accepted entry.
 
 | Field | Content |
 |---|---|
@@ -714,10 +714,10 @@ The marking extension, published once:
   "id": "extension-definition--3f5b8d21-9a47-4c6e-b0d3-7e1a5c942f88",
   "created_by_ref": "identity--<the-publishing-member>",
   "created": "2026-09-05T00:00:00.000Z",
-  "modified": "2026-09-05T00:00:00.000Z",
+  "modified": "2026-10-05T00:00:00.000Z",
   "name": "Patchwork TLP 2.0 marking",
   "description": "Carries TLP 2.0 levels for which STIX 2.1 defines no predefined marking. Currently AMBER+STRICT only.",
-  "schema": "https://github.com/CTI-Center-Organization/Patch-CTI-Framework/blob/main/docs/Patchwork-CTI-Framework.md#8.1-tlp",
+  "schema": "Nested property-extension on marking-definition: extension_type is property-extension; tlp_2_level is the string amber+strict. It restricts sharing to the recipient organisation on a need-to-know basis. Use with the predefined AMBER marking, as specified in section 8.1 of the Patchwork CTI Framework.",
   "version": "1.0.0",
   "extension_types": ["property-extension"]
 }
@@ -941,7 +941,7 @@ STIX 2.1 has no native representation for the classification concepts in [3](#3-
 
 #### The-extension-definition
 
-Published once, and referenced by every object that carries a classification:
+To be published once by the issuing member, and referenced by every object that carries a classification. This is a documentation skeleton: replace the placeholder publishing identity before issuing it.
 
 ```json
 {
@@ -950,16 +950,18 @@ Published once, and referenced by every object that carries a classification:
   "id": "extension-definition--68d9295e-c5bb-4fae-895b-23271595cc5b",
   "created_by_ref": "identity--<the-publishing-member>",
   "created": "2026-08-31T00:00:00.000Z",
-  "modified": "2026-09-01T00:00:00.000Z",
+  "modified": "2026-10-05T00:00:00.000Z",
   "name": "Patchwork CTI classification",
   "description": "Threat level, threat domain, activity category, observed date, attribution tier, intent and campaign type, as defined by the Patchwork CTI Framework.",
-  "schema": "https://github.com/CTI-Center-Organization/Patch-CTI-Framework/blob/main/docs/Patchwork-CTI-Framework.md#9.3-classification-properties",
+  "schema": "Nested property-extension: threat_level is High, Medium or Low; threat_domain is Constituency, National, Regional, Partner or World; activity_category is a non-empty list of section 5.2 category strings; observed_date is a STIX timestamp required on incident; attribution_tier is Cluster, Temporary or Mature; intent is a possibly empty list of financial, espionage, sabotage or disruption; campaign_type is Individual or Global. Property applicability and interpretation follow section 9.3 of the Patchwork CTI Framework.",
   "version": "2.0.0",
   "extension_types": ["property-extension"]
 }
 ```
 
 > ⚠️ **The extension id is permanent.** Changing it forks every object that carries it, exactly as changing a member namespace token does ([4.2](#42-member-namespaces)). Mint once.
+
+The `schema` fields here and in [8.1](#81-tlp) use normative prose rather than an unpublished repository URL. STIX 2.1 [7.3.1](Easy-access/oasis-open/stix-2.1.md#731-extension-definition-properties) explicitly permits a URL **or plain text explaining the definition**. These JSON blocks illustrate the model; placeholder identifiers and omitted common properties must be completed before producing exchangeable STIX objects. The documentation checks do not certify those objects or a platform implementation.
 
 **The `version` moves; the `id` does not.** Adding a property to the set below is a change to this definition, so `version` advances and `modified` with it — `1.1.0` added `campaign_type`. Adding a property is backward-compatible: objects written against `1.0.0` stay valid, and a consumer that does not know the new property ignores it exactly as it would ignore the whole extension. Removing or retyping a property is not, and is not something to do quietly.
 
@@ -1263,6 +1265,8 @@ One-line definitions for terms used throughout this document without re-explanat
 ---
 
 ## Revision-history
+
+- **0.7.1** · 2026-10-05 — **Publication preparation and editorial corrections.** Added the member registry, publication checklist and third-party source notices. Replaced obsolete repository URLs in extension examples with the normative prose definitions permitted by STIX 2.1, corrected the classification-property count, clarified the credential-phishing boundary case and distinguished open-vocabulary interoperability from conformance. Synthetic confidence values are explicitly examples rather than tier baselines. Template title placeholders are rendered as code so GitHub does not treat them as HTML tags. Offline tool tests and history-free public export include the publication documents. No classification properties, extension ids, extension versions or naming rules change; third-party redistribution and actual publication still require owner approval.
 
 - **0.7** · 2026-10-04 — **Year-qualified designations and public review.** New cluster and temporary-group names include the code-allocation year ([4.3](#43-attribution-codes-are-assigned-once-and-never-reused)), with member/tier/MOT/year sequence scopes, immutable issued codes and explicit legacy-identity safeguards. Naming examples, vocabulary diagrams and the actor-profile template follow the new grammar. The framework and README state that a compatible platform is in development, without claiming a released implementation. The distribution excludes internal transfer plans and includes GitHub-compatible links and validated, history-free public-export tooling. No extension property changes, so the classification `extension-definition` remains **2.0.0**.
 

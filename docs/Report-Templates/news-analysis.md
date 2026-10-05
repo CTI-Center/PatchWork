@@ -9,7 +9,7 @@
 >
 > These `[!tip]` callouts are guidance, not content — delete each one as you fill its section.
 
-# <Title>-—-News-Analysis
+# `<Title>`-—-News-Analysis
 
 ## Report-metadata
 
