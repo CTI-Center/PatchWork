@@ -1,6 +1,6 @@
 # Contributing
 
-Patchwork is a draft, v0.7.1, prepared for community review. Several design choices in [Patchwork-CTI-Framework.md](Patchwork-CTI-Framework.md) were close calls, and the document says so wherever that's true. Disagreement is useful — it's the point of publishing a draft rather than sitting on it.
+Patchwork is a draft, v0.7.2, prepared for community review. Several design choices in [Patchwork-CTI-Framework.md](Patchwork-CTI-Framework.md) were close calls, and the document says so wherever that's true. Disagreement is useful — it's the point of publishing a draft rather than sitting on it.
 
 ## Where-to-start
 

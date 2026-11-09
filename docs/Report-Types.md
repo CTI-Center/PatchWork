@@ -40,6 +40,16 @@ The **Description** and **Benefits** columns are **adapted from** the upstream c
 > **The `OSINT Article` row is not one of the thirteen** —
 > the table is alphabetical, so it sits third rather than last. It is the source catalogue's single crowdsourced type — public reporting ingested automatically rather than written by an analyst — and Patchwork has no slug for it, which is why its Type cell is `—`. A third-party report you ingest arrives carrying a [feed-assigned](<#feed-assigned-types-11--no-template>) type instead, usually `threat-report`. It is kept here so the mapping to the source catalogue is complete rather than silently short.
 
+## Optional-authoring-profiles
+
+A profile expands an existing template for a particular production task; it does **not** add a value to `report_types_ov` or change the thirteen authored types.
+
+| Profile | Parent type | Use when | Method and source structure |
+| --- | --- | --- | --- |
+| [Annual threat landscape](Report-Templates/annual-threat-landscape.md) | `net-assessment` | A retrospective annual assessment requiring explicit corpus/denominator definitions, sector and threat modules, and review/update records. “Annual” is cadence, not an actor or threat category. | [ENISA alignment](ENISA-Alignment.md), [CTL methodology](Easy-access/ENISA/enisa-ctl-methodology-2026.md), [annual report schema](Easy-access/ENISA/enisa-threat-landscape-2026-schema.md). |
+
+For an annual product, select `net-assessment` when the time-bounded retrospective is primary; a region/sector standing picture still uses `country-profile`/`industry`, and a predominantly predictive product uses `trends-forecasting`. A short outlook does not change a retrospective's type. Preserve the `published` period-start anchor and record the actual release date separately. The profile's extra production fields are not new wire properties; see [the framework's boundaries](Patchwork-CTI-Framework.md#26-enisa-production-method-and-annual-report-profile).
+
 ## Retired-—-valid,-not-authored-(3)
 
 These three slugs entered the framework with the rest of the domain set, which was taken from a **connector's value set** rather than from a live product catalogue — and that value set is frozen at a catalogue its publisher has since retired ([source](Easy-access/GTI/gtidocs/guides/07-report-analysis/report-types.md#decommissioned-curated-reports-types-or-series)). Nothing here is about following Google. It is that a type nobody can point at a reason for is a type nobody should be offered.

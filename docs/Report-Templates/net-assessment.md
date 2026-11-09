@@ -1,6 +1,7 @@
 > [!NOTE] About this template — Net Assessment (`net-assessment`)
 > **Use this when:**
 > Retrospective — the top threats you reported on or observed across the period just ended.
+> For a full annual landscape, use the optional [annual threat-landscape profile](annual-threat-landscape.md), linked to the [ENISA production methodology](../ENISA-Alignment.md). It keeps this same `net-assessment` type.
 >
 > **Use something else if:**
 > the analysis points forward — use `trends-forecasting`; if it is scoped to one region or sector rather than to a period — use `country-profile` or `industry`.

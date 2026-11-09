@@ -84,6 +84,24 @@ class PublicExportTests(unittest.TestCase):
                 self.assertEqual((self.output / name).read_text(),
                                  "# Publication\n[Framework](Patchwork-CTI-Framework.md)\n")
 
+    def test_enisa_profile_sources_and_assets_survive_public_export(self):
+        documents = {
+            "docs/ENISA-Alignment.md": "# ENISA\n[Profile](Report-Templates/annual-threat-landscape.md)\n[Schema](Easy-access/ENISA/enisa-threat-landscape-2026-schema.md)\n",
+            "docs/Report-Templates/annual-threat-landscape.md": "# Annual\n[Alignment](../ENISA-Alignment.md)\n[Method](../Easy-access/ENISA/enisa-ctl-methodology-2026.md)\n",
+            "docs/Easy-access/ENISA/enisa-threat-landscape-2026-schema.md": "# Schema\n[Method](enisa-ctl-methodology-2026.md)\n",
+            "docs/Easy-access/ENISA/enisa-ctl-methodology-2026.md": "# Method\n![Figure](assets/enisa-ctl-methodology-2026/figure.png)\n",
+            "docs/Easy-access/ENISA/assets/enisa-ctl-methodology-2026/figure.png": "asset fixture\n",
+        }
+        for name, content in documents.items():
+            self.file(name, content)
+        self.file("README.md", "<!-- repo-tree:start -->\n<!-- repo-tree:end -->\n[ENISA](docs/ENISA-Alignment.md)\n")
+        result = self.export()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        for name, content in documents.items():
+            with self.subTest(document=name):
+                self.assertEqual((self.output / name).read_text(), content)
+        self.assertFalse(any(self.output.rglob("*.pdf")))
+
     def test_public_links_cannot_point_to_private_files(self):
         self.file("docs/OpenCTI-Transfer-Plan.md")
         self.file("README.md", "[Private](docs/OpenCTI-Transfer-Plan.md)\n")

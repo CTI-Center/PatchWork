@@ -1,6 +1,6 @@
 # Publication-checklist
 
-Publication target: **Patchwork CTI Framework v0.7.1, a community-review draft**.
+Publication target: **Patchwork CTI Framework v0.7.2, a community-review draft**.
 Preparing a package is not making a repository public, releasing the compatible
 platform or certifying an implementation. Keep those distinctions in the
 announcement and release notes.

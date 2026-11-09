@@ -1,9 +1,9 @@
 ---
 title: Patchwork CTI-Framework
 created: 2026-08-31
-updated: 2026-10-05
+updated: 2026-11-09
 status: draft — for community review
-Version: "0.7.1"
+Version: "0.7.2"
 ---
 
 > TL;DR
@@ -23,6 +23,7 @@ Version: "0.7.1"
   - [2.3 Why STIX 2.1 sits differently from the other four](#23-why-stix-21-sits-differently-from-the-other-four)
   - [2.4 Deliberate divergences](#24-deliberate-divergences)
   - [2.5 Not adopted](#25-not-adopted)
+  - [2.6 ENISA production method and annual report profile](#26-enisa-production-method-and-annual-report-profile)
 - [3. What we track and how we scope it](#3-what-we-track-and-how-we-scope-it)
   - [3.1 Malicious activity of interest](#31-malicious-activity-of-interest)
   - [3.2 Ecosystem](#32-ecosystem)
@@ -122,7 +123,7 @@ This framework turns analyst observations of adversary activity into actionable 
 
 ## 2.-Source-standards-and-how-they-compose
 
-Five external standards were composed. None was adopted wholesale; each contributed the part it does best. Where Patchwork parts company with them is registered below: [2.4](#24-deliberate-divergences) is settled policy, [2.5](#25-not-adopted) is absence, both summarise, and link forward to the chapters that argue each case
+Five foundational external standards were composed. The complementary ENISA production-method and annual-report profile is localised separately in [2.6](#26-enisa-production-method-and-annual-report-profile); it does not replace these foundations or add a wire format. None was adopted wholesale; each contributed the part it does best. Where Patchwork parts company with them is registered below: [2.4](#24-deliberate-divergences) is settled policy, [2.5](#25-not-adopted) is absence, both summarise, and link forward to the chapters that argue each case
 
 | Standard                                                                  | What was taken                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Why that one                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -210,6 +211,18 @@ Threat *actor* levels and the scoring models are **not** adopted.
 	Withdrawing an *assessment* was always solved by the additive ladder; withdrawing a *fact already shared* was not. [8.4](#84-retraction-of-shared-facts) now specifies the retraction record, the correction/withdrawal split forced by `revoked` being permanent, the recipient's obligations, and the wrong-TLP case. **One residue remains:** SCOs are not versioned in STIX at all, so a wrong hash or domain has no `revoked` to set and can only be retracted by retracting the objects that reference it.
 
 ---
+
+### 2.6-ENISA-production-method-and-annual-report-profile
+
+ENISA contributes a **complementary production-method layer**: how to turn intelligence requirements and a curated evidence base into a reviewed threat-landscape product. The [September 2026 CTL methodology](Easy-access/ENISA/enisa-ctl-methodology-2026.md) supplies direction, collection, processing, analysis and production, dissemination, and feedback. The [2026 annual report's extracted structure](Easy-access/ENISA/enisa-threat-landscape-2026-schema.md) supplies one output profile, not an incident taxonomy, an adversary naming authority or a formal conformance standard. See the [ENISA alignment and adoption decisions](ENISA-Alignment.md) for the full lifecycle crosswalk and source limitations.
+
+The [annual threat-landscape template](Report-Templates/annual-threat-landscape.md) is an **optional authoring profile of `net-assessment`**, not a fourteenth authored report type. It adds an explicit reporting window, collection cutoff, corpus and metric definitions, coverage/unknowns, source-aware sector and threat analyses, assessment-to-action traceability, and publication/update/feedback records. Generalise the EU scope to the member's constituency and choose chapters to answer declared intelligence requirements; do not freeze the source's year, top-five sectors, actor lists or statistics into future editions.
+
+**Precedence and boundaries.** Existing Patchwork object identities, attribution gates, classifications and sharing rules still apply. ENISA EU-relevance scoring is not Patchwork `threat_level`, an event's estimated probability is not Admiralty credibility or STIX `confidence`, and the annual report's incident counts, separate EEAS FIMI corpus, NIS2 events and vulnerability series are not interchangeable denominators. Preserve original taxonomies and document mappings rather than replacing the sector hierarchy ([6.1](#61-sectors)) or nine activity categories ([5.2](#52-activity-categories)). Where FIMI or law-enforcement context has no adopted core representation, keep it as explicitly sourced narrative; do not force it into an intrusion or invent an `intent` value.
+
+**Human analytical accountability.** Applying this profile follows the [methodology's AI boundary](Easy-access/ENISA/enisa-ctl-methodology-2026.md#247-use-of-ai-supported-tools): tools may support defined monitoring, collection and limited editorial tasks with human validation, not identify analytical trends, draw conclusions or formulate CTL assessments. Record the tools actually used; the source annual report's “no AI-generated content” statement is its own disclosure, not a statement members may copy unverified.
+
+**No schema migration.** All added template/dictionary fields are production documentation unless explicitly mapped to an existing STIX property or the existing Patchwork extension. The 27 report-type values, seven classification properties, extension id/version **2.0.0**, namespace rules and identity keys remain unchanged. For authored annual products the established `published` period-start anchor remains stable; record actual release and later revisions separately. This is methodological alignment, not ENISA endorsement, certification or a replacement for testable STIX conformance.
 
 ## 3.-What-we-track-and-how-we-scope-it
 
@@ -1316,6 +1329,9 @@ One-line definitions for terms used throughout this document without re-explanat
 - **OASIS STIX 2.1** —
 	Committee Specification 01 / OASIS Standard. The object model, common properties, versioning semantics, data markings, extension mechanism and open vocabularies ([2](#2-source-standards-and-how-they-compose), [2.3](#23-why-stix-21-sits-differently-from-the-other-four)) — local copy: [stix-2.1.md](Easy-access/oasis-open/stix-2.1.md)
 	- <https://docs.oasis-open.org/cti/stix/v2.1/os/stix-v2.1-os.html>
+- **ENISA** — complementary production methodology and output profile ([2.6](#26-enisa-production-method-and-annual-report-profile)):
+	- *ENISA Cybersecurity Threat Landscape Methodology*, September 2026 — [local reference](Easy-access/ENISA/enisa-ctl-methodology-2026.md), DOI [10.2824/1888892](https://doi.org/10.2824/1888892).
+	- *ENISA Threat Landscape 2026*, September 2026 — [source structure and adaptation notes](Easy-access/ENISA/enisa-threat-landscape-2026-schema.md), DOI [10.2824/0806036](https://doi.org/10.2824/0806036). The supplied edition covers recorded incidents in calendar 2025; its original PDF and third-party artwork are not redistributed here.
 - **MITRE ATT&CK** Enterprise : <https://attack.mitre.org/>
 - **FIRST** :
 	Levels of Confidence in Assessment and Words of Estimative Probability guidance (referenced by CERT-EU 10.2; not adopted here).
@@ -1326,6 +1342,8 @@ One-line definitions for terms used throughout this document without re-explanat
 ---
 
 ## Revision-history
+
+- **0.7.2** · 2026-11-09 — **ENISA production-method alignment and annual reporting.** Added the attributed September 2026 CTL methodology reference, a source-page schema extraction from the supplied ENISA Threat Landscape 2026, an optional annual `net-assessment` profile and the lifecycle/adoption crosswalk in [2.6](#26-enisa-production-method-and-annual-report-profile). The annual profile separates publication year from the observed period, corpus/denominator/unknown coverage, source claims from analyst assessments, review, updates and feedback. EU-specific scoring, source taxonomies and the annual probability matrix are not silently substituted for Patchwork classifications or confidence. No report-type values, classification properties, identifiers, extension versions or historical records change; the extension remains **2.0.0**.
 
 - **0.7.1** · 2026-10-05 — **Publication preparation and editorial corrections.** Added the member registry, publication checklist and third-party source notices. Replaced obsolete repository URLs in extension examples with the normative prose definitions permitted by STIX 2.1, corrected the classification-property count, clarified the credential-phishing boundary case and distinguished open-vocabulary interoperability from conformance. Synthetic confidence values are explicitly examples rather than tier baselines. Template title placeholders are rendered as code so GitHub does not treat them as HTML tags. Offline tool tests and history-free public export include the publication documents. No classification properties, extension ids, extension versions or naming rules change; third-party redistribution and actual publication still require owner approval.
 

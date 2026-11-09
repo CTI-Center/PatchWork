@@ -1,9 +1,9 @@
 ![Patchwork CTI Framework logo](docs/Resources/PatchWork_logo-transparent-croped.png)
 
 ---
-This framework turns analyst observations of adversary activity into actionable threat intelligence designed for STIX 2.1 exchange, **in a record where each judgement stays revisable without destroying the ones around it**. **Patchwork** is a threat-intelligence framework for tracking adversaries and sharing reports, composed from five published standards — that patching-together is where the name comes from.
+This framework turns analyst observations of adversary activity into actionable threat intelligence designed for STIX 2.1 exchange, **in a record where each judgement stays revisable without destroying the ones around it**. **Patchwork** is a threat-intelligence framework for tracking adversaries and sharing reports, composed from five foundational published standards — that patching-together is where the name comes from. A complementary [ENISA production-method layer](docs/ENISA-Alignment.md) supports reviewed annual threat-landscape reporting without changing the STIX model.
 
-> **Status: draft v0.7.1, prepared for community review.**
+> **Status: draft v0.7.2, prepared for community review.**
 > Several design choices were close calls and are marked as such in the text. Disagreement is useful — see [CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 This project began as personal documentation. As it grew, I realized that each standard contributes a piece of the puzzle I was looking for. I'm grateful you're here to build on what I started, and I value your time. This draft is shared for public review, not as a final standard.
@@ -39,11 +39,12 @@ This is the framework-only public distribution. [`tools/public-review`](tools/pu
 ├── docs/
 │   ├── CONTRIBUTING.md             How to propose changes
 │   ├── Easy-access/                Local copies of the source standards
+│   ├── ENISA-Alignment.md          ENISA production-method alignment and annual-report profile
 │   ├── Member-Registry.md          Member tokens and mature-name registrations
 │   ├── Patchwork-CTI-Framework.md  The specification
 │   ├── Publication-Checklist.md    Technical checks and owner approval before publication
 │   ├── Real-Examples/              Worked report samples
-│   ├── Report-Templates/           One skeleton per report type — 13 to author, 3 retired
+│   ├── Report-Templates/           13 authored types, 3 retired skeletons and an annual-report profile
 │   ├── Report-Types.md             Which report type to use, and when
 │   ├── Resources/                  Diagrams and screenshots referenced by the docs
 │   ├── Sectors.md                  Sector taxonomy
@@ -130,6 +131,7 @@ The [third-party notices](docs/Third-Party-Notices.md) identify the reference co
 | --- | --- |
 | **[The framework](docs/Patchwork-CTI-Framework.md)** | The specification itself — adversary model, attribution ladder, classification, confidence, sharing and STIX serialisation. Has its own [table of contents](docs/Patchwork-CTI-Framework.md#table-of-contents) and [glossary](docs/Patchwork-CTI-Framework.md#glossary). |
 | **[Report types](docs/Report-Types.md)** | Which report type to use when, a template for each of the 13 authored kinds, and the worked samples. |
+| **[ENISA alignment](docs/ENISA-Alignment.md)** · **[Annual report template](docs/Report-Templates/annual-threat-landscape.md)** | Lifecycle adoption decisions and an annual `net-assessment` profile, traced to the [CTL methodology](docs/Easy-access/ENISA/enisa-ctl-methodology-2026.md) and [annual source structure](docs/Easy-access/ENISA/enisa-threat-landscape-2026-schema.md). |
 | **[Vocabularies](docs/Vocabularies.md)** · **[Sectors](docs/Sectors.md)** | The controlled value sets. |
 | **[Member registry](docs/Member-Registry.md)** | Token reservations and mature-name registrations; example tokens are not registrations. |
 | **[Publication checklist](docs/Publication-Checklist.md)** | Validation, privacy, third-party rights and history-free publication gates. |
